@@ -3,6 +3,10 @@ language: python
 python: "3.6"
   # PyPy versions
 
+before_install: 
+  - pip install codecov
+  - pip install coverage
+
 # command to install dependencies
 install: true
 # - pip install -r docs/requirements.txt
@@ -10,7 +14,7 @@ install: true
 # command to run tests
 # script: pytest
 script: 
-  - python test.py
+  - coverage run test.py
 
 #after_success:
 #  - codecov
