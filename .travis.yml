@@ -9,7 +9,9 @@ install:
   - pip install -r docs/requirements.txt
 
 # command to run tests
-script: pytest
+# script: pytest
+script: 
+  - python test.py
 
 after_success:
  - codecov
