@@ -1,17 +1,16 @@
 language: python
 
-python:
-  - "3.6"
+python: "3.6"
   # PyPy versions
 
 # command to install dependencies
-install:
-  - pip install -r docs/requirements.txt
+install: true
+# - pip install -r docs/requirements.txt
 
 # command to run tests
 # script: pytest
 script: 
   - python test.py
 
-after_success:
- - codecov
+#after_success:
+#  - codecov
