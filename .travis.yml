@@ -16,5 +16,5 @@ install: true
 script: 
   - coverage run test.py
 
-#after_success:
-#  - codecov
+after_success:
+  - codecov
