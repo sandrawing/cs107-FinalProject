@@ -17,4 +17,5 @@ script:
   - coverage run test.py
 
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
+#  - codecov
