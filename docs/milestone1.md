@@ -46,12 +46,16 @@
    * Forward automatic differentiation divides the expression into a sequence of differentiable elementary operations. The chain rule and well-known differentiation rules are then applied to each elementary operation.
 
    * Forward automatic differentiation computes a directional derivative at the same time as it performs a forward evaluation trace. Implementation of forward automatic differentiation is simple due to how expressions are normally evaluated by computers.
+   
+   * The following graph shows an example of forward accumulation with computational graph.
 
 ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ForwardAccumulationAutomaticDifferentiation.png)
 
 4. Reverse Mode
 
    * In reverse accumulation automatic differentiation, the dependent variable to be differentiated is fixed and the derivative is computed with respect to each sub-expression recursively.
+   
+   * The following graph shows an example of reverse accumulation with computational graph.
    
 ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ReverseaccumulationAD.png)
 
