@@ -47,7 +47,7 @@
 
    * Forward automatic differentiation computes a directional derivative at the same time as it performs a forward evaluation trace. Implementation of forward automatic differentiation is simple due to how expressions are normally evaluated by computers.
 
-![Image of Forward Automatic](https://en.wikipedia.org/wiki/Automatic_differentiation#/media/File:ForwardAccumulationAutomaticDifferentiation.png)
+![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ForwardAccumulationAutomaticDifferentiation.png)
 
 4. Reverse Mode
 
