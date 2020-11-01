@@ -52,6 +52,8 @@
 4. Reverse Mode
 
    * In reverse accumulation automatic differentiation, the dependent variable to be differentiated is fixed and the derivative is computed with respect to each sub-expression recursively.
+   
+![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ReverseaccumulationAD.png)
 
 ## How to Use PackageName
 
