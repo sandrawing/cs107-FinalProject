@@ -237,14 +237,9 @@
   
 ## Feedback
 
-Here's the feedback:
----------------
+* Introduction: good! 
 
-*Introduction: good! 
-
-*Background -1: 
-
-the explanation of automatic differentiation is too simple, and it missed the key points of AD: graph structures, evaluation trace, elementary function derivatives, and so on. You don't have to include everything about AD in the background section, but the basic explanations about the key points are essential for users who would use your package. 
+* Background -1: the explanation of automatic differentiation is too simple, and it missed the key points of AD: graph structures, evaluation trace, elementary function derivatives, and so on. You don't have to include everything about AD in the background section, but the basic explanations about the key points are essential for users who would use your package. 
 
 how to use: If the input of your package is a function, I am afraid it may be an issue to deal with multiple-variable derivatives and ask users to give a function, instead of variables in the terminal. 
 
