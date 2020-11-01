@@ -38,7 +38,10 @@
 2. Automatic Differentiation
 
    * Automatic Differentiation refers to a general way of taking a program which computes a value, and automatically constructing a procedure for computing derivatives of that value. The derivatives sought may be first order (the gradient of a target function, or the Jacobian of a set of constraints), higher order (Hessian times direction vector or a truncated Taylor series), or nested. There are two modes in Automatic Differentiation: the forward mode and reverse mode.
+   
+   * Function evaluation traces: All numeric evaluations are sequences of elementary operations: a “trace,” also called a “Wengert list”. The following graph shows an example of evaluation traces.
 
+![Image of Evaluation Trace](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/eval_trace.png)
    
 
 3. Forward Mode
