@@ -233,3 +233,21 @@
 
 * How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
   * For the elementary functions which are already implemented in numpy and sklearn packages, we will use the implementation from the packages. And we will include their implementation for handling both the input of scalars and vectors. For all the others, we will include our own implementation in a module called func. Since the elementary function will be used for many times in our project, it’s better to define and implement in a separate module.
+  
+  
+## Feedback
+
+Here's the feedback:
+---------------
+
+*Introduction: good! 
+
+*Background -1: 
+
+the explanation of automatic differentiation is too simple, and it missed the key points of AD: graph structures, evaluation trace, elementary function derivatives, and so on. You don't have to include everything about AD in the background section, but the basic explanations about the key points are essential for users who would use your package. 
+
+how to use: If the input of your package is a function, I am afraid it may be an issue to deal with multiple-variable derivatives and ask users to give a function, instead of variables in the terminal. 
+
+software organization - 0.5: the Modules and basic functionality part are actually asking what python models you use in your package. 
+
+implementation -0.5: Please elaborate on how you deal with elementary functions, e.g. by giving examples, demos, graphs, or tables, and so on.
