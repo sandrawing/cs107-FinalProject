@@ -19,15 +19,15 @@
 
    * Product Rule
 
-   In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
+     In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
 
-   ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ProductRule.png)
+   ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ProductRule.png =400x)
 
    * Chain Rule
 
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
 
-   ![Image of Chain Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ChainRule.png)
+   ![Image of Chain Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ChainRule.png =250x)
 
 
 
@@ -76,47 +76,47 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Define a function to be evaluate
     ```python
-         ​	def func(args_array):
+ ​	def func(args_array):
 
-         ​		return ….(the function)
+ ​		return ….(the function)
     ```
 
    * Instantiate autodiff objects and calculate derivatives
     ```python
-        func_prime_foward_obj = autodiff.forward_mode(func)
+    func_prime_foward_obj = autodiff.forward_mode(func)
 
-        val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
+    val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
 
-        func_prime_backward_obj = autodiff.reverse_mode(func)
+    func_prime_backward_obj = autodiff.reverse_mode(func)
 
-        val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
+    val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
     ```
 
 2. What’s inside autodiff package
 
    * Forward_mode class
     ```python
-        class forward_mode:
+    class forward_mode:
 
-            def __init__(func):
+        def __init__(func):
 
-         ​		self.func = func
+     ​		self.func = func
 
-            def calculate_derivate(self, x, seed_vec):
+        def calculate_derivate(self, x, seed_vec):
 
-                return *** using self.func
+            return *** using self.func
     ```
    * Reverse_mode class
     ```python
-        class reverse_mode:
+    class reverse_mode:
 
-            def __init__(func):
+        def __init__(func):
 
-         ​		self.func = func
+     ​		self.func = func
 
-            def calculate_derivate(self, x, seed_vec):
+        def calculate_derivate(self, x, seed_vec):
 
-                return *** using self.func
+            return *** using self.func
     ```
 ## Software Organization
 
@@ -235,15 +235,15 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
     * For instance,
     ```python
-    ​	def sin(x):
+​    def sin(x):
 
-    ​		# if x is a scalar:
+​		 # if x is a scalar:
 
-    ​			# implement the sin(x) for scalar
+​			 # implement the sin(x) for scalar
 
-    ​		# if x is a vector:
+​		 # if x is a vector:
 
-    ​			# implement the sin(x) for vector
+​			 # implement the sin(x) for vector
     ```
   * Inside the newtons_method module, we have methods like root_finding.
 
@@ -254,13 +254,13 @@ numerical differentiation, in the sense that it computes numerical values, it co
   * For the elementary functions which are already implemented in numpy and sklearn packages, we will use the implementation from the packages. And we will include their implementation for handling both the input of scalars and vectors. For all the others, we will include our own implementation in a module called func. Since the elementary function will be used for many times in our project, it’s better to define and implement in a separate module.
   * For example, in the trace table above, we would use elementary functions from numpy as exemplified below:
     ```python
-        X  = numpy.pi/2
-        Y  = numpy.pi/3
-        V1 = numpy.sin(x)
-        V2 = numpy.cos(y)
-        V3 = v1-v2
-        V4 = numpy.pow(v3,2)
-        V5 = numpy.exp(v4)
+    X  = numpy.pi/2
+    Y  = numpy.pi/3
+    V1 = numpy.sin(x)
+    V2 = numpy.cos(y)
+    V3 = v1-v2
+    V4 = numpy.pow(v3,2)
+    V5 = numpy.exp(v4)
     ```
 
 
