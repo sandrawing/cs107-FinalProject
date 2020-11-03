@@ -113,24 +113,24 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```python
      class forward_mode:
        
-       	def __init__(val, n, m):
-         		self.val = val
-             # For now we assume m=n, deal with more complicated cases later
-           	self.der = np.eye((m, n)) # Jacobian matrix
+       def __init__(val, n, m):
+         self.val = val
+         # For now we assume m=n, deal with more complicated cases later
+         self.der = np.eye((m, n)) # Jacobian matrix
        
-       	def __multi__(self, alpha):
-         		pass
-         
-         def __rmulti__(self, alpha):
-         		pass
-         
-         def __add__(self, alpha):
-           	pass
-           
-         def __radd__(self, alpha):
-           	pass
-         
-         ...
+       def __multi__(self, alpha):
+         pass
+       
+       def __rmulti__(self, alpha):
+         pass
+       
+       def __add__(self, alpha):
+         pass
+       
+       def __radd__(self, alpha):
+         pass
+       
+       ...
          
       ```
 
@@ -139,25 +139,25 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```python
      class forward_mode:
        
-       	def __init__(val):
-         		self.val = val
-             # For now we assume m=n, deal with more complicated cases later
-           	self.der = np.eye((m, n)) # Jacobian matrix
+       def __init__(val):
+         self.val = val
+         # For now we assume m=n, deal with more complicated cases later
+         self.der = np.eye((m, n)) # Jacobian matrix
+         
+       def __multi__(self, alpha):
+         pass
        
-       	def __multi__(self, alpha):
-         		pass
-         
-         def __rmulti__(self, alpha):
-         		pass
-         
-         def __add__(self, alpha):
-           	pass
-           
-         def __radd__(self, alpha):
-           	pass
-         
-         ...
-         
+       def __rmulti__(self, alpha):
+         pass
+       
+       def __add__(self, alpha):
+         pass
+       
+       def __radd__(self, alpha):
+         pass
+       
+       ...
+     
       ```
 
    * Elementary functions
