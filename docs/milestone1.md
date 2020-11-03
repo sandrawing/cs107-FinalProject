@@ -100,8 +100,8 @@ numerical differentiation, in the sense that it computes numerical values, it co
     class forward_mode:
 
         def __init__(func):
-
-     ​		self.func = func
+        
+           self.func = func
 
         def calculate_derivate(self, x, seed_vec):
 
@@ -113,7 +113,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
         def __init__(func):
 
-     ​		self.func = func
+           self.func = func
 
         def calculate_derivate(self, x, seed_vec):
 
@@ -238,12 +238,12 @@ numerical differentiation, in the sense that it computes numerical values, it co
     ```python
         def sin(x):
         	# if x is a scalar:
-    
-    ​			 # implement the sin(x) for scalar
-    
-    ​		 # if x is a vector:
-    
-    ​			 # implement the sin(x) for vector
+          	
+            # implement the sin(x) for scalar
+          
+          # if x is a vector:
+          	
+            # implement the sin(x) for vector
     ```
 
   * Inside the newtons_method module, we have methods like root_finding.
