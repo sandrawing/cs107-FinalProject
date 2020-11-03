@@ -71,24 +71,25 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Import packages
     ```python
-    import autodiff
+   import autodiff
     ```
 
    * Define a function to be evaluate
     ```python
- ​	def func(args_array):
-
- ​		return ….(the function)
+    ​	def func(args_array):
+       	return ….(the function)​
     ```
 
+
    * Instantiate autodiff objects and calculate derivatives
-    ```python
+
+    ``` python
     func_prime_foward_obj = autodiff.forward_mode(func)
-
+    
     val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
-
+    
     func_prime_backward_obj = autodiff.reverse_mode(func)
-
+    
     val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
     ```
 
@@ -235,21 +236,22 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
     * For instance,
     ```python
-​    def sin(x):
-
-​		 # if x is a scalar:
-
-​			 # implement the sin(x) for scalar
-
-​		 # if x is a vector:
-
-​			 # implement the sin(x) for vector
+        def sin(x):
+        	# if x is a scalar:
+    
+    ​			 # implement the sin(x) for scalar
+    
+    ​		 # if x is a vector:
+    
+    ​			 # implement the sin(x) for vector
     ```
+
   * Inside the newtons_method module, we have methods like root_finding.
 
 * What external dependencies will you rely on?
-  * We will rely on Python math library and Python packages like numpy and sklearn.
-
+  
+* We will rely on Python math library and Python packages like numpy and sklearn.
+  
 * How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
   * For the elementary functions which are already implemented in numpy and sklearn packages, we will use the implementation from the packages. And we will include their implementation for handling both the input of scalars and vectors. For all the others, we will include our own implementation in a module called func. Since the elementary function will be used for many times in our project, it’s better to define and implement in a separate module.
   * For example, in the trace table above, we would use elementary functions from numpy as exemplified below:
