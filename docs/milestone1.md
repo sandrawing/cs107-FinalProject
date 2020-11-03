@@ -70,56 +70,113 @@ numerical differentiation, in the sense that it computes numerical values, it co
 1. What to import and how to instantiate autodiff objects
 
    * Import packages
-    ```python
-   import autodiff
-    ```
 
-   * Define a function to be evaluate
-    ```python
-   def func(args_array):
-     
-     	return *** the function
-    ```
-
+      ```python
+     import autodiff as ad
+     import numpy as np
+      ```
 
    * Instantiate autodiff objects and calculate derivatives
 
-```python
-func_prime_foward_obj = autodiff.forward_mode(func)
+     * scalar case, forward mode (similar for reverse mode)
 
-val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
+       ```python
+       val = np.array([0]) # Value to evaluate at 
+       
+       # Create an AD forward mode object with val, number of inputs and number of outputs
+       x = ad.forward_mode(val, 1, 1) 
+       
+       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+       
+       print(f.val, f.der) # Output the function value and derivate
+       ```
 
-func_prime_backward_obj = autodiff.reverse_mode(func)
+     * vector case, forward mode (similar for reverse mode)
 
-val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
-```
+       ```python
+       vec = np.array([1,1]) # Value to be evaluate at
+       
+       # Create an AD forward mode object with vector, number of inputs and number of putputs
+       x = ad.forward_mode(vec, 2, 2) 
+       
+       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x,y) = [sin(2x), sin(2y)]
+       
+       print(f.val, f.der) # Output the function value and derivative
+       ```
+
+       
 
 2. What’s inside autodiff package
 
    * Forward_mode class
-    ```python
-   class forward_mode:
-  
-     	def __init__(func):
-    
-       		self.func = func
-  
-     	def calculate_derivate(self, x, seed_vec):
-    
-       		return *** using self.func
-    ```
+
+      ```python
+     class forward_mode:
+       
+       	def __init__(val, n, m):
+         		self.val = val
+             # For now we assume m=n, deal with more complicated cases later
+           	self.der = np.eye((m, n)) # Jacobian matrix
+       
+       	def __multi__(self, alpha):
+         		pass
+         
+         def __rmulti__(self, alpha):
+         		pass
+         
+         def __add__(self, alpha):
+           	pass
+           
+         def __radd__(self, alpha):
+           	pass
+         
+         ...
+         
+      ```
+
    * Reverse_mode class
-    ```python
-   class reverse_mode:
-    
-       def __init__(func):
 
-         	self.func = func
+      ```python
+     class forward_mode:
+       
+       	def __init__(val):
+         		self.val = val
+             # For now we assume m=n, deal with more complicated cases later
+           	self.der = np.eye((m, n)) # Jacobian matrix
+       
+       	def __multi__(self, alpha):
+         		pass
+         
+         def __rmulti__(self, alpha):
+         		pass
+         
+         def __add__(self, alpha):
+           	pass
+           
+         def __radd__(self, alpha):
+           	pass
+         
+         ...
+         
+      ```
 
-       def calculate_derivate(self, x, seed_vec):
+   * Elementary functions
 
-       		return *** using self.func
-    ```
+     ```python
+     def sin(x):
+       	# x is an AD object
+       	pass
+     
+     def cos(x):
+       	pass
+      
+     def exp(x):
+       	pass
+     
+     ...
+     
+     ```
+
 ## Software Organization
 
 *Discuss how you plan on organizing your software package.*
