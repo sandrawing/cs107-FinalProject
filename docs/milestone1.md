@@ -76,48 +76,49 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Define a function to be evaluate
     ```python
-    ​	def func(args_array):
-       	return ….(the function)​
+   def func(args_array):
+     
+     	return *** the function
     ```
 
 
    * Instantiate autodiff objects and calculate derivatives
 
-    ``` python
-    func_prime_foward_obj = autodiff.forward_mode(func)
-    
-    val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
-    
-    func_prime_backward_obj = autodiff.reverse_mode(func)
-    
-    val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
-    ```
+```python
+func_prime_foward_obj = autodiff.forward_mode(func)
+
+val_diff_forward = func_prime_forward_obj.calculate_derivative(x, seed_vec)
+
+func_prime_backward_obj = autodiff.reverse_mode(func)
+
+val_diff_backward = func_prime_backward_obj.calculate_derivative(x, seed_vec)
+```
 
 2. What’s inside autodiff package
 
    * Forward_mode class
     ```python
-    class forward_mode:
-
-        def __init__(func):
-        
-           self.func = func
-
-        def calculate_derivate(self, x, seed_vec):
-
-            return *** using self.func
+   class forward_mode:
+  
+     	def __init__(func):
+    
+       		self.func = func
+  
+     	def calculate_derivate(self, x, seed_vec):
+    
+       		return *** using self.func
     ```
    * Reverse_mode class
     ```python
-    class reverse_mode:
+   class reverse_mode:
+    
+       def __init__(func):
 
-        def __init__(func):
+         	self.func = func
 
-           self.func = func
+       def calculate_derivate(self, x, seed_vec):
 
-        def calculate_derivate(self, x, seed_vec):
-
-            return *** using self.func
+       		return *** using self.func
     ```
 ## Software Organization
 
@@ -237,6 +238,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
     * For instance,
     ```python
         def sin(x):
+        
         	# if x is a scalar:
           	
             # implement the sin(x) for scalar
