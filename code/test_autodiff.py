@@ -62,10 +62,68 @@ def test_sin():
     assert abs(f1.der - 3*np.cos(3*x_val+2)) < tol
 
 
+# Part 3 tests - Sehaj
+
+
+def test_sinh():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.sinh(f1)
+    assert f2.val == np.sinh(3*5 + 2)
+    assert f2.der == 3*np.cosh(17)
+
+def test_cos():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.cos(f1)
+    assert f2.val == np.cos(3*5 + 2)
+    assert f2.der == -3* np.sin(17)
+
+def test_cosh():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.cosh(f1)
+    assert f2.val == np.cosh(3*5 + 2)
+    assert f2.der == 3*np.sinh(17)
+
+def test_tan():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.tan(f1)
+    assert f2.val == np.tan(3*5 + 2)
+    assert f2.der == 3 / ((np.cos(17))**2)
+
+def test_tanh():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.tanh(f1)
+    assert f2.val == np.tanh(3*5+2)
+    assert f2.der == 3 / ((np.cosh(17))**2) 
+
+
+def test_sqrt():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.sqrt(f1)
+    assert f2.val == (3*5+2)**0.5
+    assert f2.der == 3 / (2*(17**0.5))
+
+
+
+
 test_pow()
 test_rpow()
 test_truediv()
 test_rtruediv()
 test_neg()
 test_sin()
+
+test_sinh()
+test_cos()
+test_cosh()
+test_tan()
+test_tanh()
+test_sqrt()
+
+
 
