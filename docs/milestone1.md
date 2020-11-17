@@ -67,7 +67,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 *How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
 
-1. What to import and how to instantiate autodiff objects
+1. Setting up the repository and environment
+    * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
+    * Install all the requirements for this package with the command `pip install requirements.txt -r`
+
+2. What to import and how to instantiate autodiff objects
 
    * Import packages
 
@@ -81,13 +85,13 @@ numerical differentiation, in the sense that it computes numerical values, it co
      * scalar case, forward mode (similar for reverse mode)
 
        ```python
-       val = np.array([0]) # Value to evaluate at 
-       
+       val = np.array([0]) # Value to evaluate at
+
        # Create an AD forward mode object with val, number of inputs and number of outputs
-       x = ad.forward_mode(val, 1, 1) 
-       
+       x = ad.forward_mode(val, 1, 1)
+
        f = ad.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
-       
+
        print(f.val, f.der) # Output the function value and derivate
        ```
 
@@ -95,69 +99,69 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
        ```python
        vec = np.array([1,1]) # Value to be evaluate at
-       
+
        # Create an AD forward mode object with vector, number of inputs and number of putputs
-       x = ad.forward_mode(vec, 2, 2) 
-       
+       x = ad.forward_mode(vec, 2, 2)
+
        f = ad.sin(2 * x) # function to be evaluate, i.e. f(x,y) = [sin(2x), sin(2y)]
-       
+
        print(f.val, f.der) # Output the function value and derivative
        ```
 
-       
 
-2. What’s inside autodiff package
+
+3. What’s inside autodiff package
 
    * Forward_mode class
 
       ```python
      class forward_mode:
-       
+
        def __init__(val, n, m):
          self.val = val
          # For now we assume m=n, deal with more complicated cases later
          self.der = np.eye((m, n)) # Jacobian matrix
-       
+
        def __multi__(self, alpha):
          pass
-       
+
        def __rmulti__(self, alpha):
          pass
-       
+
        def __add__(self, alpha):
          pass
-       
+
        def __radd__(self, alpha):
          pass
-       
+
        ...
-         
+
       ```
 
    * Reverse_mode class
 
       ```python
      class forward_mode:
-       
+
        def __init__(val):
          self.val = val
          # For now we assume m=n, deal with more complicated cases later
          self.der = np.eye((m, n)) # Jacobian matrix
-         
+
        def __multi__(self, alpha):
          pass
-       
+
        def __rmulti__(self, alpha):
          pass
-       
+
        def __add__(self, alpha):
          pass
-       
+
        def __radd__(self, alpha):
          pass
-       
+
        ...
-     
+
       ```
 
    * Elementary functions
@@ -166,15 +170,15 @@ numerical differentiation, in the sense that it computes numerical values, it co
      def sin(x):
        	# x is an AD object
        	pass
-     
+
      def cos(x):
        	pass
-      
+
      def exp(x):
        	pass
-     
+
      ...
-     
+
      ```
 
 ## Software Organization
@@ -295,22 +299,22 @@ numerical differentiation, in the sense that it computes numerical values, it co
     * For instance,
     ```python
         def sin(x):
-        
+
         	# if x is a scalar:
-          	
+
             # implement the sin(x) for scalar
-          
+
           # if x is a vector:
-          	
+
             # implement the sin(x) for vector
     ```
 
   * Inside the newtons_method module, we have methods like root_finding.
 
 * What external dependencies will you rely on?
-  
+
 * We will rely on Python math library and Python packages like numpy and sklearn.
-  
+
 * How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
   * For the elementary functions which are already implemented in numpy and sklearn packages, we will use the implementation from the packages. And we will include their implementation for handling both the input of scalars and vectors. For all the others, we will include our own implementation in a module called func. Since the elementary function will be used for many times in our project, it’s better to define and implement in a separate module.
   * For example, in the trace table above, we would use elementary functions from numpy as exemplified below:
