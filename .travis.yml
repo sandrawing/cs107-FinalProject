@@ -11,5 +11,5 @@ script:
     - pytest --cov=code/
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+    - bash <(curl -s https://codecov.io/bash) -t 5e655a65-d0e2-4f94-a82d-17d4f40a04dd
 
