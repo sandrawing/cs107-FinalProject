@@ -98,7 +98,7 @@ def test_tanh():
     f1 = 3 * x + 2
     f2 = AutoDiff.tanh(f1)
     assert f2.val == np.tanh(3*5+2)
-    assert f2.der == 3 / ((np.cosh(17))**2) 
+    assert f2.der == 3 / ((np.cosh(17))**2)
 
 
 def test_sqrt():
@@ -107,6 +107,34 @@ def test_sqrt():
     f2 = AutoDiff.sqrt(f1)
     assert f2.val == (3*5+2)**0.5
     assert f2.der == 3 / (2*(17**0.5))
+
+def test_ln():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.ln(f1)
+    assert f2.val == np.log(17)
+    assert f2.der == (1/17)*3
+
+def test_log():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.log(f1,4)
+    assert f2.val == np.log(17)/np.log(4)
+    assert f2.der == 3/(np.log(4)*(17))
+
+def test_exp():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.exp(f1)
+    assert f2.val == np.exp(17)
+    assert f2.der == 3*np.exp(17)
+
+def test_exp_base():
+    x = AutoDiff(5)
+    f1 = 3 * x + 2
+    f2 = AutoDiff.exp_base(f1,4)
+    assert f2.val == 4**17
+    assert f2.der == (4**17) * 3 * np.log(4)
 
 
 
@@ -125,5 +153,7 @@ test_tan()
 test_tanh()
 test_sqrt()
 
-
-
+test_ln()
+test_log()
+test_exp()
+test_exp_base()
