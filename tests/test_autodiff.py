@@ -1,5 +1,8 @@
-import pytest
+import sys
 import numpy as np
+sys.path.append(sys.path[0][:-5])
+
+import pytest
 from autodiff.autodiff import AutoDiff
 
 
