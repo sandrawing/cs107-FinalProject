@@ -1,9 +1,9 @@
 import sys
 import numpy as np
-sys.path.append(sys.path[0][:-5])
+sys.path.append('autodiff')
 
 import pytest
-from autodiff.autodiff import AutoDiff
+from autodiff import AutoDiff
 
 
 def test_add_constant():
