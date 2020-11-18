@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from cs107-FinalProject.autodiff.autodiff import AutoDiff
+from autodiff.autodiff import AutoDiff
 
 
 def test_add_constant():
