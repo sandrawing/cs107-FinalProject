@@ -9,7 +9,10 @@ before_install:
   #- pip install coverage
 
 script:
-    - pytest --cov=./
+    - pytest
+
+# script:
+#     - pytest --cov=./
 
 after_success:
     - codecov
