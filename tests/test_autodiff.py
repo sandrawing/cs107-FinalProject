@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from autodiff import AutoDiff
+from autodiff.autodiff import AutoDiff
 
 
 # Part 2 test
