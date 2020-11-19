@@ -64,7 +64,127 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ReverseaccumulationAD.png)
 
-## How to Use PackageName
+
+## How to Use PackageName (After Milestone 2)
+
+*How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
+
+1. Setting up the repository and environment
+    * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
+    * Install all the requirements for this package with the command `pip install requirements.txt -r`
+
+2. What to import and how to instantiate autodiff objects
+
+   * Import packages
+
+      ```python
+     import autodiff as ad
+     import numpy as np
+      ```
+
+   * Instantiate autodiff objects and calculate derivatives
+
+     * scalar case, forward mode (similar for reverse mode)
+
+       ```python
+       val = np.array([0]) # Value to evaluate at
+
+       # Create an AD forward mode object with val, number of inputs and number of outputs
+       x = ad.forward_mode(val, 1, 1)
+
+       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+
+       print(f.val, f.der) # Output the function value and derivate
+       ```
+
+     * vector case, forward mode (similar for reverse mode)
+
+       ```python
+       vec = np.array([1,1]) # Value to be evaluate at
+
+       # Create an AD forward mode object with vector, number of inputs and number of putputs
+       x = ad.forward_mode(vec, 2, 2)
+
+       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x,y) = [sin(2x), sin(2y)]
+
+       print(f.val, f.der) # Output the function value and derivative
+       ```
+
+
+
+3. What’s inside autodiff package
+
+   * Forward_mode class
+
+      ```python
+     class forward_mode:
+
+       def __init__(val, n, m):
+         self.val = val
+         # For now we assume m=n, deal with more complicated cases later
+         self.der = np.eye((m, n)) # Jacobian matrix
+
+       def __multi__(self, alpha):
+         pass
+
+       def __rmulti__(self, alpha):
+         pass
+
+       def __add__(self, alpha):
+         pass
+
+       def __radd__(self, alpha):
+         pass
+
+       ...
+
+      ```
+
+   * Reverse_mode class
+
+      ```python
+     class forward_mode:
+
+       def __init__(val):
+         self.val = val
+         # For now we assume m=n, deal with more complicated cases later
+         self.der = np.eye((m, n)) # Jacobian matrix
+
+       def __multi__(self, alpha):
+         pass
+
+       def __rmulti__(self, alpha):
+         pass
+
+       def __add__(self, alpha):
+         pass
+
+       def __radd__(self, alpha):
+         pass
+
+       ...
+
+      ```
+
+   * Elementary functions
+
+     ```python
+     def sin(x):
+        # x is an AD object
+        pass
+
+     def cos(x):
+        pass
+
+     def exp(x):
+        pass
+
+     ...
+
+     ```
+
+
+## How to Use PackageName (After Milestone 2)
 
 *How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
 
