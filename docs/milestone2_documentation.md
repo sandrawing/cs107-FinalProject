@@ -70,14 +70,14 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 1. Setting up the repository and environment
     * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
-    * Install all the requirements for this package with the command `pip install requirements.txt -r`
+    * Install all the requirements for this package with the command `pip install -r requirements.txt`
 
 2. What to import and how to instantiate autodiff objects
 
    * Import packages
 
       ```python
-     import autodiff as ad
+     import autodiff.autodiff as ad
      import numpy as np
       ```
 
@@ -86,101 +86,74 @@ numerical differentiation, in the sense that it computes numerical values, it co
      * scalar case, forward mode (similar for reverse mode)
 
        ```python
-       val = np.array([0]) # Value to evaluate at
+       val = 0 # Value to evaluate at
 
-       # Create an AD forward mode object with val, number of inputs and number of outputs
-       x = ad.forward_mode(val, 1, 1)
+       # Create an AD forward mode object with val
+       x = ad.AutoDiff(val)
 
-       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+       f = ad.AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
 
        print(f.val, f.der) # Output the function value and derivate
        ```
 
-     * vector case, forward mode (similar for reverse mode)
-
-       ```python
-       vec = np.array([1,1]) # Value to be evaluate at
-
-       # Create an AD forward mode object with vector, number of inputs and number of putputs
-       x = ad.forward_mode(vec, 2, 2)
-
-       f = ad.sin(2 * x) # function to be evaluate, i.e. f(x,y) = [sin(2x), sin(2y)]
-
-       print(f.val, f.der) # Output the function value and derivative
-       ```
-
-
 
 3. What’s inside autodiff package
 
-   * Forward_mode class
+   * autodiff
 
       ```python
-     class forward_mode:
+     class AutoDiff:
+         """
+         Forward Mode Implementation of Automatic Differentiation
+         The class overloads the basic operations, including the unary operation,
+         and contains some elemental functions
+         """
 
-       def __init__(val, n, m):
-         self.val = val
-         # For now we assume m=n, deal with more complicated cases later
-         self.der = np.eye((m, n)) # Jacobian matrix
+         def __init__(self, val, der=1):
+             """
+             Initializes AutoDiff object with a value that was passed in and
+             sets the default value of derivative to 1
+             """
+             if isinstance(val, str):
+                 raise TypeError("Cannot initialize val to string values")
+             elif isinstance(der, str):
+                 raise TypeError("Cannot initialize der to string values")
+             self.val = val
+             self.der = der
 
-       def __multi__(self, alpha):
-         pass
+         """Basic Operations"""
 
-       def __rmulti__(self, alpha):
-         pass
+         def __add__(self, other):
+             """
+             Overloads the addition operation
 
-       def __add__(self, alpha):
-         pass
+             Inputs: Scalar or AutoDiff Instance
+             Returns: A new AutoDiff object which is the result of the addition operation
+             performed between the AutoDiff object and the argument that was passed in
+             """
+             try:
+                 return AutoDiff(self.val + other.val, self.der + other.der)
+             except AttributeError:
+                 other = AutoDiff(other, 0)  # derivative of a constant is zero
+                 return AutoDiff(self.val + other.val, self.der + other.der)
 
-       def __radd__(self, alpha):
-         pass
+        ...
 
-       ...
+        """Elemental Functions"""
+
+        def sin(self):
+            """
+            Inputs: None
+            Returns: A new AutoDiff object with the sine computation done on the value and derivative
+            """
+            new_val = np.sin(self.val)
+            new_der = np.cos(self.val) * self.der
+            return AutoDiff(new_val, new_der)
+
+        ...
 
       ```
 
-   * Reverse_mode class
-
-      ```python
-     class forward_mode:
-
-       def __init__(val):
-         self.val = val
-         # For now we assume m=n, deal with more complicated cases later
-         self.der = np.eye((m, n)) # Jacobian matrix
-
-       def __multi__(self, alpha):
-         pass
-
-       def __rmulti__(self, alpha):
-         pass
-
-       def __add__(self, alpha):
-         pass
-
-       def __radd__(self, alpha):
-         pass
-
-       ...
-
-      ```
-
-   * Elementary functions
-
-     ```python
-     def sin(x):
-       	# x is an AD object
-       	pass
-
-     def cos(x):
-       	pass
-
-     def exp(x):
-       	pass
-
-     ...
-
-     ```
 
 ## Software Organization
 
@@ -192,33 +165,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ​	docs/
 
-      ​	func/
-
-      ​		__init__.py
-
-      ​		Files/         (modules related to implementation of different elementary functions)
-
-      ​	newtons_method/
-
-      ​		__init__.py
-
-      ​		Files/         (modules related to newtons_method)
-
       ​	autodiff/
 
       ​		__init__.py
 
-      ​		forward_mode/  (subdirectory)
-
-      ​			__init__.py
-
-      ​			Files/		(modules related to forward_mode)
-
-      ​		reverse_mode/   (subdirectory)
-
-      ​			__init__.py
-
-      ​			Files/		(modules related to reverse_mode)
+      ​		autodiff.py
 
       ​		...
 
@@ -231,10 +182,8 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 
 * Basic Functionality
-  * Forward_mode
+  * autodiff
     * Calculates the gradient using the forward method. The arguments it takes in are: a function, the seed(s), and the point of evaluation.
-  * Reverse_mode
-    * Calculates the gradient using the reverse method. The arguments it takes in are: a function, the seed(s), and the point of evaluation.
 
 * Testing
 
@@ -386,7 +335,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 ## Future Features
 
-* What kinds of things do you want to impelement next? 
+* What kinds of things do you want to impelement next?
   * The first thing we want to implement is expanding our functionality to vector functions. This milestone's requirements were only for scalar function, but we think the real value of forward mode and automatic differentiation lies in the vector implementation. So we will be spending time modifying our code to find all the partial derivatives for vector functions.
   * We also spent a lot of time thinking of and implementing our elementary functions, and believe we now have a comprehensive number of them implemented. However, we will continue to think of more functions that we can add by the next milestone.
   * We also want to implement the reverse mode as an additional functionality. We learnt about reverse mode in class, and also as Masters of Data Science students ourselves, we saw an example of why reverse mode is useful in data science through the CS109A course at Harvard. We think this functionality, will therefore, be a great addition to our package.
@@ -394,7 +343,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
   * We also want to think of and implement a better package downloading mechanism than the one we have now (`git clone`).
 
 
-* How will your software change? 
+* How will your software change?
   * For Task 2 above (more elementary functions), there will only need to be additions to the code, no real changes to the structure of the existing implementation.
   * Similarly for Tasks 3 and 4 (Reverse mode and Newton's Method), also we don't need many changes to existing code, since these will be separate additions in seperate files.
   * For Task 5 - this is more an architectural change, so implementation won't be impacted again.
@@ -423,4 +372,3 @@ numerical differentiation, in the sense that it computes numerical values, it co
   * No new modules are anticipated - we believe `numpy` will be enough for us to achieve our goals for the future features we have proposed.
   * New classes will be added: namely one for Reverse Mode `AutoDiffRev` and one for Newton's method `NewtonMethod`.
   * Data structures that we will use for the above as well as for the vector implementation will include numpy arrays and python dictionaries (which were not required so far for the scalar implementation, but will be necessary for the vector functionality).
-
