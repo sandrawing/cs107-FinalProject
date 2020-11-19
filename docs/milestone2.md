@@ -65,7 +65,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ReverseaccumulationAD.png)
 
 
-## How to Use PackageName (After Milestone 2)
+## How to Use PackageName (Before Milestone 2)
 
 *How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
 
