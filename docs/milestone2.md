@@ -1,4 +1,5 @@
-# CS207 Milestone 1
+
+# CS207 Milestone 2
 
 * Group 7 Group Members: Sivananda Rajananda, Sehaj Chawla, Xin Zeng, Yang Xiang
 
@@ -63,7 +64,8 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_2A/docs/ReverseaccumulationAD.png)
 
-## How to Use PackageName
+
+## How to Use PackageName (Before Milestone 2)
 
 *How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
 
@@ -168,18 +170,109 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
      ```python
      def sin(x):
-       	# x is an AD object
-       	pass
+        # x is an AD object
+        pass
 
      def cos(x):
-       	pass
+        pass
 
      def exp(x):
-       	pass
+        pass
 
      ...
 
      ```
+
+
+## How to Use PackageName (After Milestone 2)
+
+
+1. Setting up the repository and environment
+    * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
+    * Install all the requirements for this package with the command `pip install -r requirements.txt`
+
+2. What to import and how to instantiate autodiff objects
+
+   * Import packages
+
+      ```python
+     import autodiff.autodiff as ad
+     import numpy as np
+      ```
+
+   * Instantiate autodiff objects and calculate derivatives
+
+     * scalar case, forward mode (similar for reverse mode)
+
+       ```python
+       val = 0 # Value to evaluate at
+
+       # Create an AD forward mode object with val
+       x = ad.AutoDiff(val)
+
+       f = ad.AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+
+       print(f.val, f.der) # Output the function value and derivate
+       ```
+
+
+3. What’s inside autodiff package
+
+   * autodiff
+
+      ```python
+     class AutoDiff:
+         """
+         Forward Mode Implementation of Automatic Differentiation
+         The class overloads the basic operations, including the unary operation,
+         and contains some elemental functions
+         """
+
+         def __init__(self, val, der=1):
+             """
+             Initializes AutoDiff object with a value that was passed in and
+             sets the default value of derivative to 1
+             """
+             if isinstance(val, str):
+                 raise TypeError("Cannot initialize val to string values")
+             elif isinstance(der, str):
+                 raise TypeError("Cannot initialize der to string values")
+             self.val = val
+             self.der = der
+
+         """Basic Operations"""
+
+         def __add__(self, other):
+             """
+             Overloads the addition operation
+
+             Inputs: Scalar or AutoDiff Instance
+             Returns: A new AutoDiff object which is the result of the addition operation
+             performed between the AutoDiff object and the argument that was passed in
+             """
+             try:
+                 return AutoDiff(self.val + other.val, self.der + other.der)
+             except AttributeError:
+                 other = AutoDiff(other, 0)  # derivative of a constant is zero
+                 return AutoDiff(self.val + other.val, self.der + other.der)
+
+        ...
+
+        """Elemental Functions"""
+
+        def sin(self):
+            """
+            Inputs: None
+            Returns: A new AutoDiff object with the sine computation done on the value and derivative
+            """
+            new_val = np.sin(self.val)
+            new_der = np.cos(self.val) * self.der
+            return AutoDiff(new_val, new_der)
+
+        ...
+
+      ```
+
 
 ## Software Organization
 
@@ -191,33 +284,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ​	docs/
 
-      ​	func/
-
-      ​		__init__.py
-
-      ​		Files/         (modules related to implementation of different elementary functions)
-
-      ​	newtons_method/
-
-      ​		__init__.py
-
-      ​		Files/         (modules related to newtons_method)
-
       ​	autodiff/
 
       ​		__init__.py
 
-      ​		forward_mode/  (subdirectory)
-
-      ​			__init__.py
-
-      ​			Files/		(modules related to forward_mode)
-
-      ​		reverse_mode/   (subdirectory)
-
-      ​			__init__.py
-
-      ​			Files/		(modules related to reverse_mode)
+      ​		autodiff.py
 
       ​		...
 
@@ -230,10 +301,8 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 
 * Basic Functionality
-  * Forward_mode
+  * autodiff
     * Calculates the gradient using the forward method. The arguments it takes in are: a function, the seed(s), and the point of evaluation.
-  * Reverse_mode
-    * Calculates the gradient using the reverse method. The arguments it takes in are: a function, the seed(s), and the point of evaluation.
 
 * Testing
 
@@ -269,7 +338,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 
 
-## Implementation
+## Implementation (Before Milestone 2)
 
 *Discuss how you plan on implementing the forward mode of automatic differentiation.*
 
@@ -329,14 +398,96 @@ numerical differentiation, in the sense that it computes numerical values, it co
     ```
 
 
-## Feedback
+## Implementation Details (After Milestone 2)
 
-* Introduction: good!
+* Description of current implementation
+  * We had originally planned on using numpy arrays and python dictionaries for our data structures. However, since this milestone only required an implementation for scalar functions, we didn't need to use that. Instead, our idea behind coding it was to implement all the derivatives in the form of recusive calls that create new AutoDiff objects at each stage. This way, we could maintain modular coding while ensuring correctness.
+  * The class we implemented is called `AutoDiff`, and this class creates objects which store the current value as well as the derivative.
+  * Our attributes have names: `val` for value and `der` for derivative. We also have many methods within this class: one for each of the elementary functions (like `AutoDiff.sin(x)` for sin) and we have overwritten many of the dunder methods to allow easy use for our users. Now, they can simply create AutoDiff objects such as `x = AutoDiff(5, 10)` and then run intuitive functions on them like `f1 = 3 * x + 2` and `f2 = AutoDiff.ln(f1)`.
+  * Here is our `__init__` method:
+  ```python
+       def __init__(self, val, der=1):
+	        """
+	        Initializes AutoDiff object with a value that was passed in and
+	        sets the default value of derivative to 1
+	        """
+	        if isinstance(val, str):
+	            raise TypeError("Cannot initialize val to string values")
+	        elif isinstance(der, str):
+	            raise TypeError("Cannot initialize der to string values")
+	        self.val = val
+	        self.der = der
+   ```
+  * And below is an example of a dunder method (specifically multiplication with the common derivative laws) we overwrote:
+  ```python
+       def __mul__(self, other):
+	        """
+	        Overloads the multiplication operation
+	        Inputs: Scalar or AutoDiff Instance
+	        Returns: A new AutoDiff object which is the result of the multiplication operation
+	        performed between the AutoDiff object and the argument that was passed in
+	        """
+	        try:
+	            return AutoDiff(self.val * other.val, self.val * other.der + other.val * self.der)
+	        except AttributeError:
+	            other = AutoDiff(other, 0)
+	            return AutoDiff(self.val * other.val, self.val * other.der + other.val * self.der)
+  ```
+  * Lastly, here's an example of a elementary function implemented:
+  ```python
+       def sin(self):
+	        """
+	        Inputs: None
+	        Returns: A new AutoDiff object with the sine computation done on the value and derivative
+	        """
+	        new_val = np.sin(self.val)
+	        new_der = np.cos(self.val) * self.der
+	        return AutoDiff(new_val, new_der)
+  ```
 
-* Background -1: the explanation of automatic differentiation is too simple, and it missed the key points of AD: graph structures, evaluation trace, elementary function derivatives, and so on. You don't have to include everything about AD in the background section, but the basic explanations about the key points are essential for users who would use your package.
+  * The external dependencies we relied on were `numpy` and `sys`.
 
-* how to use: If the input of your package is a function, I am afraid it may be an issue to deal with multiple-variable derivatives and ask users to give a function, instead of variables in the terminal.
 
-* software organization - 0.5: the Modules and basic functionality part are actually asking what python models you use in your package.
+* What aspects have you not implemented yet? What else do you plan on implementing?
+  * We have not implemented the vector implementation yet. We plan on doing this for the next milestone, since it wasn't a part of the "scalar function" requirement for this milestone. The other things we plan on implementing are a Reverse mode implementation, as well as a functionality for Newton's method. Both of which are detailed (along with the vector function implementation) in the section below (Future Features).
 
-* implementation -0.5: Please elaborate on how you deal with elementary functions, e.g. by giving examples, demos, graphs, or tables, and so on.
+
+## Future Features
+
+* What kinds of things do you want to impelement next?
+  * The first thing we want to implement is expanding our functionality to vector functions. This milestone's requirements were only for scalar function, but we think the real value of forward mode and automatic differentiation lies in the vector implementation. So we will be spending time modifying our code to find all the partial derivatives for vector functions.
+  * We also spent a lot of time thinking of and implementing our elementary functions, and believe we now have a comprehensive number of them implemented. However, we will continue to think of more functions that we can add by the next milestone.
+  * We also want to implement the reverse mode as an additional functionality. We learnt about reverse mode in class, and also as Masters of Data Science students ourselves, we saw an example of why reverse mode is useful in data science through the CS109A course at Harvard. We think this functionality, will therefore, be a great addition to our package.
+  *Lastly, we will want to be implement Newton's Method, becasue this is a very useful root finding mechanism and is closely related to automatic differentiation, and since we want our users to find us as helpful as possible, we don't want them to have to use two different packages for Automatic Differentiation and Newton's Method - this should ideally be all in one package, which is why we want to add this functionality.
+  * We also want to think of and implement a better package downloading mechanism than the one we have now (`git clone`).
+
+
+* How will your software change?
+  * For Task 2 above (more elementary functions), there will only need to be additions to the code, no real changes to the structure of the existing implementation.
+  * Similarly for Tasks 3 and 4 (Reverse mode and Newton's Method), also we don't need many changes to existing code, since these will be separate additions in seperate files.
+  * For Task 5 - this is more an architectural change, so implementation won't be impacted again.
+  * However, for Task 1, making our package to be compatible for vector functions, we will need to make changes to our implementation. We think the Milestone 2 design was a great way to get started along the right direction, and the code structure very clear right now, so rather than implementing something from scratch, we will just be building on the current implementation, by adding data structures like numpy arrays, and python dictionaries to store vectors, as well as the partial derivatives. The implementation will be similar to what we had proposed earlier, as shown below:
+  ```python
+        def sin(x):
+
+        	# if x is a scalar:
+
+            # implement the sin(x) for scalar
+
+          # if x is a vector:
+
+            # implement the sin(x) for vector
+    ```
+   * So, we have already completed the x is a scalar implementation, now we will add checks for vectors and handle them similarly but with modifications.
+
+
+* What will be the primary challenges to implementing these new features?
+  * The primary challenge for adding vector functionality will be to work with arbitrary length vectors, because that will require us to communicate very clearly amongst each other so that the codebase's clarity and correctness is maintained.
+  * As for the other main tasks (Reverse mode and Newton's Method), although we are familiar with these techniques, we will have to do more research so that our understanding of the material is extremely clear before we implement it.
+
+
+* Any changes to the directory structure, and new modules, classes, data structures, etc.
+  * The directory structure will remain the same, except new files will now be added at the correct level. e.g. Reverse Mode will be at the same level as our implementation of Forward mode.
+  * No new modules are anticipated - we believe `numpy` will be enough for us to achieve our goals for the future features we have proposed.
+  * New classes will be added: namely one for Reverse Mode `AutoDiffRev` and one for Newton's method `NewtonMethod`.
+  * Data structures that we will use for the above as well as for the vector implementation will include numpy arrays and python dictionaries (which were not required so far for the scalar implementation, but will be necessary for the vector functionality).
