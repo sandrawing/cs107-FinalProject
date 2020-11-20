@@ -1,5 +1,5 @@
 
-# CS207 Milestone 1
+# CS207 Milestone 2
 
 * Group 7 Group Members: Sivananda Rajananda, Sehaj Chawla, Xin Zeng, Yang Xiang
 
@@ -186,7 +186,6 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 ## How to Use PackageName (After Milestone 2)
 
-*How do you envision that a user will interact with your package? What should they import? How can they instantiate autodiff objects? Note: This section should be a mix of pseudo code and text. It should not include any actual operations yet. Remember, you have not yet written any code at this point.*
 
 1. Setting up the repository and environment
     * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
