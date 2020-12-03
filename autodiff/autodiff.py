@@ -25,6 +25,8 @@ class AutoDiff():
         self.val = np.array(val)
         if type(der) == dict:
             self.der = der
+        elif type(der) == list:
+            self.der = {name: np.array(der)}
         else:
             self.der = {name: np.array(der * len(self.val))}
         self.name = name
