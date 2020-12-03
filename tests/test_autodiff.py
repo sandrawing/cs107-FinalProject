@@ -1,7 +1,9 @@
-# import pytest
+import sys
 import numpy as np
-from autodiff import AutoDiff
+sys.path.append('autodiff')
 
+import pytest
+from autodiff import AutoDiff
 
 def test_add():
     x = AutoDiff(5, 10, "x")
@@ -263,6 +265,20 @@ def test_exp_base():
     assert f2.der["x"] == (4 ** 17) * 3 * np.log(4)
 
 
+def test_logistic():
+    tol = 1e-6
+    x = AutoDiff(2, name="x")
+    f = AutoDiff.logistic(x)
+    assert f.val == [1 / (1 + np.exp(-2))]
+    assert (f.der['x'] - np.exp(-2) / ((1 + np.exp(-2)) ** 2)) < tol
+
+
+def test_complicated_func():
+    x = AutoDiff(2.0, 1.0, "x")
+    f1 = AutoDiff.sin((AutoDiff.cos(x) ** 2.0 + x ** 2.0) ** 0.5)
+    print(f1.der)
+
+
 if __name__ == '__main__':
     test_add()
     test_radd()
@@ -286,5 +302,5 @@ if __name__ == '__main__':
     test_log()
     test_exp()
     test_exp_base()
-    # x = AutoDiff(2.0, 1.0)
-    # f1 = AutoDiff.sin((AutoDiff.cos(x) ** 2.0 + x ** 2.0) ** 0.5)
+    test_logistic()
+    test_complicated_func()
