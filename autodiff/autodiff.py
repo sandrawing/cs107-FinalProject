@@ -26,7 +26,7 @@ class AutoDiff():
         if type(der) == dict:
             self.der = der
         else:
-            self.der = {name: np.array(der)}
+            self.der = {name: np.array(der * len(self.val))}
         self.name = name
 
     def get_variables(self):
