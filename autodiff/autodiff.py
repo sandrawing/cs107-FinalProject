@@ -8,7 +8,7 @@ class AutoDiff():
     and contains some elemental functions
     """
 
-    def __init__(self, val, der=1, name="not_specified"):
+    def __init__(self, val, der=[1], name="not_specified"):
         """
         Initializes AutoDiff object with a value that was passed in and
         sets the default value of derivative to 1
@@ -19,14 +19,16 @@ class AutoDiff():
             raise TypeError("Cannot initialize der to string values")
         if isinstance(val, (float, int)):
             val = [val]
+        if isinstance(der, (float, int)):
+            der = [der]
 
         self.val = np.array(val)
         if type(der) == dict:
             self.der = der
-        elif type(der) == list:
+        elif type(der) == list and len(der) == len(self.val):
             self.der = {name: np.array(der)}
-        elif isinstance(der, (float, int)):
-            self.der = {name: np.array([der] * len(self.val))}
+        else:
+            self.der = {name: np.array(der * len(self.val))}
         self.name = name
 
     def get_variables(self):
