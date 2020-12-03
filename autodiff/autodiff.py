@@ -347,3 +347,10 @@ class AutoDiff():
         for variable in self.get_variables():
             temp_der[variable] = self.der[variable] * (base ** self.val) * np.log(base)
         return AutoDiff(new_val, temp_der, self.name)
+
+    def logistic(self):
+        new_val = 1 / (1 + np.exp(-self.val))
+        temp_der = {}
+        for variable in self.get_variables():
+            temp_der[variable] = self.der[variable] * np.exp(self.val) / ((1 + np.exp(self.val)) ** 2)
+        return AutoDiff(new_val, temp_der, self.name)
