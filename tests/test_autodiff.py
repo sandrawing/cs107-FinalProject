@@ -26,7 +26,7 @@ def test_add():
     # Test TypeError
     with pytest.raises(TypeError):
         x = AutoDiff(5, 10, "x")
-        f1 = 's' + x
+        f1 = x + 'InvalidInput'
 
 
 def test_radd():
@@ -56,6 +56,11 @@ def test_mul():
     assert np.array_equal(f1.der["x"], np.array([9, 12]))
     assert np.array_equal(f1.der["y"], np.array([8, 4]))
 
+    # Test TypeError
+    with pytest.raises(TypeError):
+        x = AutoDiff(5, 10, "x")
+        f1 = x * 'InvalidInput'
+
 
 def test_rmul():
     x = AutoDiff([8, 4], name='x')
@@ -83,6 +88,11 @@ def test_sub():
     assert np.array_equal(f1.val, np.array([-1, -8]))
     assert np.array_equal(f1.der["x"], np.array([10, 11]))
     assert np.array_equal(f1.der["y"], np.array([-20, -33]))
+
+    # Test TypeError
+    with pytest.raises(TypeError):
+        x = AutoDiff(5, 10, "x")
+        f1 = x - 'InvalidInput'
 
 
 def test_rsub():
@@ -124,12 +134,22 @@ def test_pow():
     assert np.array_equal(f4.der['x'], np.array([11664, 13824]))
     assert np.array_equal(f4.der['y'], np.array([15552, 6912]))
 
+    # Test TypeError
+    with pytest.raises(TypeError):
+        x = AutoDiff(5, 10, "x")
+        f1 = x ** 'InvalidInput'
+
 
 def test_rpow():
     x = AutoDiff(2, name="x")
     f1 = 2 ** x
     assert f1.val == 4.0
     assert f1.der["x"] == 4.0 * np.log(2)
+
+    # Test TypeError
+    with pytest.raises(TypeError):
+        x = AutoDiff(5, 10, "x")
+        f1 = 'InvalidInput' * x
 
 
 def test_truediv():
