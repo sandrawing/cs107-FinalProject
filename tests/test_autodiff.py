@@ -229,13 +229,13 @@ def test_lt():
     assert np.array_equal(x < y, np.array([True, False]))
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = AutoDiff([2.0], 10.0)
         x < y
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = 2
         x < y
@@ -255,13 +255,13 @@ def test_le():
     assert np.array_equal(x <= y, np.array([True, True]))
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = AutoDiff([2.0], 10.0)
         x <= y
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = 2
         x <= y
@@ -281,13 +281,13 @@ def test_gt():
     assert np.array_equal(x > y, np.array([True, False]))
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = AutoDiff([2.0], 10.0)
         x > y
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = 2
         x > y
@@ -307,13 +307,13 @@ def test_ge():
     assert np.array_equal(x >= y, np.array([True, False]))
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = AutoDiff([2.0], 10.0)
         x >= y
 
     # Test for raising TypeError
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
         y = AutoDiff(2, 10.0)
         x >= y
