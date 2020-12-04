@@ -201,10 +201,10 @@ class AutoDiff():
         Returns: True if self and other AutoDiff instance have the
         same value and derivative; False if not
         """
-        try:
-            return (self.val == other.val) and (self.der == other.der)
-        except AttributeError:
-            return False
+        if isinstance(other, (int, float)):
+            return np.array_equal(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            return np.array_equal(self.val, other.val)
 
     def __ne__(self, other):
         """
@@ -213,7 +213,50 @@ class AutoDiff():
         Returns: False if self and other AutoDiff instance have the
         same value and derivative; True if not
         """
-        return not self == other
+        if isinstance(other, (int, float)):
+            return not np.array_equal(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            return not np.array_equal(self.val, other.val)
+
+    def __lt__(self, other):
+        if isinstance(other, (int, float)):
+            if len(self.val) != 1:
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.less(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            if len(self.val) != len(other.val):
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.less(self.val, other.val)
+
+    def __le__(self, other):
+        if isinstance(other, (int, float)):
+            if len(self.val) != 1:
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.less_equal(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            if len(self.val) != len(other.val):
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.less_equal(self.val, other.val)
+
+    def __gt__(self, other):
+        if isinstance(other, (int, float)):
+            if len(self.val) != 1:
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.greater(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            if len(self.val) != len(other.val):
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.greater(self.val, other.val)
+
+    def __ge__(self, other):
+        if isinstance(other, (int, float)):
+            if len(self.val) != 1:
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.greater_equal(self.val, np.array([float(other)]))
+        elif isinstance(other, AutoDiff):
+            if len(self.val) != len(other.val):
+                raise TypeError("Please compare the variables with same number of values!")
+            return np.greater_equal(self.val, other.val)
 
     """Elemental Function"""
 
