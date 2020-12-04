@@ -13,14 +13,18 @@ class AutoDiff():
         Initializes AutoDiff object with a value that was passed in and
         sets the default value of derivative to 1
         """
-        if isinstance(val, str):
-            raise TypeError("Cannot initialize val to string values")
-        elif isinstance(der, str):
-            raise TypeError("Cannot initialize der to string values")
+        # Handle several input types of val, including float, int, list and np.ndarray
         if isinstance(val, (float, int)):
             val = [val]
+            self.val = np.array(val)
+        elif isinstance(val, list):
+            self.val = np.array(val)
+        elif isinstance(val, np.ndarray):
+            self.val = val
+        else:
+            raise TypeError("Invalid Type for val! ")
 
-        self.val = np.array(val)
+        # Handle several input types of val, including float, int, list and dict
         if type(der) == dict:
             self.der = der
         elif type(der) == list:
@@ -30,7 +34,9 @@ class AutoDiff():
         self.name = name
 
     def get_variables(self):
-
+        """
+        Get all variables in current AutoDiff object
+        """
         return set(self.der.keys())
 
     """Basic Operations"""
@@ -44,15 +50,17 @@ class AutoDiff():
         """
         temp_der = {}
         if isinstance(other, (int, float)):
+            # Add a scalar to a AutoDiff object
             return AutoDiff(self.val + float(other), self.der.copy(), self.name)
         elif isinstance(other, AutoDiff):
+            # Add two AutoDiff objects
             var_union = self.get_variables().union(other.get_variables())
             temp_val = self.val + other.val
             for variable in var_union:
                 temp_der[variable] = self.der.get(variable, 0) + other.der.get(variable, 0)
             return AutoDiff(temp_val, temp_der, self.name)
         else:
-            raise ValueError("Invalid input type!")
+            raise TypeError("Invalid input type!")
 
     def __radd__(self, other):
         """
@@ -71,16 +79,18 @@ class AutoDiff():
         """
         temp_der = {}
         if isinstance(other, (int, float)):
+            # Multiply a scalar to a AutoDiff object
             for variable in self.get_variables():
                 temp_der[variable] = self.der[variable] * other
             return AutoDiff(self.val * float(other), temp_der, self.name)
         elif isinstance(other, AutoDiff):
+            # Multiply two AutoDiff objects
             var_union = self.get_variables().union(other.get_variables())
             for variable in var_union:
                 temp_der[variable] = self.val * other.der.get(variable, 0) + other.val * self.der.get(variable, 0)
             return AutoDiff(self.val * other.val, temp_der, self.name)
         else:
-            raise ValueError("Invalid input type!")
+            raise TypeError("Invalid input type!")
 
     def __rmul__(self, other):
         """
@@ -99,15 +109,17 @@ class AutoDiff():
         """
         temp_der = {}
         if isinstance(other, (int, float)):
+            # Subtract a scalar from a AutoDiff object
             return AutoDiff(self.val - float(other), self.der.copy(), self.name)
         elif isinstance(other, AutoDiff):
+            # Subtract two AutoDiff objects
             var_union = self.get_variables().union(other.get_variables())
             temp_val = self.val - other.val
             for variable in var_union:
                 temp_der[variable] = self.der.get(variable, 0) - other.der.get(variable, 0)
             return AutoDiff(temp_val, temp_der, self.name)
         else:
-            raise ValueError("Invalid input type!")
+            raise TypeError("Invalid input type!")
 
     def __rsub__(self, other):
         """
@@ -126,12 +138,14 @@ class AutoDiff():
         """
         temp_der = {}
         if isinstance(other, (int, float)):
+            # An AutoDiff object powered by a scalar
             temp_val = np.array([float(v) ** other for v in self.val])
             for variable in self.get_variables():
                 curr_val = np.array([float(v) ** (other - 1) for v in self.val])
                 temp_der[variable] = other * np.array(curr_val) * self.der[variable]
             return AutoDiff(temp_val, temp_der, self.name)
         elif isinstance(other, AutoDiff):
+            # An AutoDiff object powered by another AutoDiff object
             var_union = self.get_variables().union(other.get_variables())
             temp_val = np.array([float(v) ** other.val for v in self.val])
             for variable in var_union:
@@ -140,7 +154,7 @@ class AutoDiff():
                                                  self.val * np.log(self.val) * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
         else:
-            raise ValueError("Invalid input type!")
+            raise TypeError("Invalid input type!")
 
     def __rpow__(self, other):
         """
@@ -150,12 +164,14 @@ class AutoDiff():
         """
         temp_der = {}
         if isinstance(other, (int, float)):
+            # A scalar powered by an AutoDiff object
             temp_val = np.array([other ** float(v) for v in self.val])
             for variable in self.get_variables():
                 curr_val = np.array([other ** float(v) for v in self.val])
                 temp_der[variable] = np.log(other) * curr_val * self.der[variable]
             return AutoDiff(temp_val, temp_der, self.name)
         elif isinstance(other, AutoDiff):
+            # An AutoDiff object powered by another AutoDiff object
             var_union = self.get_variables().union(other.get_variables())
             temp_val = np.array([other.val ** float(v) for v in self.val])
             for variable in var_union:
@@ -164,7 +180,7 @@ class AutoDiff():
                                                  self.val * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
         else:
-            raise ValueError("Invalid input type!")
+            raise TypeError("Invalid input type!")
 
     def __truediv__(self, other):
         """
@@ -392,6 +408,10 @@ class AutoDiff():
         return AutoDiff(new_val, temp_der, self.name)
 
     def logistic(self):
+        """
+        Inputs: None
+        Returns: A new AutoDiff object calculated with logistic function
+        """
         new_val = 1 / (1 + np.exp(-self.val))
         temp_der = {}
         for variable in self.get_variables():
