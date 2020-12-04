@@ -5,6 +5,12 @@ sys.path.append('autodiff')
 import pytest
 from autodiff import AutoDiff
 
+
+def test_init_fail():
+    with pytest.raises(TypeError):
+        x = AutoDiff('InvalidInput')
+
+
 def test_add():
     x = AutoDiff(5, 10, "x")
     f1 = x + 100
@@ -222,19 +228,17 @@ def test_lt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x < y, np.array([True, False]))
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = AutoDiff([2.0], 10.0)
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = AutoDiff([2.0], 10.0)
         x < y
-    except TypeError:
-        assert True
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = 2
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = 2
         x < y
-    except TypeError:
-        assert True
 
 
 def test_le():
@@ -250,19 +254,17 @@ def test_le():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x <= y, np.array([True, True]))
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = AutoDiff([2.0], 10.0)
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = AutoDiff([2.0], 10.0)
         x <= y
-    except TypeError:
-        assert True
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = 2
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = 2
         x <= y
-    except TypeError:
-        assert True
 
 
 def test_gt():
@@ -278,19 +280,17 @@ def test_gt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x > y, np.array([True, False]))
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = AutoDiff([2.0], 10.0)
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = AutoDiff([2.0], 10.0)
         x > y
-    except TypeError:
-        assert True
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = 2
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = 2
         x > y
-    except TypeError:
-        assert True
 
 
 def test_ge():
@@ -306,19 +306,17 @@ def test_ge():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x >= y, np.array([True, False]))
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = AutoDiff([2.0], 10.0)
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = AutoDiff([2.0], 10.0)
         x >= y
-    except TypeError:
-        assert True
 
-    x = AutoDiff([1.0, 2.0], 10.0)
-    y = AutoDiff(2, 10.0)
-    try:
+    # Test for raising TypeError
+    with pytest.raises(KeyError):
+        x = AutoDiff([1.0, 2.0], 10.0)
+        y = AutoDiff(2, 10.0)
         x >= y
-    except TypeError:
-        assert True
 
 
 def test_sin():
