@@ -23,6 +23,11 @@ def test_add():
     assert np.array_equal(f1.der["x"], np.array([10, 11]))
     assert np.array_equal(f1.der["y"], np.array([20, 33]))
 
+    # Test TypeError
+    with pytest.raises(TypeError):
+        x = AutoDiff(5, 10, "x")
+        f1 = 's' + x
+
 
 def test_radd():
     x = AutoDiff(3, 10, "x")
