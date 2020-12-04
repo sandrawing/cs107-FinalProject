@@ -98,6 +98,13 @@ def test_pow():
     assert f2.val == 4
     assert f2.der["x"] == 4.0 * (np.log(x.val) + 1)
 
+    x = AutoDiff(2, name="x")
+    y = AutoDiff(4, name='y')
+    f2 = x ** y
+    assert f2.val == 16
+    assert f2.der["x"] == 32
+    assert f2.der["y"] == 16 * np.log(2)
+
     x = AutoDiff(3, name='x')
     y = AutoDiff(4, name='y')
     f3 = (x ** 2) * (y ** 3)
@@ -194,6 +201,13 @@ def test_lt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x < y, np.array([True, False]))
 
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0], 10.0)
+    try:
+        x < y
+    except TypeError:
+        assert True
+
 
 def test_le():
     x = AutoDiff(1.0, 10.0)
@@ -207,6 +221,13 @@ def test_le():
     x = AutoDiff([1.0, 2.0], 10.0)
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x <= y, np.array([True, True]))
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0], 10.0)
+    try:
+        x <= y
+    except TypeError:
+        assert True
 
 
 def test_gt():
@@ -222,6 +243,13 @@ def test_gt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x > y, np.array([True, False]))
 
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0], 10.0)
+    try:
+        x > y
+    except TypeError:
+        assert True
+
 
 def test_ge():
     x = AutoDiff(2.0, 10.0)
@@ -235,6 +263,13 @@ def test_ge():
     x = AutoDiff([3.0, 1.0], 3.0)
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x >= y, np.array([True, False]))
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0], 10.0)
+    try:
+        x >= y
+    except TypeError:
+        assert True
 
 
 def test_sin():
