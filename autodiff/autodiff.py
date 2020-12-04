@@ -170,15 +170,6 @@ class AutoDiff():
                 curr_val = np.array([other ** float(v) for v in self.val])
                 temp_der[variable] = np.log(other) * curr_val * self.der[variable]
             return AutoDiff(temp_val, temp_der, self.name)
-        elif isinstance(other, AutoDiff):
-            # An AutoDiff object powered by another AutoDiff object
-            var_union = self.get_variables().union(other.get_variables())
-            temp_val = np.array([other.val ** float(v) for v in self.val])
-            for variable in var_union:
-                curr_val = np.array([other.val ** (float(v) - 1) for v in self.val])
-                temp_der[variable] = curr_val * (other.val * self.der.get(variable, 0) * np.log(other.val) +
-                                                 self.val * other.der.get(variable, 0))
-            return AutoDiff(temp_val, temp_der, self.name)
         else:
             raise TypeError("Invalid input type!")
 
