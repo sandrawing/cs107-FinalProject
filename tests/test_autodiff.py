@@ -145,13 +145,6 @@ def test_truediv():
     assert np.array_equal(f3.der['x'], np.array([0.125, -1.0]))
     assert np.array_equal(f3.der['y'], np.array([-0.25, -0.0]))
 
-    # x = AutoDiff(16, 12, "x")
-    # y = AutoDiff(8, 12, "y")
-    # result = x / y
-    # print(result.der)
-    # assert result.val == 2.0
-    # assert result.der == -1.5
-
 
 def test_rtruediv():
     x_val = 2.0
@@ -183,6 +176,9 @@ def test_unequal():
     y = AutoDiff(2.0, 10.0)
     assert x != y
 
+    x = AutoDiff(4.0, 10.0)
+    assert x != 2
+
     x = AutoDiff([2.0, 2.0], 10.0)
     y = AutoDiff(2.0, 10.0)
     assert x != y
@@ -203,6 +199,13 @@ def test_lt():
 
     x = AutoDiff([1.0, 2.0], 10.0)
     y = AutoDiff([2.0], 10.0)
+    try:
+        x < y
+    except TypeError:
+        assert True
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = 2
     try:
         x < y
     except TypeError:
@@ -229,6 +232,13 @@ def test_le():
     except TypeError:
         assert True
 
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = 2
+    try:
+        x <= y
+    except TypeError:
+        assert True
+
 
 def test_gt():
     x = AutoDiff(1.0, 10.0)
@@ -250,6 +260,13 @@ def test_gt():
     except TypeError:
         assert True
 
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = 2
+    try:
+        x > y
+    except TypeError:
+        assert True
+
 
 def test_ge():
     x = AutoDiff(2.0, 10.0)
@@ -266,6 +283,13 @@ def test_ge():
 
     x = AutoDiff([1.0, 2.0], 10.0)
     y = AutoDiff([2.0], 10.0)
+    try:
+        x >= y
+    except TypeError:
+        assert True
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff(2, 10.0)
     try:
         x >= y
     except TypeError:
