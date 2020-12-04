@@ -162,8 +162,12 @@ def test_neg():
 
 
 def test_equal():
-    x = AutoDiff(2.0, 10.0)
-    y = AutoDiff(2.0, 10.0)
+    x = AutoDiff(2.0, 10.0, "x")
+    y = AutoDiff(2.0, 10.0, "y")
+    assert x == y
+
+    x = AutoDiff(2.0, name="x")
+    y = 2
     assert x == y
 
 
@@ -171,6 +175,66 @@ def test_unequal():
     x = AutoDiff(4.0, 10.0)
     y = AutoDiff(2.0, 10.0)
     assert x != y
+
+    x = AutoDiff([2.0, 2.0], 10.0)
+    y = AutoDiff(2.0, 10.0)
+    assert x != y
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 3, 4], 10.0)
+    assert x != y
+
+
+def test_lt():
+    x = AutoDiff(1.0, 10.0)
+    y = AutoDiff(2.0, 10.0)
+    assert x < y
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(x < y, np.array([True, False]))
+
+
+def test_le():
+    x = AutoDiff(1.0, 10.0)
+    y = AutoDiff(2.0, 10.0)
+    assert x <= y
+
+    x = AutoDiff(2.0, 10.0)
+    y = AutoDiff(2.0, 10.0)
+    assert x <= y
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(x <= y, np.array([True, True]))
+
+
+def test_gt():
+    x = AutoDiff(1.0, 10.0)
+    y = AutoDiff(2.0, 8.0)
+    assert y > x
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(y > x, np.array([True, False]))
+
+    x = AutoDiff([3.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(x > y, np.array([True, False]))
+
+
+def test_ge():
+    x = AutoDiff(2.0, 10.0)
+    y = AutoDiff(2.0, 8.0)
+    assert y >= x
+
+    x = AutoDiff([1.0, 2.0], 10.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(y >= x, np.array([True, True]))
+
+    x = AutoDiff([3.0, 1.0], 3.0)
+    y = AutoDiff([2.0, 2.0], 10.0)
+    assert np.array_equal(x >= y, np.array([True, False]))
 
 
 def test_sin():
@@ -276,7 +340,12 @@ def test_logistic():
 def test_complicated_func():
     x = AutoDiff(2.0, 1.0, "x")
     f1 = AutoDiff.sin((AutoDiff.cos(x) ** 2.0 + x ** 2.0) ** 0.5)
-    print(f1.der)
+    assert pytest.approx
+
+    x = AutoDiff([3.0, 5.0, 7.0], name="x")
+    f2 = AutoDiff.sin(AutoDiff.ln(x) + (3 * x ** 2) + (2 * x) + 7)
+    print(f2.der)
+    print(f2.val)
 
 
 if __name__ == '__main__':
@@ -290,6 +359,12 @@ if __name__ == '__main__':
     test_rpow()
     test_truediv()
     test_rtruediv()
+    test_equal()
+    test_unequal()
+    test_lt()
+    test_le()
+    test_gt()
+    test_ge()
     test_neg()
     test_sin()
     test_sinh()
