@@ -155,7 +155,7 @@ def test_rpow():
     # Test TypeError
     with pytest.raises(TypeError):
         x = AutoDiff(5, 10, "x")
-        f1 = 'InvalidInput' * x
+        f1 = 'InvalidInput' ** x
 
 
 def test_truediv():
@@ -228,6 +228,9 @@ def test_lt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x < y, np.array([True, False]))
 
+    x = AutoDiff(1.0, 10.0)
+    assert x < 2
+
     # Test for raising TypeError
     with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
@@ -253,6 +256,9 @@ def test_le():
     x = AutoDiff([1.0, 2.0], 10.0)
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x <= y, np.array([True, True]))
+
+    x = AutoDiff(1.0, 10.0)
+    assert x < 2
 
     # Test for raising TypeError
     with pytest.raises(TypeError):
@@ -280,6 +286,9 @@ def test_gt():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x > y, np.array([True, False]))
 
+    x = AutoDiff(1.0, 10.0)
+    assert x > 0
+
     # Test for raising TypeError
     with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
@@ -306,6 +315,9 @@ def test_ge():
     y = AutoDiff([2.0, 2.0], 10.0)
     assert np.array_equal(x >= y, np.array([True, False]))
 
+    x = AutoDiff(1.0, 10.0)
+    assert x >= 0
+
     # Test for raising TypeError
     with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
@@ -315,7 +327,7 @@ def test_ge():
     # Test for raising TypeError
     with pytest.raises(TypeError):
         x = AutoDiff([1.0, 2.0], 10.0)
-        y = AutoDiff(2, 10.0)
+        y = 2
         x >= y
 
 
