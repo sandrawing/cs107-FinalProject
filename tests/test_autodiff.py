@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-sys.path.append('autodiff')
+sys.path.append('../autodiff')
 
 import pytest
 from autodiff import AutoDiff
