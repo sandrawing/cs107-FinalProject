@@ -153,6 +153,14 @@ def test_rpow():
     assert f1.val == 4.0
     assert f1.der["x"] == 4.0 * np.log(2)
 
+    x = AutoDiff(2, name="x")
+    y = AutoDiff(5, name="y")
+    # use ** for two AutoDiff
+    f2 = x.__rpow__(y)
+    assert f2.val == 4.0
+    assert f2.der["x"] == 25.0 * np.log(5)
+    assert f2.der["y"] == 10.0
+
     # Test TypeError
     with pytest.raises(TypeError):
         x = AutoDiff(5, 10, "x")
@@ -429,18 +437,53 @@ def test_logistic():
     x = AutoDiff(2, name="x")
     f = AutoDiff.logistic(x)
     assert f.val == [1 / (1 + np.exp(-2))]
-    assert (f.der['x'] - np.exp(-2) / ((1 + np.exp(-2)) ** 2)) < tol
+    assert abs(f.der['x'] - np.exp(2) / ((1 + np.exp(2)) ** 2)) < tol
+
+
+def test_arcsin():
+    tol = 1e-6
+    x = AutoDiff(0.5, name="x")
+    f = AutoDiff.arcsin(x)
+    assert f.val == np.arcsin(0.5)
+    assert abs(f.der["x"] - 1.1547) < tol
+
+
+def test_arccos():
+    tol = 1e-6
+    x = AutoDiff(0.5, name="x")
+    f = AutoDiff.arccos(x)
+    assert f.val == np.arccos(0.5)
+    assert abs(f.der["x"] + 1.1547) < tol
+
+
+def test_arctan():
+    tol = 1e-6
+    x = AutoDiff(0.5, name="x")
+    f = AutoDiff.arctan(x)
+    assert f.val == np.arctan(0.5)
+    assert abs(f.der["x"] - 0.8) < tol
 
 
 def test_complicated_func():
-    x = AutoDiff(2.0, 1.0, "x")
+    tol = 1e-4
+    x = AutoDiff(2.0, name="x")
     f1 = AutoDiff.sin((AutoDiff.cos(x) ** 2.0 + x ** 2.0) ** 0.5)
-    assert pytest.approx
+    assert abs(f1.val - 0.890643) < tol
+    assert abs(f1.der["x"] - (-0.529395)) < tol
 
-    x = AutoDiff([3.0, 5.0, 7.0], name="x")
+    x = AutoDiff([1.0, 3.0, 5.0, 7.0], name="x")
     f2 = AutoDiff.sin(AutoDiff.ln(x) + (3 * x ** 2) + (2 * x) + 7)
-    print(f2.der)
-    print(f2.val)
+    assert np.array_equal(f2.val, np.array([np.sin(12), np.sin(40+np.log(3)),
+                                            np.sin(92+np.log(5)), np.sin(168+np.log(7))]))
+    assert np.array_equal(f2.der["x"], np.array([9*np.cos(12), 61/3*np.cos(40+np.log(3)),
+                                                 161/5*np.cos(92+np.log(5)), 309/7*np.cos(168+np.log(7))]))
+
+    x = AutoDiff([-1.0, -3.0, -5.0, -7.0, 0.1], name="x")
+    f3 = AutoDiff.logistic(AutoDiff.tan(x) + (3 * x ** (-2)) + (2 * x) + 7)
+    assert np.less(abs(f3.val-np.array([1/(1+np.exp(np.tan(1)-8)), 1/(1+np.exp(np.tan(3)-4/3)),
+                                        1/(1+np.exp(np.tan(5)+72/25)), 1/(1+np.exp(np.tan(7)+340/49)), 1])),
+                   np.ones((5, 1))*tol).all()
+    assert np.less(abs(f3.der["x"]-np.array([0.018135, 0.49104, 3.40145666, 0.001531, 0])), np.ones((5, 1))*tol).all()
 
 
 if __name__ == '__main__':
@@ -473,4 +516,7 @@ if __name__ == '__main__':
     test_exp()
     test_exp_base()
     test_logistic()
+    test_arcsin()
+    test_arccos()
+    test_arctan()
     test_complicated_func()
