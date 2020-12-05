@@ -2,7 +2,10 @@ import numpy as np
 
 class Reverse():
     def __init__(self, val):
-        self.val = val
+        if isinstance(val, (int, float)):
+            self.val = val
+        else:
+            raise TypeError("Please enter a float or integer.")
         self.children = []
         self.gradient_value = None
     
