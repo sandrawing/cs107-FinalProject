@@ -157,7 +157,7 @@ def test_rpow():
     y = AutoDiff(5, name="y")
     # use ** for two AutoDiff
     f2 = x.__rpow__(y)
-    assert f2.val == 4.0
+    assert f2.val == 25.0
     assert f2.der["x"] == 25.0 * np.log(5)
     assert f2.der["y"] == 10.0
 
