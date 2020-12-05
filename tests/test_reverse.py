@@ -57,6 +57,12 @@ def test_7():
     y.gradient_value = 1
     assert np.around(x.get_gradient(), 5) == -0.05198
 
+def test_9():
+    x = Reverse(5)
+    z = Reverse.logistic(+x)
+    z.gradient_value = 1
+    assert x.get_gradient() == np.exp(-5)/((1+np.exp(-5))**2)
+
 def test_8():
     x = Reverse(5)
     y =  Reverse.sqrt(Reverse.sinh(x))/(2**x + Reverse.exp_base(x, 7)*Reverse.sin(Reverse.cos(x)))
@@ -77,6 +83,15 @@ def test_11():
     assert np.around(x.get_gradient(), 5) == np.around((3*np.sqrt(5))/np.log(36), 5)
     assert np.around(y.get_gradient(), 5) == np.around(-(5*np.sqrt(5))/(6*(np.log(6)**2)), 5)
 
+def test_12():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = ((3-x)-(2/y))/((x-3)-(y/2))
+    z.gradient_value = 1
+    print(x.get_gradient())
+    assert x.get_gradient() == 10/3
+    assert y.get_gradient() == -11/9
+
 
 
 if __name__ == '__main__':
@@ -88,5 +103,12 @@ if __name__ == '__main__':
     test_6()
     test_7()
     test_8()
+    test_9()
     test_10()
     test_11()
+    test_12()
+    test_eq()
+    test_lt()
+    test_le()
+    test_gt()
+    test_ge()
