@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 sys.path.append('autodiff')
+sys.path.append('../autodiff')
 
 print(sys.path)
 import pytest
@@ -88,9 +89,45 @@ def test_12():
     y = Reverse(6)
     z = ((3-x)-(2/y))/((x-3)-(y/2))
     z.gradient_value = 1
-    print(x.get_gradient())
     assert x.get_gradient() == 10/3
     assert y.get_gradient() == -11/9
+
+def test_eq():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert x != y
+    assert y == z
+
+def test_lt():
+    x = Reverse(5)
+    y = Reverse(6)
+    assert x < y
+    assert x < 6
+
+def test_le():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert x <= y
+    assert y <= z
+    assert x <= 5
+    assert x <= 6
+
+def test_gt():
+    x = Reverse(5)
+    y = Reverse(6)
+    assert y > x
+    assert y > 5
+
+def test_ge():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert y >= x
+    assert y >= z
+    assert y >= 5
+    assert y >= 6
 
 
 

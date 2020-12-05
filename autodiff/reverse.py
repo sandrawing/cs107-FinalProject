@@ -86,7 +86,7 @@ class Reverse():
         return self.__mul__(-1)
 
     def __pos__(self):
-        return self.copy()
+        return self
 
     def sin(self):
         """
