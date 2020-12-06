@@ -31,6 +31,12 @@ class Vector():
         return np.array(self.val_func_order()).T
 
     def jacobian(self):
+        """
+        Used for getting the jacobian matrix in the order of input
+        if there is p functions, each of the function has m variables,
+        each of the variable has length of n
+        then the size of output is n*p*m
+        """
         var_list = set()
         for function in self.func_ver:
             var_list = var_list.union(function.get_variables())
