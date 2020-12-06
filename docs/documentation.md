@@ -285,46 +285,8 @@ numerical differentiation, in the sense that it computes numerical values, it co
 #### Forward Mode
   * We had originally planned on using numpy arrays and python dictionaries for our data structures. However, since this milestone only required an implementation for scalar functions, we didn't need to use that. Instead, our idea behind coding it was to implement all the derivatives in the form of recusive calls that create new AutoDiff objects at each stage. This way, we could maintain modular coding while ensuring correctness.
   * The class we implemented is called `AutoDiff`, and this class creates objects which store the current value as well as the derivative.
-  * Our attributes have names: `val` for value and `der` for derivative. We also have many methods within this class: one for each of the elementary functions (like `AutoDiff.sin(x)` for sin) and we have overwritten many of the dunder methods to allow easy use for our users. Now, they can simply create AutoDiff objects such as `x = AutoDiff(5, 10)` and then run intuitive functions on them like `f1 = 3 * x + 2` and `f2 = AutoDiff.ln(f1)`.
-  
-  * Elementary functions defined in the AutoDiff class:
-
-	Ln (natural log)
-	Log
-	Exp
-	Exp with any base (e.g. 2 ^ x)
-	Sin
-	Cos
-	Tan
-	arcsine
-	arccosine
-	arctangent
-	sinh
-	cosh
-	tanh
-	Sqrt
-	logistic
-	
-	Elementary mathematical operations supported (note: the cummutative properties of operations are preserved):
-
-	Addition
-	Subtraction
-	Multiplication
-	Division
-	Power
-	
-	Comparison operators:
-
-	equal
-	not equal
-	greater or equal
-	greater
-	less or equal
-	less
-	
-	Unary operator:
-
-	Negative
+  * Our attributes have names: `val` for value and `der` for derivative. We also have many methods within this class: one for each of the elementary functions (like `AutoDiff.sin(x)` for sin) and we have overwritten many of the dunder methods to allow easy use for our users. Now, they can simply create AutoDiff objects such as `x = AutoDiff(5, 10)` and then run intuitive functions on them like `f1 = 3 * x + 2` and `f2 = AutoDiff.ln(f1)`. 
+  * Elementary functions defined in the AutoDiff class: ln (natural log), log, exp, exp with any base, sin, cos, tan, arcsine, arccosine, arctangent, sinh, cosh, tanh, sqrt, logistic. Elementary mathematical operations defined in the AutoDiff class: addition, subtraction, multiplication, division, power. Comparison operators defined in the AutoDiff class: equal, not equal, greater or equal, greater, less or equal, less. Unary operator defined in the AutoDiff class: negative.
 
   * Here is our `__init__` method:
   ```python
