@@ -176,31 +176,32 @@ numerical differentiation, in the sense that it computes numerical values, it co
 	       [-6.22988631e-01, -2.49195453e+01]])]
        ```
  
-      * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class
+      * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class.
      
-       ```python
-       x = AutoDiff([3, 1], name='x')
-       y = AutoDiff([5, 2], name='y')
-       f1 = (2 * x ** 2) + (3 * y ** 4)
-       f2 = AutoDiff.cos(x + (4 * y ** 2))
-       v = Vector([f1, f2])
-       print(v.val())
-       print(v.jacobian()[0])
-       print(v.jacobian()[1])
-       ```
+        ```python
+        x = AutoDiff([3, 1], name='x')
+        y = AutoDiff([5, 2], name='y')
+        f1 = (2 * x ** 2) + (3 * y ** 4)
+        f2 = AutoDiff.cos(x + (4 * y ** 2))
+        v = Vector([f1, f2])
+        print(v.val())
+        print(v.jacobian()[0])
+        print(v.jacobian()[1])
+        ```
        
-       The output is 
-       ```python
-       [[ 1.89300000e+03 -7.82230890e-01]
-       [ 5.00000000e+01 -2.75163338e-01]]
+        The output is 
        
-       ['x', 'y']
+        ```python
+        [[ 1.89300000e+03 -7.82230890e-01]
+        [ 5.00000000e+01 -2.75163338e-01]]
        
-       [array([[ 1.20000000e+01,  1.50000000e+03],
-       [-6.22988631e-01, -2.49195453e+01]]), 
-       array([[ 4.        , 96.        ],
-       [ 0.96139749, 15.38235987]])]
-       ```
+        ['x', 'y']
+       
+        [array([[ 1.20000000e+01,  1.50000000e+03],
+        [-6.22988631e-01, -2.49195453e+01]]), 
+        array([[ 4.        , 96.        ],
+        [ 0.96139749, 15.38235987]])]
+        ```
  
  
    * Instantiate reverse objects and calculate values and derivatives    
