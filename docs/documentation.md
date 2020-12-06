@@ -86,7 +86,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Instantiate autodiff objects and calculate derivatives
 
-     * scalar case, forward mode (similar for reverse mode)
+     * scalar case, forward mode 
 
        ```python
        val = 0 # Value to evaluate at
@@ -98,7 +98,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
        print(f.val, f.der) # Output the function value and derivate
        ```
-     * scalar case, reverse mode (similar for reverse mode)
+     * scalar case, reverse mode 
 
        ```python
         x = Reverse(5)
