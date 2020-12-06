@@ -1,5 +1,5 @@
 
-# CS207 Milestone 2
+# CS207 Final Project Documentation
 
 * Group 7 Group Members: Sivananda Rajananda, Sehaj Chawla, Xin Zeng, Yang Xiang
 
