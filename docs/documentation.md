@@ -226,7 +226,46 @@ numerical differentiation, in the sense that it computes numerical values, it co
    * autodiff
 
       ```python
+      class AutoDiff():
+      """
+      Forward Mode Implementation of Automatic Differentiation
+      The class overloads the basic operations, including the unary operation,
+      and contains some elemental functions
+      """
+          def __init__(self, val, der=1, name="not_specified"):
+        	"""
+        	constructor for AutoDiff class
+        	Initializes AutoDiff object with a value, derivative and name that was passed in
+       	 	and converts the type of value to numpy array for handling multiple values
+        	converts the type of derivatives to a dictionary for handling multiple variables
+        	"""
+        	# Handle several input types of val, including float, int, list and np.ndarray
+        	if isinstance(val, (float, int)):
+			val = [val]
+            		self.val = np.array(val)
+        	elif isinstance(val, list):
+            		self.val = np.array(val)
+       		elif isinstance(val, np.ndarray):
+            		self.val = val
+        	else:
+            		raise TypeError("Invalid Type for val! ")
 
+        	# Handle several input types of val, including float, int, list and dict
+       	 	if type(der) == dict:
+            		self.der = der
+        	elif type(der) == list:
+            		self.der = {name: np.array(der)}
+        	elif isinstance(der, (float, int)):
+            		self.der = {name: np.array([der] * len(self.val))}
+        	self.name = name
+
+          def get_variables(self):
+	  	"""
+        	returns the variable names
+        	"""
+        	return set(self.der.keys())
+
+    	  """Basic Operations"""
       ```
 
 
@@ -318,11 +357,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ​		autodiff.py
 
-          reverse.py
+          	reverse.py
 
-          rootfinding.py
+          	rootfinding.py
 
-          vector.py
+          	vector.py
 
       ​		...
 
