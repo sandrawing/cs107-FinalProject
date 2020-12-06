@@ -171,6 +171,78 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```
 
 
+   * reverse
+
+      ```python
+       class Reverse():
+          def __init__(self, val):
+              """
+              Initializes Reverse object with a value that was passed in
+              """
+              if isinstance(val, (int, float)):
+                  self.val = val
+              else:
+                  raise TypeError("Please enter a float or integer.")
+              self.children = []
+              self.gradient_value = None
+
+          def reset_gradient(self):
+              """
+              Sets the gradient of all its children to None
+              Inputs: None
+              Returns: None
+              """
+              self.gradient_value = None
+              for _, child in self.children:
+                  child.reset_gradient()
+
+          def get_gradient(self):
+              """
+              Calculates the gradient with respect to the Reverse instance
+              Inputs: None
+              Returns: The gradient value (float)
+              """
+              if self.gradient_value is None:
+                  self.gradient_value = sum(
+                      weight * child.get_gradient() for weight, child in self.children
+                  )
+              return self.gradient_value
+
+         """Basic Operations"""
+
+         def __add__(self, other):
+            """
+            Overloads the addition operation
+            Inputs: Scalar or AutoDiff Instance
+            Returns: A new AutoDiff object which is the result of the addition operation
+            perform
+            """
+            if isinstance(other, int) or isinstance(other, float):
+                other = Reverse(other)
+            z = Reverse(self.val + other.val)
+            self.children.append((1, z)) # weight = dz/dself = 1
+            other.children.append((1, z)) # weight = dz/dother = 1
+            return z
+
+        ...
+
+        """Elemental Functions"""
+
+        def sin(self):
+          """
+          Inputs: None
+          Returns: A new Reverse object with the sine computation done on the value and derivative
+          """
+          z = Reverse(np.sin(self.val))
+          self.children.append((np.cos(self.val), z)) # z = sin(x) => dz/dx = cos(x)
+          return z
+
+        ...
+
+      ```
+
+
+
 ## Software Organization
 
 *Discuss how you plan on organizing your software package.*
