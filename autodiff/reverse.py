@@ -320,7 +320,6 @@ class Reverse():
             return z
         else:
             raise ValueError("Reverse.log only takes in positive numbers as arguments.")
-        return z
 
     def __eq__(self, other):
         """
