@@ -86,7 +86,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Instantiate autodiff objects and calculate values and derivatives 
 
-     * scalar case, forward mode 
+     * Firstly, we show how to handle scalar case in forward mode. The user begins by initializing an AD forward mode object with input value. By default, the derivatives of variable is 1 and the name of variable is "not_specified". But any derivatives and name can be passed in. And we use different names of variables to represent their independence. 
 
        ```python
        val = 0 # Value to evaluate at
@@ -108,7 +108,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        ```
        
        
-     * vector case, forward mode
+     * Then, we show how to handle vector case for a single variable in forward mode. This is very similar to handle scalar case in forward mode. But instead, we pass in a list or numpy.array to initialize the values.
      
        ```python
        # Create an AD forward mode object with vector
@@ -116,10 +116,38 @@ numerical differentiation, in the sense that it computes numerical values, it co
        
        f = AutoDiff.logistic(AutoDiff.tan(x) + (3 * x ** (-2)) + (2 * x) + 7) # function to be evaluate
        
-       print(f.val, f.der) # Output the function value and derivate
+       print(f.val) # Output the function value 
+       print(f.der) # Output the function derivative
        ```
        
+       The output is 
+       ```python
+       [9.98410258e-01 8.13949454e-01 6.22580352e-01 4.05402978e-04 1.00000000e+00]
        
+       {'x': array([ 1.81347563e-002,  4.91036710e-001,  3.40145666e+000, 1.53055156e-003, -2.08494059e-130])}
+       ```
+       
+     * Then, we show how to handle vector case for various variables in forward mode.
+     
+       ```python
+       # Create an AD forward mode object with vector for x
+       x = AutoDiff([16, 0], name="x")
+       
+       # Create an AD forward mode object with vector for y
+       y = AutoDiff([8, -1], name="y")
+       
+       f = x / y  # function to be evaluate
+       
+       print(f.val) # Output the function value 
+       print(f.der) # Output the function derivative
+       ```
+       
+       The output is 
+       ```python
+       [ 2. -0.]
+       
+       {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
+       ```
        
    * Instantiate reverse objects and calculate values and derivatives    
    
