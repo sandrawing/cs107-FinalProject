@@ -341,11 +341,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ​		autodiff.py
 
-          	reverse.py
+      ​		reverse.py
 
-          	rootfinding.py
+      ​		rootfinding.py
 
-          	vector.py
+      ​		vector.py
 
       ​		...
 
