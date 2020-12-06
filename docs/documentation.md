@@ -100,12 +100,16 @@ numerical differentiation, in the sense that it computes numerical values, it co
        ```
      * scalar case, reverse mode 
 
-       ```python
-        x = Reverse(5)
-        y =  Reverse.sqrt(Reverse.sinh(x)) + 2**x + 7*Reverse.exp(x) + Reverse.sin(Reverse.cos(x))
-        y.gradient_value = 1
-        dy_dx = x.get_gradient()
-        print(dy_dx)
+       ```python 
+        x = Reverse(5)  # create a reverse mode variable that can be used later
+
+        y =  Reverse.sqrt(Reverse.sinh(x)) + 2**x + 7*Reverse.exp(x) + Reverse.sin(Reverse.cos(x))  # create the function y = (sinh(x))^0.5 + 2^x + 7e^x + sin(cos(x))
+
+        y.gradient_value = 1  # we want dy/dx so we set y.gradient_value to 1
+
+        dy_dx = x.get_gradient()  # Finally to get dy/dx calculate get_gradient at x (since we want dy/dx i.e. w.r.t. x)
+        
+        print(dy_dx)  # print the gradient value found to console
        ```
 
 
