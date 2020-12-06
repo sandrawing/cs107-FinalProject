@@ -80,6 +80,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ```python
      import autodiff.autodiff as ad
+     import autodiff.reverse as rv
      import numpy as np
       ```
 
@@ -96,6 +97,15 @@ numerical differentiation, in the sense that it computes numerical values, it co
        f = ad.AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
 
        print(f.val, f.der) # Output the function value and derivate
+       ```
+     * scalar case, reverse mode (similar for reverse mode)
+
+       ```python
+        x = Reverse(5)
+        y =  Reverse.sqrt(Reverse.sinh(x)) + 2**x + 7*Reverse.exp(x) + Reverse.sin(Reverse.cos(x))
+        y.gradient_value = 1
+        dy_dx = x.get_gradient()
+        print(dy_dx)
        ```
 
 
