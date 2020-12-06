@@ -14,7 +14,7 @@ class AutoDiff():
         sets the default value of derivative to 1
         """
         # Handle several input types of val, including float, int, list and np.ndarray
-        if isinstance(val, (float, int)):
+        if isinstance(val, (float, int, np.int64, np.float64)):
             val = [val]
             self.val = np.array(val)
         elif isinstance(val, list):
