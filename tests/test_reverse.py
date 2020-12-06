@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 sys.path.append('autodiff')
+sys.path.append('../autodiff')
 
 print(sys.path)
 import pytest
@@ -57,6 +58,12 @@ def test_7():
     y.gradient_value = 1
     assert np.around(x.get_gradient(), 5) == -0.05198
 
+def test_9():
+    x = Reverse(5)
+    z = Reverse.logistic(+x)
+    z.gradient_value = 1
+    assert x.get_gradient() == np.exp(-5)/((1+np.exp(-5))**2)
+
 def test_8():
     x = Reverse(5)
     y =  Reverse.sqrt(Reverse.sinh(x))/(2**x + Reverse.exp_base(x, 7)*Reverse.sin(Reverse.cos(x)))
@@ -77,6 +84,57 @@ def test_11():
     assert np.around(x.get_gradient(), 5) == np.around((3*np.sqrt(5))/np.log(36), 5)
     assert np.around(y.get_gradient(), 5) == np.around(-(5*np.sqrt(5))/(6*(np.log(6)**2)), 5)
 
+def test_12():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = ((3-x)-(2/y))/((x-3)-(y/2))
+    z.gradient_value = 1
+    assert x.get_gradient() == 10/3
+    assert y.get_gradient() == -11/9
+
+def test_13():
+    x = Reverse(0.35)
+    z = x**2 + 2**x + 3*x*Reverse.arcsin(x) + 1/(Reverse.arctan(x)*Reverse.arccos(x))
+    z.gradient_value = 1 
+    assert np.around(x.get_gradient(), 5) == -0.54690
+
+def test_eq():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert x != y
+    assert y == z
+
+def test_lt():
+    x = Reverse(5)
+    y = Reverse(6)
+    assert x < y
+    assert x < 6
+
+def test_le():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert x <= y
+    assert y <= z
+    assert x <= 5
+    assert x <= 6
+
+def test_gt():
+    x = Reverse(5)
+    y = Reverse(6)
+    assert y > x
+    assert y > 5
+
+def test_ge():
+    x = Reverse(5)
+    y = Reverse(6)
+    z = Reverse(6)
+    assert y >= x
+    assert y >= z
+    assert y >= 5
+    assert y >= 6
+
 
 
 if __name__ == '__main__':
@@ -88,5 +146,13 @@ if __name__ == '__main__':
     test_6()
     test_7()
     test_8()
+    test_9()
     test_10()
     test_11()
+    test_12()
+    test_13()
+    test_eq()
+    test_lt()
+    test_le()
+    test_gt()
+    test_ge()
