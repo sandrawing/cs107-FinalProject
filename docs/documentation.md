@@ -79,7 +79,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
    * Import packages
 
       ```python
-     import autodiff.autodiff as ad
+     from autodiff.autodiff import AutoDiff
      import autodiff.reverse as rv
      import numpy as np
       ```
@@ -92,12 +92,23 @@ numerical differentiation, in the sense that it computes numerical values, it co
        val = 0 # Value to evaluate at
 
        # Create an AD forward mode object with val
-       x = ad.AutoDiff(val)
+       x = AutoDiff(val, name="x")
 
-       f = ad.AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+       f = AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
 
        print(f.val, f.der) # Output the function value and derivate
        ```
+     * vector case, forward mode
+     
+       ```python
+       # Create an AD forward mode object with vector
+       x = AutoDiff([-1.0, -3.0, -5.0, -7.0, 0.1], name="x")
+       
+       f = AutoDiff.logistic(AutoDiff.tan(x) + (3 * x ** (-2)) + (2 * x) + 7) # function to be evaluate
+       
+       print(f.val, f.der) # Output the function value and derivate
+       ```
+       
      * scalar case, reverse mode 
 
        ```python 
