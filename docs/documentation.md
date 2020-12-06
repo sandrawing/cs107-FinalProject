@@ -80,13 +80,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ```python
      from autodiff.autodiff import AutoDiff
-     import autodiff.reverse as rv
+     from autodiff.reverse import Reverse
      import numpy as np
       ```
 
-   * Instantiate autodiff objects and calculate derivatives
-
-   Firstly, 
+   * Instantiate autodiff objects and calculate derivatives 
 
      * scalar case, forward mode 
 
