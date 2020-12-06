@@ -34,28 +34,6 @@ class Reverse():
             )
         return self.gradient_value
 
-    def __mul__(self, other):
-        """
-        Overloads the multiplication operation
-        Inputs: Scalar or Reverse Instance
-        Returns: A new AutoDiff object which is the result of the multiplication operation
-        performed between the AutoDiff object and the argument that was passed in
-        """
-        if isinstance(other, int) or isinstance(other, float):
-            other = Reverse(other)
-        z = Reverse(self.val * other.val)
-        self.children.append((other.val, z)) # weight = dz/dself = other.value
-        other.children.append((self.val, z)) # weight = dz/dother = self.value
-        return z
-
-    def __rmul__(self, other):
-        """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the multiplication operation
-        performed between the AutoDiff object and the argument that was passed in
-        """
-        return self * other
-
     def __add__(self, other):
         """
         Overloads the addition operation
@@ -104,6 +82,28 @@ class Reverse():
         self.children.append((-1, z)) # weight = dz/dself = 1
         other.children.append((1, z)) # weight = dz/dother = -1
         return z
+
+    def __mul__(self, other):
+        """
+        Overloads the multiplication operation
+        Inputs: Scalar or Reverse Instance
+        Returns: A new AutoDiff object which is the result of the multiplication operation
+        performed between the AutoDiff object and the argument that was passed in
+        """
+        if isinstance(other, int) or isinstance(other, float):
+            other = Reverse(other)
+        z = Reverse(self.val * other.val)
+        self.children.append((other.val, z)) # weight = dz/dself = other.value
+        other.children.append((self.val, z)) # weight = dz/dother = self.value
+        return z
+
+    def __rmul__(self, other):
+        """
+        Inputs: Scalar or AutoDiff Instance
+        Returns: A new AutoDiff object which is the result of the multiplication operation
+        performed between the AutoDiff object and the argument that was passed in
+        """
+        return self * other
 
     def __truediv__(self, other):
         """
@@ -174,16 +174,6 @@ class Reverse():
         self.children.append((np.cos(self.val), z)) # z = sin(x) => dz/dx = cos(x)
         return z
 
-    def sinh(self):
-        """
-        Inputs: None
-        Returns: A new Reverse object with the hyperbolic sine
-        computation done on the value and derivative
-        """
-        z = Reverse(np.sinh(self.val))
-        self.children.append((np.cosh(self.val), z))
-        return z
-
     def cos(self):
         """
         Inputs: None
@@ -192,16 +182,6 @@ class Reverse():
         """
         z = Reverse(np.cos(self.val))
         self.children.append((-np.sin(self.val), z))
-        return z
-
-    def cosh(self):
-        """
-        Inputs: None
-        Returns: A new Reverse object with the hyperbolic cosine
-        computation done on the value and derivative
-        """
-        z = Reverse(np.cosh(self.val))
-        self.children.append((np.sinh(self.val), z))
         return z
 
     def tan(self):
@@ -214,6 +194,26 @@ class Reverse():
         self.children.append((1 / (np.cos(self.val) ** 2), z))
         return z
 
+    def sinh(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the hyperbolic sine
+        computation done on the value and derivative
+        """
+        z = Reverse(np.sinh(self.val))
+        self.children.append((np.cosh(self.val), z))
+        return z
+
+    def cosh(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the hyperbolic cosine
+        computation done on the value and derivative
+        """
+        z = Reverse(np.cosh(self.val))
+        self.children.append((np.sinh(self.val), z))
+        return z
+
     def tanh(self):
         """
         Inputs: None
@@ -223,6 +223,66 @@ class Reverse():
         z = Reverse(np.tanh(self.val))
         self.children.append((1 / (np.cosh(self.val) ** 2), z))
         return z
+
+    def exp(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the natural exponential
+        computation done on the value  and derivative
+        """
+        z = Reverse(np.exp(self.val))
+        self.children.append((np.exp(self.val), z))
+        return z
+
+    def exp_base(self, base):
+        """
+        Inputs: scalar
+        Returns: A new Reverse object with the exponential (using a specified base)
+        computation done on the value and derivative
+        """
+        z = Reverse(base ** self.val)
+        self.children.append(((base ** self.val) * np.log(base), z))
+        return z
+    
+    def arcsin(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the inverse
+        sine computation done on the value and derivative
+        """ 
+        z = Reverse(np.arcsin(self.val))
+        self.children.append((1 / (1 - (self.val**2))**0.5, z))
+        return z
+
+    def arccos(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the inverse
+        cosine computation done on the value and derivative
+        """ 
+        z = Reverse(np.arccos(self.val))
+        self.children.append((-1 / (1 - (self.val**2))**0.5, z))
+        return z
+
+    def arctan(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object with the inverse
+        cosine computation done on the value and derivative
+        """ 
+        z = Reverse(np.arctan(self.val))
+        self.children.append((1 / (1 + (self.val**2)), z))
+        return z
+
+    def logistic(self):
+        """
+        Inputs: None
+        Returns: A new Reverse object calculated with logistic function
+        """
+        z = Reverse(1/(1+np.exp(-self.val)))
+        self.children.append((np.exp(-self.val)/((1+np.exp(-self.val))**2), z)) # Need to make sure this is correct
+        return z
+
 
     def sqrt(self):
         """
@@ -252,35 +312,6 @@ class Reverse():
         """
         z = Reverse(np.log(self.val) / np.log(base))
         self.children.append((1 / (self.val * np.log(base)), z))
-        return z
-
-    def exp(self):
-        """
-        Inputs: None
-        Returns: A new Reverse object with the natural exponential
-        computation done on the value  and derivative
-        """
-        z = Reverse(np.exp(self.val))
-        self.children.append((np.exp(self.val), z))
-        return z
-
-    def exp_base(self, base):
-        """
-        Inputs: scalar
-        Returns: A new Reverse object with the exponential (using a specified base)
-        computation done on the value and derivative
-        """
-        z = Reverse(base ** self.val)
-        self.children.append(((base ** self.val) * np.log(base), z))
-        return z
-
-    def logistic(self):
-        """
-        Inputs: None
-        Returns: A new Reverse object calculated with logistic function
-        """
-        z = Reverse(1/(1+np.exp(-self.val)))
-        self.children.append((np.exp(-self.val)/((1+np.exp(-self.val))**2), z)) # Need to make sure this is correct
         return z
 
     def __eq__(self, other):

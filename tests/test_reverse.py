@@ -92,6 +92,12 @@ def test_12():
     assert x.get_gradient() == 10/3
     assert y.get_gradient() == -11/9
 
+def test_13():
+    x = Reverse(0.35)
+    z = x**2 + 2**x + 3*x*Reverse.arcsin(x) + 1/(Reverse.arctan(x)*Reverse.arccos(x))
+    z.gradient_value = 1 
+    assert np.around(x.get_gradient(), 5) == -0.54690
+
 def test_eq():
     x = Reverse(5)
     y = Reverse(6)
@@ -144,6 +150,7 @@ if __name__ == '__main__':
     test_10()
     test_11()
     test_12()
+    test_13()
     test_eq()
     test_lt()
     test_le()
