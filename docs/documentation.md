@@ -84,7 +84,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
      import numpy as np
       ```
 
-   * Instantiate autodiff objects and calculate derivatives 
+   * Instantiate autodiff objects and calculate values and derivatives 
 
      * scalar case, forward mode 
 
@@ -96,8 +96,18 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
        f = AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
 
-       print(f.val, f.der) # Output the function value and derivate
+       print(f.val) # Output the function value 
+       print(f.der) # Output the function derivative
        ```
+       
+       The output is 
+       ```python
+       [0.] 
+       
+       {'x': array([2.])}
+       ```
+       
+       
      * vector case, forward mode
      
        ```python
@@ -109,7 +119,9 @@ numerical differentiation, in the sense that it computes numerical values, it co
        print(f.val, f.der) # Output the function value and derivate
        ```
        
-   * Instantiate reverse objects and calculate derivatives    
+       
+       
+   * Instantiate reverse objects and calculate values and derivatives    
    
      * scalar case, reverse mode 
 
