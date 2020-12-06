@@ -150,7 +150,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
        ```
        
-     * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class
+     * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class would return a list and a numpy matrix. The list is the order of variables appears inside the matrix. For instance, if the list is ['x', 'y'], the the first column of the matrix is the derivatives for variable 'x', and the second column of the matrix is the derivatives for variable 'y'. The numpy matrix is the jacobian matrix. Different rows represents the derivatives for different functions. In the following result, where we input two functions. Then the first row is the result for f1 and the second ros is the result for f2.
      
        ```python
        # Create an AD forward mode object with value for x
@@ -176,7 +176,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 	       [-6.22988631e-01, -2.49195453e+01]])]
        ```
  
-      * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class.
+      * Then, we show how to handle the most complicated case, where we have multiple variables, and each of the variable has vector input, and we evaluate them for multiple functions. Compared with the previous one, this time, the jacobian function inside Vector class would return a list of variable names and a list of numpy matrix.
      
         ```python
         x = AutoDiff([3, 1], name='x')
@@ -247,9 +247,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
               elif isinstance(val, np.ndarray):
 	          self.val = val
               else:
-                  raise TypeError("Invalid Type for val! ")
-              
-	      
+                  raise TypeError("Invalid Type for val! ")	      
       ```
 
 
