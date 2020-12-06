@@ -35,6 +35,7 @@ class Vector():
         for function in self.func_ver:
             var_list = var_list.union(function.get_variables())
         var_list = list(var_list)
+        var_list.sort()
 
         jac_matrix = []
         for i in range(len(self.func_ver[0].val)):
