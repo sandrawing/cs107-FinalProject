@@ -95,8 +95,14 @@ def test_12():
 def test_13():
     x = Reverse(0.35)
     z = x**2 + 2**x + 3*x*Reverse.arcsin(x) + 1/(Reverse.arctan(x)*Reverse.arccos(x))
-    z.gradient_value = 1 
+    z.gradient_value = 1
     assert np.around(x.get_gradient(), 5) == -0.54690
+
+def test_14():
+    x = Reverse(5)
+    z = (x+3)+(3+x) - Reverse.log(x,2)
+    z.gradient_value = 1
+    assert x.get_gradient() == 2 - 1/np.log(32)
 
 def test_eq():
     x = Reverse(5)
@@ -104,12 +110,27 @@ def test_eq():
     z = Reverse(6)
     assert x != y
     assert y == z
+    assert x == 5
+    assert y != 5
+    try:
+        x == "hi"
+    except TypeError:
+        pass
+    try:
+        x != "hi"
+    except TypeError:
+        pass
 
 def test_lt():
     x = Reverse(5)
     y = Reverse(6)
     assert x < y
     assert x < 6
+    try:
+        x < "hi"
+    except TypeError:
+        pass
+
 
 def test_le():
     x = Reverse(5)
@@ -119,12 +140,20 @@ def test_le():
     assert y <= z
     assert x <= 5
     assert x <= 6
+    try:
+        x <= "hi"
+    except TypeError:
+        pass
 
 def test_gt():
     x = Reverse(5)
     y = Reverse(6)
     assert y > x
     assert y > 5
+    try:
+        x > "hi"
+    except TypeError:
+        pass
 
 def test_ge():
     x = Reverse(5)
@@ -134,6 +163,39 @@ def test_ge():
     assert y >= z
     assert y >= 5
     assert y >= 6
+    try:
+        x >= "hi"
+    except TypeError:
+        pass
+
+def test_ln_log():
+    x = Reverse(0)
+    y = Reverse(1)
+    try:
+        Reverse.ln(x)
+    except ValueError:
+        pass
+    try:
+        Reverse.log(x, 1)
+    except ValueError:
+        pass
+    try:
+        Reverse.log(y, -1)
+    except ValueError:
+        pass
+
+def test_reset_gradient():
+    w = Reverse(4)
+    x = Reverse(5)
+    y = Reverse(6)
+    z = (2*x-w**2)/(x+y**w)
+    z.gradient_value = 1
+    x.get_gradient()
+    x.reset_gradient()
+    for _, child in x.children:
+        assert child.gradient_value == None
+        for _, child2 in child.children:
+            assert child2.gradient_value == None
 
 
 
@@ -151,8 +213,11 @@ if __name__ == '__main__':
     test_11()
     test_12()
     test_13()
+    test_14()
     test_eq()
     test_lt()
     test_le()
     test_gt()
     test_ge()
+    test_ln_log()
+    test_reset_gradient()

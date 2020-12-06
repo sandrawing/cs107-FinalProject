@@ -243,13 +243,13 @@ class Reverse():
         z = Reverse(base ** self.val)
         self.children.append(((base ** self.val) * np.log(base), z))
         return z
-    
+
     def arcsin(self):
         """
         Inputs: None
         Returns: A new Reverse object with the inverse
         sine computation done on the value and derivative
-        """ 
+        """
         z = Reverse(np.arcsin(self.val))
         self.children.append((1 / (1 - (self.val**2))**0.5, z))
         return z
@@ -259,7 +259,7 @@ class Reverse():
         Inputs: None
         Returns: A new Reverse object with the inverse
         cosine computation done on the value and derivative
-        """ 
+        """
         z = Reverse(np.arccos(self.val))
         self.children.append((-1 / (1 - (self.val**2))**0.5, z))
         return z
@@ -269,7 +269,7 @@ class Reverse():
         Inputs: None
         Returns: A new Reverse object with the inverse
         cosine computation done on the value and derivative
-        """ 
+        """
         z = Reverse(np.arctan(self.val))
         self.children.append((1 / (1 + (self.val**2)), z))
         return z
@@ -300,9 +300,13 @@ class Reverse():
         Returns: A new Reverse object with the natural log
         computation done on the value and derivative
         """
-        z = Reverse(np.log(self.val))
-        self.children.append(( 1 / self.val , z))
-        return z
+        if(self.val > 0):
+            z = Reverse(np.log(self.val))
+            self.children.append(( 1 / self.val , z))
+            return z
+        else:
+            raise ValueError("Reverse.ln only takes in positive numbers as arguments.")
+
 
     def log(self, base):
         """
@@ -310,8 +314,12 @@ class Reverse():
         Returns: A new Reverse object with the log (using a specified
         base) computation done on the value and derivative
         """
-        z = Reverse(np.log(self.val) / np.log(base))
-        self.children.append((1 / (self.val * np.log(base)), z))
+        if(self.val > 0 and base > 0):
+            z = Reverse(np.log(self.val) / np.log(base))
+            self.children.append((1 / (self.val * np.log(base)), z))
+            return z
+        else:
+            raise ValueError("Reverse.log only takes in positive numbers as arguments.")
         return z
 
     def __eq__(self, other):
@@ -325,6 +333,8 @@ class Reverse():
             return np.equal(self.val, other)
         elif isinstance(other, Reverse):
             return np.equal(self.val, other.val)
+        else:
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
 
     def __ne__(self, other):
         """
@@ -337,6 +347,8 @@ class Reverse():
             return not np.equal(self.val, other)
         elif isinstance(other, Reverse):
             return not np.equal(self.val, other.val)
+        else:
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
 
 
     def __lt__(self, other):
@@ -351,7 +363,7 @@ class Reverse():
         elif isinstance(other, Reverse):
             return np.less(self.val, other.val)
         else:
-            return TypeError("Please only compare Reverse object with another Reverse object or int or float.")
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
 
     def __le__(self, other):
         """
@@ -365,7 +377,7 @@ class Reverse():
         elif isinstance(other, Reverse):
             return np.less_equal(self.val, other.val)
         else:
-            return TypeError("Please only compare Reverse object with another Reverse object or int or float.")
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
 
     def __gt__(self, other):
         """
@@ -379,7 +391,7 @@ class Reverse():
         elif isinstance(other, Reverse):
             return np.greater(self.val, other.val)
         else:
-            return TypeError("Please only compare Reverse object with another Reverse object or int or float.")
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
 
     def __ge__(self, other):
         """
@@ -393,4 +405,4 @@ class Reverse():
         elif isinstance(other, Reverse):
             return np.greater_equal(self.val, other.val)
         else:
-            return TypeError("Please only compare Reverse object with another Reverse object or int or float.")
+            raise TypeError("Please only compare Reverse object with another Reverse object or int or float.")
