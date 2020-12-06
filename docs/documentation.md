@@ -233,22 +233,22 @@ numerical differentiation, in the sense that it computes numerical values, it co
           and contains some elemental functions
           """
           def __init__(self, val, der=1, name="not_specified"):
-        	"""
-        	constructor for AutoDiff class
-        	Initializes AutoDiff object with a value, derivative and name that was passed in
-       	 	and converts the type of value to numpy array for handling multiple values
-        	converts the type of derivatives to a dictionary for handling multiple variables
-        	"""
-        	# Handle several input types of val, including float, int, list and np.ndarray
-        	if isinstance(val, (float, int)):
-			val = [val]
-            		self.val = np.array(val)
-        	elif isinstance(val, list):
-            		self.val = np.array(val)
-       		elif isinstance(val, np.ndarray):
-            		self.val = val
-        	else:
-            		raise TypeError("Invalid Type for val! ")
+              """
+              constructor for AutoDiff class
+              Initializes AutoDiff object with a value, derivative and name that was passed in
+       	      and converts the type of value to numpy array for handling multiple values
+              converts the type of derivatives to a dictionary for handling multiple variables
+              """
+              # Handle several input types of val, including float, int, list and np.ndarray
+              if isinstance(val, (float, int)):
+	          val = [val]
+            	  self.val = np.array(val)
+              elif isinstance(val, list):
+	          self.val = np.array(val)
+       	      elif isinstance(val, np.ndarray):
+	          self.val = val
+              else:
+            	  raise TypeError("Invalid Type for val! ")
 
         	# Handle several input types of val, including float, int, list and dict
        	 	if type(der) == dict:
