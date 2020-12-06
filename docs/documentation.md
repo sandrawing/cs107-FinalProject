@@ -227,11 +227,11 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ```python
       class AutoDiff():
-      """
-      Forward Mode Implementation of Automatic Differentiation
-      The class overloads the basic operations, including the unary operation,
-      and contains some elemental functions
-      """
+          """
+      	  Forward Mode Implementation of Automatic Differentiation
+          The class overloads the basic operations, including the unary operation,
+          and contains some elemental functions
+          """
           def __init__(self, val, der=1, name="not_specified"):
         	"""
         	constructor for AutoDiff class
@@ -259,20 +259,37 @@ numerical differentiation, in the sense that it computes numerical values, it co
             		self.der = {name: np.array([der] * len(self.val))}
         	self.name = name
 
-          def get_variables(self):
-	  	"""
-        	returns the variable names
-        	"""
-        	return set(self.der.keys())
+          ...
 
     	  """Basic Operations"""
+	  def __mul__(self, other):
+	      	"""
+        	Overloads the multiplication operation
+        	Inputs: Scalar or AutoDiff Instance
+        	Returns: A new AutoDiff object which is the result of the multiplication operation
+        	performed between the AutoDiff object and the argument that was passed in
+        	"""
+        	temp_der = {}
+        	if isinstance(other, (int, float)):
+            		# Multiply a scalar to a AutoDiff object
+            		for variable in self.get_variables():
+                		temp_der[variable] = self.der[variable] * other
+            		return AutoDiff(self.val * float(other), temp_der, self.name)
+        	elif isinstance(other, AutoDiff):
+           		# Multiply two AutoDiff objects
+            		var_union = self.get_variables().union(other.get_variables())
+            		for variable in var_union:
+                		temp_der[variable] = self.val * other.der.get(variable, 0) + other.val * self.der.get(variable, 0)
+            		return AutoDiff(self.val * other.val, temp_der, self.name)
+        	else:
+            		raise TypeError("Invalid input type!")
       ```
 
 
    * reverse
 
       ```python
-       class Reverse():
+      class Reverse():
           def __init__(self, val):
               """
               Initializes Reverse object with a value that was passed in
