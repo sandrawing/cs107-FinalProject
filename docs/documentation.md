@@ -118,53 +118,83 @@ numerical differentiation, in the sense that it computes numerical values, it co
    * autodiff
 
       ```python
-     class AutoDiff:
-         """
-         Forward Mode Implementation of Automatic Differentiation
-         The class overloads the basic operations, including the unary operation,
-         and contains some elemental functions
-         """
+class AutoDiff():
+    """
+    Forward Mode Implementation of Automatic Differentiation
+    The class overloads the basic operations, including the unary operation,
+    and contains some elemental functions
+    """
 
-         def __init__(self, val, der=1):
-             """
-             Initializes AutoDiff object with a value that was passed in and
-             sets the default value of derivative to 1
-             """
-             if isinstance(val, str):
-                 raise TypeError("Cannot initialize val to string values")
-             elif isinstance(der, str):
-                 raise TypeError("Cannot initialize der to string values")
-             self.val = val
-             self.der = der
+    def __init__(self, val, der=1, name="not_specified"):
+	"""
+	constructor for AutoDiff class
+	Initializes AutoDiff object with a value, derivative and name that was passed in
+	and converts the type of value to numpy array for handling multiple values
+	converts the type of derivatives to a dictionary for handling multiple variables
+	"""
+	# Handle several input types of val, including float, int, list and np.ndarray
+	if isinstance(val, (float, int)):
+	    val = [val]
+	    self.val = np.array(val)
+	elif isinstance(val, list):
+	    self.val = np.array(val)
+	elif isinstance(val, np.ndarray):
+	    self.val = val
+	else:
+	    raise TypeError("Invalid Type for val! ")
 
-         """Basic Operations"""
+	# Handle several input types of val, including float, int, list and dict
+	if type(der) == dict:
+	    self.der = der
+	elif type(der) == list:
+	    self.der = {name: np.array(der)}
+	elif isinstance(der, (float, int)):
+	    self.der = {name: np.array([der] * len(self.val))}
+	self.name = name
 
-         def __add__(self, other):
-             """
-             Overloads the addition operation
+    def get_variables(self):
+	"""
+	returns the variable names
+	"""
+	return set(self.der.keys())
 
-             Inputs: Scalar or AutoDiff Instance
-             Returns: A new AutoDiff object which is the result of the addition operation
-             performed between the AutoDiff object and the argument that was passed in
-             """
-             try:
-                 return AutoDiff(self.val + other.val, self.der + other.der)
-             except AttributeError:
-                 other = AutoDiff(other, 0)  # derivative of a constant is zero
-                 return AutoDiff(self.val + other.val, self.der + other.der)
+    """Basic Operations"""
 
+    def __add__(self, other):
+	"""
+	Overloads the addition operation
+	Inputs: Scalar or AutoDiff Instance
+	Returns: A new AutoDiff object which is the result of the addition operation
+	performed between the AutoDiff object and the argument that was passed in
+	"""
+	temp_der = {}
+	if isinstance(other, (int, float)):
+	    # Add a scalar to a AutoDiff object
+	    return AutoDiff(self.val + float(other), self.der.copy(), self.name)
+	elif isinstance(other, AutoDiff):
+	    # Add two AutoDiff objects
+	    var_union = self.get_variables().union(other.get_variables())
+	    temp_val = self.val + other.val
+	    for variable in var_union:
+		temp_der[variable] = self.der.get(variable, 0) + other.der.get(variable, 0)
+	    return AutoDiff(temp_val, temp_der, self.name)
+	else:
+	    raise TypeError("Invalid input type!")
         ...
 
-        """Elemental Functions"""
+    """Elemental Function"""
 
-        def sin(self):
-            """
-            Inputs: None
-            Returns: A new AutoDiff object with the sine computation done on the value and derivative
-            """
-            new_val = np.sin(self.val)
-            new_der = np.cos(self.val) * self.der
-            return AutoDiff(new_val, new_der)
+    def sin(self):
+        """
+        Inputs: None
+        Returns: A new AutoDiff object with the sine
+        computation done on the value and derivative
+        """
+        temp_der = {}
+        new_val = np.sin(self.val)
+        for variable in self.get_variables():
+            temp_der[variable] = np.cos(self.val) * self.der[variable]
+        return AutoDiff(new_val, temp_der, self.name)
 
         ...
 
