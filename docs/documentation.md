@@ -81,6 +81,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```python
      from autodiff.autodiff import AutoDiff
      from autodiff.reverse import Reverse
+     from autodiff.vector import Vector
      import numpy as np
       ```
 
@@ -136,7 +137,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        # Create an AD forward mode object with vector for y
        y = AutoDiff([8, -1], name="y")
        
-       f = x / y  # function to be evaluate
+       f = x / y  # function to be evaluate, i.e. f(x, y) = x / y
        
        print(f.val) # Output the function value 
        print(f.der) # Output the function derivative
@@ -147,6 +148,30 @@ numerical differentiation, in the sense that it computes numerical values, it co
        [ 2. -0.]
        
        {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
+       ```
+       
+     * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar.
+     
+       ```python
+       x = AutoDiff(3, name='x')
+       y = AutoDiff(5, name='y')
+       f1 = (2 * x ** 2) + (3 * y ** 4)
+       f2 = AutoDiff.cos(x + (4 * y ** 2))
+       v = Vector([f1, f2])
+       
+       print(v.val())
+       print(v.jacobian()[0])
+       print(v.jacobian()[1])
+       ```
+       
+       The output is 
+       ```python
+       [[ 1.8930000e+03 -7.8223089e-01]]
+       
+       ['x', 'y']
+       
+       [array([[ 1.20000000e+01,  1.50000000e+03],
+	       [-6.22988631e-01, -2.49195453e+01]])]
        ```
        
    * Instantiate reverse objects and calculate values and derivatives    
