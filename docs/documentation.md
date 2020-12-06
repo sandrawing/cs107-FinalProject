@@ -87,7 +87,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Instantiate autodiff objects and calculate values and derivatives 
 
-     * Firstly, we show how to handle scalar case in forward mode. The user begins by initializing an AD forward mode object with input value. By default, the derivatives of variable is 1 and the name of variable is "not_specified". But any derivatives and name can be passed in. And we use different names of variables to represent their independence. 
+     * Firstly, we show how to handle scalar case in forward mode. The user begins by initializing an AD forward mode object with input value. By default, the derivatives of variable is 1 and the name of variable is "not_specified". But any derivatives and name can be passed in. And we use different names of variables to represent their independence. Then, the user can call the functions we provide inside AutoDiff class and get the value and derivatives.
 
        ```python
        val = 0 # Value to evaluate at
@@ -150,10 +150,12 @@ numerical differentiation, in the sense that it computes numerical values, it co
        {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
        ```
        
-     * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar.
+     * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class
      
        ```python
+       # Create an AD forward mode object with value for x
        x = AutoDiff(3, name='x')
+       # Create an AD forward mode object with value for y
        y = AutoDiff(5, name='y')
        f1 = (2 * x ** 2) + (3 * y ** 4)
        f2 = AutoDiff.cos(x + (4 * y ** 2))
@@ -173,7 +175,34 @@ numerical differentiation, in the sense that it computes numerical values, it co
        [array([[ 1.20000000e+01,  1.50000000e+03],
 	       [-6.22988631e-01, -2.49195453e+01]])]
        ```
+ 
+      * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector class. And the val function inside Vector class gives the output values of the functions. And the jacobian function inside Vector class
+     
+       ```python
+       x = AutoDiff([3, 1], name='x')
+       y = AutoDiff([5, 2], name='y')
+       f1 = (2 * x ** 2) + (3 * y ** 4)
+       f2 = AutoDiff.cos(x + (4 * y ** 2))
+       v = Vector([f1, f2])
+       print(v.val())
+       print(v.jacobian()[0])
+       print(v.jacobian()[1])
+       ```
        
+       The output is 
+       ```python
+       [[ 1.89300000e+03 -7.82230890e-01]
+       [ 5.00000000e+01 -2.75163338e-01]]
+       
+       ['x', 'y']
+       
+       [array([[ 1.20000000e+01,  1.50000000e+03],
+       [-6.22988631e-01, -2.49195453e+01]]), 
+       array([[ 4.        , 96.        ],
+       [ 0.96139749, 15.38235987]])]
+       ```
+ 
+ 
    * Instantiate reverse objects and calculate values and derivatives    
    
      * scalar case, reverse mode 
