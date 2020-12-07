@@ -1,14 +1,17 @@
 from autodiff import AutoDiff
+import numpy as np
+from vector import Vector
 
 
-def newton_method_scalar(func, initial_val, max_iter=10000, tol=1e-5):
+def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int = 10000, tol: float = 1e-5):
     """
-    Use Newton's method to find root of a simple scalar function
+    Use Newton's method to find root of a scalar / vector function
     Use forward mode of automatic differentiation to calculate derivative in Newton's method
 
     INPUTS
     ======
-    func: scalar function
+    func: function
+    num_of_variables: number of variables in function
     initial_val: initial value for root finding
     max_iter: max iterations, default value 10000
     tol: maximum tolerance of error, default value 1e-5
@@ -19,29 +22,33 @@ def newton_method_scalar(func, initial_val, max_iter=10000, tol=1e-5):
     x_trace: traces of x in root finding process
     """
 
-    # Create an AutoDiff object with initial value
-    x_val = initial_val
-    x = AutoDiff(x_val, 1, 'x')
+    x_val = np.array(initial_val)         # Current value of x
+    x = []                                # list to store autodiff objects
+    for i in range(num_of_variables):
+        x.append(AutoDiff(val=x_val[i], der=1, name='x'+str(i)))
+    f = func(x)                           # function object of autodiff object
+    iter = 0                              # number of iterations
+    sum_abs_error = sum([abs(f_elem.val[0]) for f_elem in f])    # sum of absolute error
+    x_trace = [x_val]                     # trace of x
 
-    # Initial values for f, iter, abs_error
-    f = func(x)
-    iter = 0
-    abs_error = abs(f.val[0])
-
-    # Use x_trace to store values of x in root finding processes
-    x_trace = [x_val]
-
-    while (abs_error > tol):
+    while sum_abs_error > tol:
         # Continue updating until abs_error <= tol
 
-        # Update x, f, iter, abs_error
-        x_val = x_val - f.val[0] / f.der['x'][0]
-        x = AutoDiff(x_val, 1, 'x')
-        f = func(x)
-        iter += 1
-        abs_error = abs(f.val[0])
+        # Calculate function value and jacobian matrix
+        f_vector = Vector(f)
+        f_val = f_vector.val()[0].reshape(-1, 1)
+        jacobian = f_vector.jacobian()[1][0]
 
-        # Store trace of x
+        # Update x_val, x, f, iter, sum_abs_error
+        x_val = x_val - (np.linalg.inv(jacobian) @ f_val).reshape(-1)
+        x = []
+        for i in range(num_of_variables):
+            x.append(AutoDiff(val=x_val[i], der=1, name='x' + str(i)))
+        f = func(x)
+        iter = 0
+        sum_abs_error = sum([abs(f_elem.val[0]) for f_elem in f])
+
+        # Store x_val to x_trace
         x_trace.append(x_val)
 
         # Throw exception if max number of iterations is reached
@@ -49,4 +56,5 @@ def newton_method_scalar(func, initial_val, max_iter=10000, tol=1e-5):
             raise Exception("Max number of iterations is reached! ")
 
     return x_val, x_trace
+
 
