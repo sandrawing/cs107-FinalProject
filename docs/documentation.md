@@ -196,7 +196,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 
    * Instantiate reverse objects and calculate values and derivatives    
-   
+
      * scalar case, reverse mode 
 
        ```python 
@@ -210,6 +210,54 @@ numerical differentiation, in the sense that it computes numerical values, it co
         
         print(dy_dx)  # print the gradient value found to console
        ```
+
+* Instantiate root finding with Newton's method
+
+
+  * One-variable function
+
+    ```python
+    def func_one_variable(x: list):
+        # function with one variable
+        f = (x[0]-2)**2
+        return [f]
+    
+    # Find root of function, print root and trace
+    root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[1], max_iter=10000, tol=1e-8)
+    print(f'Root of function: {root}')
+    print(f'Trace of function: {trace}')
+    ```
+
+    Output is as below
+
+    ```python
+    Root of function: [1.99993896]
+    Trace of function: [array([1]), array([1.5]), array([1.75]), array([1.875]), array([1.9375]), array([1.96875]), array([1.984375]), array([1.9921875]), array([1.99609375]), array([1.99804688]), array([1.99902344]), array([1.99951172]), array([1.99975586]), array([1.99987793]), array([1.99993896])]
+    ```
+
+  * Multi-variable function
+
+    ```python
+    def func_multi_variables(x: list):
+        # function with multi variables
+        f1 = x[0] + 2
+        f2 = x[0] + x[1]**2 - 2
+        return [f1, f2]
+    
+    # Find root of function, print root and trace
+    root, trace = newton_method(func=func_multi_variables, num_of_variables=2, initial_val=[0, 1], max_iter=10000, tol=1e-8)
+    print(f'Root of function: {root}')
+    print(f'Trace of function: {trace}')
+    ```
+
+    Output is as below
+
+    ```python
+    Root of function: [-2.  2.]
+    Trace of function: [array([0, 1]), array([-2. ,  2.5]), array([-2.  ,  2.05]), array([-2.        ,  2.00060976]), array([-2.        ,  2.00000009]), array([-2.,  2.])]
+    ```
+
+    
 
 
 3. What’s inside autodiff package
@@ -312,7 +360,66 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
       ```
 
+* Root finding with Newton's method
 
+  ```python
+  def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int = 10000, tol: float = 1e-5):
+      """
+      Use Newton's method to find root of a scalar / vector function
+      Use forward mode of automatic differentiation to calculate derivative in Newton's method
+  
+      INPUTS
+      ======
+      func: function
+      num_of_variables: number of variables in function
+      initial_val: initial value for root finding
+      max_iter: max iterations, default value 10000
+      tol: maximum tolerance of error, default value 1e-5
+  
+      RETURNS
+      =======
+      x_val: root of function func computed with Newton's method
+      x_trace: traces of x in root finding process
+      """
+  
+      x_val = np.array(initial_val)         # Current value of x
+      x = []                                # list to store autodiff objects
+      for i in range(num_of_variables):
+          x.append(AutoDiff(val=x_val[i], der=1, name='x'+str(i)))
+      f = func(x)                           # function object of autodiff object
+      iter = 0                              # number of iterations
+      sum_abs_error = sum([abs(f_elem.val[0]) for f_elem in f])    # sum of absolute error
+      x_trace = [x_val]                     # trace of x
+  
+      while sum_abs_error > tol:
+          # Continue updating until abs_error <= tol
+  
+          # Calculate function value and jacobian matrix
+          f_vector = Vector(f)
+          f_val = f_vector.val()[0].reshape(-1, 1)
+          jacobian = f_vector.jacobian()[1][0]
+  
+          # Update x_val, x, f, iter, sum_abs_error
+          x_val = x_val - (np.linalg.inv(jacobian) @ f_val).reshape(-1)
+          x = []
+          for i in range(num_of_variables):
+              x.append(AutoDiff(val=x_val[i], der=1, name='x' + str(i)))
+          f = func(x)
+          iter += 1
+          sum_abs_error = sum([abs(f_elem.val[0]) for f_elem in f])
+  
+          # Store x_val to x_trace
+          x_trace.append(x_val)
+  
+          # Throw exception if max number of iterations is reached
+          if iter > max_iter:
+              raise Exception("Max number of iterations is reached! ")
+  
+      return x_val, x_trace
+  
+  ```
+
+  
 
 ## Software Organization
 
