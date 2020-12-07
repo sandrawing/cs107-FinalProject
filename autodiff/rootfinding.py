@@ -45,7 +45,7 @@ def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int 
         for i in range(num_of_variables):
             x.append(AutoDiff(val=x_val[i], der=1, name='x' + str(i)))
         f = func(x)
-        iter = 0
+        iter += 1
         sum_abs_error = sum([abs(f_elem.val[0]) for f_elem in f])
 
         # Store x_val to x_trace

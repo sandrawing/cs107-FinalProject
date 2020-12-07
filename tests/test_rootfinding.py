@@ -42,7 +42,7 @@ def test_rootfinding_fail():
         f1 = x[0]**2 + 1
         return [f1]
     with pytest.raises(Exception):
-        root, _ = newton_method(func=func_no_root, num_of_variables=2, initial_val=0, max_iter=10000, tol=1e-8)
+        root, _ = newton_method(func=func_no_root, num_of_variables=1, initial_val=[2], max_iter=10000, tol=1e-8)
 
 
 if __name__ == "__main__":
