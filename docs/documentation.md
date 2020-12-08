@@ -27,10 +27,9 @@
    * Chain Rule
 
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
-  
+    
      <img src="ChainRule.png" alt="Image of Chain Rule" align="center" width="250"/>
    
-
 2. Automatic Differentiation
 
    * Automatic Differentiation (short AD) is a method to evaluate derivatives of functions which differs significantly from the classical ways of computer-based differentiation through either approximative, numerical methods, or through symbolic differentiation, using computer algebra systems. While approximative methods (which are usually based on finite differences) are inherently prone to truncation and rounding errors and suffer from numerical instability, symbolic differentiation may (in certain cases) lead to significant long computation times. Automatic Differentiation suffers from none of these problems and is, in particular, well-suited for the differentiation of functions implemented as computer code. Furthermore, while Automatic Differentiation is also
@@ -226,7 +225,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
         dy_dx = x.get_gradient()  # Finally to get dy/dx calculate get_gradient at x (since we want dy/dx i.e. w.r.t. x)
         
         print(dy_dx)  # print the gradient value found to console
-      ```
+     ```
      * Next we do the case, where our output is a vector of functions.
       ```python 
 
@@ -234,77 +233,103 @@ numerical differentiation, in the sense that it computes numerical values, it co
         x = Reverse([1, 2, 3, 4, 5])
 
         y = Reverse([8, 2, 1, 3, 2])
-
-
-        # And say we want our output as a vector of functions i.e. [f1, f2] then
-        f1 = x**2 + x**y + 2*x*y  # We first define f1
-
-        f2 = (y/x)**2  # then define f2
-
-        vect = ReverseVector([f1, f2])  # Finally we combine both the functions into a vector using the ReverseVector class
-
-
-        eval_arr = vect.val_func_order()  # Using this then, we can find our vector of function's value evaluated at the point we initialised it at.
-
-        # Now for derivatives, we call der_func_order() which takes in the argument a list of lists where if our vector of functions is [f1, f2] then:
-        der1_arr = vect.der_func_order([[x], [y]])  # returns [[df1/dx], [df2/dy]]
-
-        der2_arr = vect.der_func_order([[y], [x]])  # returns [[df1/dy], [df2/dx]]
-
-        der3_arr = vect.der_func_order([[x, y], [x, y]])  # returns [[df1/dx, df1/dy], [df2/dx, df2/dy]]
-
-        # i.e. the output follows the same format as the input that you define
-        # Note: You are passing in the Reverse object x in the lists above not a string "x".
       ```
 
 
+```python
+    # And say we want our output as a vector of functions i.e. [f1, f2] then
+    f1 = x**2 + x**y + 2*x*y  # We first define f1
+
+    f2 = (y/x)**2  # then define f2
+
+    vect = ReverseVector([f1, f2])  # Finally we combine both the functions into a vector using the ReverseVector class
+```
+
+
+~~~python
+    eval_arr = vect.val_func_order()  # Using this then, we can find our vector of function's value evaluated at the point we initialised it at.
+
+    # Now for derivatives, we call der_func_order() which takes in the argument a list of lists where if our vector of functions is [f1, f2] then:
+    der1_arr = vect.der_func_order([[x], [y]])  # returns [[df1/dx], [df2/dy]]
+
+    der2_arr = vect.der_func_order([[y], [x]])  # returns [[df1/dy], [df2/dx]]
+
+    der3_arr = vect.der_func_order([[x, y], [x, y]])  # returns [[df1/dx, df1/dy], [df2/dx, df2/dy]]
+
+    # i.e. the output follows the same format as the input that you define
+    # Note: You are passing in the Reverse object x in the lists above not a string "x".
+  ```
+~~~
+
+* Here, we also want to specify the following cases for Reverse mode, where the input is a combination of vector and scalar.
+
+  ```python
+  # Case 1: Inputs are one-length list and a vector
+  x = Reverse([5])
+  y = Reverse([1, 2, 3]) 
+  f = x * y
+  
+  # Case 2: Inputs are a value and a vector
+  x = Reverse(5)
+  y = Reverse([1, 2, 3]) 
+  f = x * y
+  
+  # For both of Case 1, 2, we do Reverse mode for x=5 and y=1, y=2, and y=3 respectively
+  # Both of them are equivalent to the following case
+  x = Reverse([5, 5, 5])
+  y = Reverse([1, 2, 3]) 
+  f = x * y
+  
+  ```
+
+  
 * Instantiate root finding with Newton's method
 
+    * One-variable function
 
-  * One-variable function
+  ```python
+  def func_one_variable(x: list):
+      # function with one variable
+      f = (x[0]-2)**2
+      return [f]
+  
+  # Find root of function, print root and trace
+  root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[1], max_iter=10000, tol=1e-8)
+  print(f'Root of function: {root}')
+  print(f'Trace of function: {trace}')
+  ```
 
-    ```python
-    def func_one_variable(x: list):
-        # function with one variable
-        f = (x[0]-2)**2
-        return [f]
-    
-    # Find root of function, print root and trace
-    root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[1], max_iter=10000, tol=1e-8)
-    print(f'Root of function: {root}')
-    print(f'Trace of function: {trace}')
-    ```
+  ​	Output is as below
 
-    Output is as below
+  ```python
+  Root of function: [1.99993896]
+  Trace of function: [array([1]), array([1.5]), array([1.75]), array([1.875]), array([1.9375]), array([1.96875]), array([1.984375]), array([1.9921875]), array([1.99609375]), array([1.99804688]), array([1.99902344]), array([1.99951172]), array([1.99975586]), array([1.99987793]), array([1.99993896])]
+  ```
 
-    ```python
-    Root of function: [1.99993896]
-    Trace of function: [array([1]), array([1.5]), array([1.75]), array([1.875]), array([1.9375]), array([1.96875]), array([1.984375]), array([1.9921875]), array([1.99609375]), array([1.99804688]), array([1.99902344]), array([1.99951172]), array([1.99975586]), array([1.99987793]), array([1.99993896])]
-    ```
 
-  * Multi-variable function
+    * Multi-variable function
 
-    ```python
-    def func_multi_variables(x: list):
-        # function with multi variables
-        f1 = x[0] + 2
-        f2 = x[0] + x[1]**2 - 2
-        return [f1, f2]
-    
-    # Find root of function, print root and trace
-    root, trace = newton_method(func=func_multi_variables, num_of_variables=2, initial_val=[0, 1], max_iter=10000, tol=1e-8)
-    print(f'Root of function: {root}')
-    print(f'Trace of function: {trace}')
-    ```
+  ```python
+  def func_multi_variables(x: list):
+      # function with multi variables
+      f1 = x[0] + 2
+      f2 = x[0] + x[1]**2 - 2
+      return [f1, f2]
+  
+  # Find root of function, print root and trace
+  root, trace = newton_method(func=func_multi_variables, num_of_variables=2, initial_val=[0, 1], max_iter=10000, tol=1e-8)
+  print(f'Root of function: {root}')
+  print(f'Trace of function: {trace}')
+  ```
 
-    Output is as below
+  ​	Output is as below
 
-    ```python
-    Root of function: [-2.  2.]
-    Trace of function: [array([0, 1]), array([-2. ,  2.5]), array([-2.  ,  2.05]), array([-2.        ,  2.00060976]), array([-2.        ,  2.00000009]), array([-2.,  2.])]
-    ```
+  ```python
+  Root of function: [-2.  2.]
+  Trace of function: [array([0, 1]), array([-2. ,  2.5]), array([-2.  ,  2.05]), array([-2.        ,  2.00060976]), array([-2.        ,  2.00000009]), array([-2.,  2.])]
+  ```
 
-    
+  
 
 
 3. What’s inside autodiff package
@@ -361,7 +386,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
                    raise TypeError("Invalid input type!")
 		   
            ...
-	  
+	    
            """Elemental Function"""
 
            def sin(self):
@@ -454,24 +479,24 @@ numerical differentiation, in the sense that it computes numerical values, it co
         ...
 
       ```
-    * vector_reverse
+        * vector_reverse
 
     ```python
-
+    
     class ReverseVector():
     """
     Implementation of evaluating multiple functions
     """
-
+    
     def __init__(self, func_vec):
         self.func_ver = func_vec
-
+    
     def val_func_order(self):
         """
         Used for getting all of the values in the order of function list
         """
         return [function.val for function in self.func_ver]
-
+    
     def der_func_order(self, list_of_inputs):
         """
         Used for getting all of the derivatives in the order of function list
@@ -484,9 +509,9 @@ numerical differentiation, in the sense that it computes numerical values, it co
                 self.func_ver[i].gradient_value = 1
                 grad_value = input_var.get_gradient()
                 output_array[-1].append(grad_value)
-
+    
         return np.array(output_array)
-
+    
     ```
 
 * Root finding with Newton's method
