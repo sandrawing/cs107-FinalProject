@@ -268,23 +268,23 @@ numerical differentiation, in the sense that it computes numerical values, it co
       class AutoDiff():
           """
           Forward Mode Implementation of Automatic Differentiation 
-	  The class overloads the basic operations, including the unary operation,
-	  and contains some elemental functions
+          The class overloads the basic operations, including the unary operation,
+          and contains some elemental functions
           """
           def __init__(self, val):
               """
               constructor for AutoDiff class
-	      Initializes AutoDiff object with a value, derivative and name that was passed in
-	      and converts the type of value to numpy array for handling multiple values
-	      converts the type of derivatives to a dictionary for handling multiple variables
+              Initializes AutoDiff object with a value, derivative and name that was passed in
+              and converts the type of value to numpy array for handling multiple values
+              converts the type of derivatives to a dictionary for handling multiple variables
               """
               if isinstance(val, (int, float)):
                   val = [val]
-		  self.val = np.array(val)
-	      elif isinstance(val, list):
-	          self.val = np.array(val)
+                  self.val = np.array(val)
+              elif isinstance(val, list):
+                  self.val = np.array(val)
               elif isinstance(val, np.ndarray):
-	          self.val = val
+                  self.val = val
               else:
                   raise TypeError("Invalid Type for val! ")	      
      ```
