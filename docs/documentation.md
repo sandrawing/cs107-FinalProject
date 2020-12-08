@@ -73,7 +73,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```python
      from autodiff.autodiff import AutoDiff
      from autodiff.reverse import Reverse
-     from autodiff.vector import Vector
+     from autodiff.vector_forward import Vector_Forward
      import numpy as np
      ```
 
@@ -150,7 +150,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        y = AutoDiff(5, name='y')
        f1 = (2 * x ** 2) + (3 * y ** 4)
        f2 = AutoDiff.cos(x + (4 * y ** 2))
-       v = Vector([f1, f2])
+       v = Vector_Forward([f1, f2])
        
        print(v.val())
        print(v.jacobian()[0])
@@ -174,7 +174,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
         y = AutoDiff([5, 2], name='y')
         f1 = (2 * x ** 2) + (3 * y ** 4)
         f2 = AutoDiff.cos(x + (4 * y ** 2))
-        v = Vector([f1, f2])
+        v = Vector_Forward([f1, f2])
         print(v.val())
         print(v.jacobian()[0])
         print(v.jacobian()[1])
@@ -268,25 +268,68 @@ numerical differentiation, in the sense that it computes numerical values, it co
       class AutoDiff():
           """
           Forward Mode Implementation of Automatic Differentiation 
-	  The class overloads the basic operations, including the unary operation,
-	  and contains some elemental functions
+          The class overloads the basic operations, including the unary operation,
+          and contains some elemental functions
           """
           def __init__(self, val):
               """
               constructor for AutoDiff class
-	      Initializes AutoDiff object with a value, derivative and name that was passed in
-	      and converts the type of value to numpy array for handling multiple values
-	      converts the type of derivatives to a dictionary for handling multiple variables
+              Initializes AutoDiff object with a value, derivative and name that was passed in
+              and converts the type of value to numpy array for handling multiple values
+              converts the type of derivatives to a dictionary for handling multiple variables
               """
               if isinstance(val, (int, float)):
                   val = [val]
-		  self.val = np.array(val)
-	      elif isinstance(val, list):
-	          self.val = np.array(val)
+                  self.val = np.array(val)
+              elif isinstance(val, list):
+                  self.val = np.array(val)
               elif isinstance(val, np.ndarray):
-	          self.val = val
+                  self.val = val
               else:
-                  raise TypeError("Invalid Type for val! ")	      
+                  raise TypeError("Invalid Type for val! ")	
+		
+           ...
+		  
+           """Basic Operations"""
+
+           def __add__(self, other):
+               """
+               Overloads the addition operation
+               Inputs: Scalar or AutoDiff Instance
+               Returns: A new AutoDiff object which is the result of the addition operation
+               performed between the AutoDiff object and the argument that was passed in
+               """
+               temp_der = {}
+               if isinstance(other, (int, float)):
+                   # Add a scalar to a AutoDiff object
+                   return AutoDiff(self.val + float(other), self.der.copy(), self.name)
+               elif isinstance(other, AutoDiff):
+                   # Add two AutoDiff objects
+                   var_union = self.get_variables().union(other.get_variables())
+                   temp_val = self.val + other.val
+                   for variable in var_union:
+                       temp_der[variable] = self.der.get(variable, 0) + other.der.get(variable, 0)
+                   return AutoDiff(temp_val, temp_der, self.name)
+               else:
+                   raise TypeError("Invalid input type!")
+		   
+           ...
+	  
+           """Elemental Function"""
+
+           def sin(self):
+               """
+               Inputs: None
+               Returns: A new AutoDiff object with the sine
+               computation done on the value and derivative
+               """
+               temp_der = {}
+               new_val = np.sin(self.val)
+               for variable in self.get_variables():
+                   temp_der[variable] = np.cos(self.val) * self.der[variable]
+               return AutoDiff(new_val, temp_der, self.name)
+	    
+           ...
      ```
 
 
@@ -502,43 +545,70 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
   * Here is our `__init__` method:
   ```python
-       def __init__(self, val, der=1):
-	        """
-	        Initializes AutoDiff object with a value that was passed in and
-	        sets the default value of derivative to 1
-	        """
-	        if isinstance(val, str):
-	            raise TypeError("Cannot initialize val to string values")
-	        elif isinstance(der, str):
-	            raise TypeError("Cannot initialize der to string values")
-	        self.val = val
-	        self.der = der
+    def __init__(self, val, der=1, name="not_specified"):
+        """
+        constructor for AutoDiff class
+        Initializes AutoDiff object with a value, derivative and name that was passed in
+        and converts the type of value to numpy array for handling multiple values
+        converts the type of derivatives to a dictionary for handling multiple variables
+        """
+        # Handle several input types of val, including float, int, list and np.ndarray
+        if isinstance(val, (float, int)):
+            val = [val]
+            self.val = np.array(val)
+        elif isinstance(val, list):
+            self.val = np.array(val)
+        elif isinstance(val, np.ndarray):
+            self.val = val
+        else:
+            raise TypeError("Invalid Type for val! ")
+
+        # Handle several input types of val, including float, int, list and dict
+        if type(der) == dict:
+            self.der = der
+        elif type(der) == list:
+            self.der = {name: np.array(der)}
+        elif isinstance(der, (float, int)):
+            self.der = {name: np.array([der] * len(self.val))}
+        self.name = name
   ```
   * And below is an example of a dunder method (specifically multiplication with the common derivative laws) we overwrote:
   ```python
-       def __mul__(self, other):
-	        """
-	        Overloads the multiplication operation
-	        Inputs: Scalar or AutoDiff Instance
-	        Returns: A new AutoDiff object which is the result of the multiplication operation
-	        performed between the AutoDiff object and the argument that was passed in
-	        """
-	        try:
-	            return AutoDiff(self.val * other.val, self.val * other.der + other.val * self.der)
-	        except AttributeError:
-	            other = AutoDiff(other, 0)
-	            return AutoDiff(self.val * other.val, self.val * other.der + other.val * self.der)
+    def __mul__(self, other):
+        """
+        Overloads the multiplication operation
+        Inputs: Scalar or AutoDiff Instance
+        Returns: A new AutoDiff object which is the result of the multiplication operation
+        performed between the AutoDiff object and the argument that was passed in
+        """
+        temp_der = {}
+        if isinstance(other, (int, float)):
+            # Multiply a scalar to a AutoDiff object
+            for variable in self.get_variables():
+                temp_der[variable] = self.der[variable] * other
+            return AutoDiff(self.val * float(other), temp_der, self.name)
+        elif isinstance(other, AutoDiff):
+            # Multiply two AutoDiff objects
+            var_union = self.get_variables().union(other.get_variables())
+            for variable in var_union:
+                temp_der[variable] = self.val * other.der.get(variable, 0) + other.val * self.der.get(variable, 0)
+            return AutoDiff(self.val * other.val, temp_der, self.name)
+        else:
+            raise TypeError("Invalid input type!")
   ```
   * Lastly, here's an example of a elementary function implemented:
   ```python
-       def sin(self):
-	        """
-	        Inputs: None
-	        Returns: A new AutoDiff object with the sine computation done on the value and derivative
-	        """
-	        new_val = np.sin(self.val)
-	        new_der = np.cos(self.val) * self.der
-	        return AutoDiff(new_val, new_der)
+    def cos(self):
+        """
+        Inputs: None
+        Returns: A new AutoDiff object with the cosine computation
+        done on the value and derivative
+        """
+        new_val = np.cos(self.val)
+        temp_der = {}
+        for variable in self.get_variables():
+            temp_der[variable] = -np.sin(self.val) * self.der[variable]
+        return AutoDiff(new_val, temp_der, self.name)
   ```
 
   * The external dependencies we relied on were `numpy` and `sys`.
