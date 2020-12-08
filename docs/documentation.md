@@ -283,6 +283,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
   ```
 
   
+
 * Instantiate root finding with Newton's method
 
     * One-variable function
@@ -789,6 +790,23 @@ numerical differentiation, in the sense that it computes numerical values, it co
           return z
   ```
 
+  * Here is an example of another basic elementary function, exp_base, where the input should be a scalar. 
+  
+    ```python
+        def exp_base(self, base):
+            """
+            Inputs: scalar
+            Returns: A new Reverse object with the exponential (using a specified base)
+            computation done on the value and derivative
+            """
+            if isinstance(base, (int, float)):
+                return self.__rpow__(base)
+            else:
+                raise TypeError("Please enter an int or float for base.")
+    ```
+  
+    
+  
   * The external dependencies we relied on were `numpy` and `sys`.
 
 
