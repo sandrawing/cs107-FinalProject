@@ -197,12 +197,14 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
    * Instantiate reverse objects and calculate values and derivatives    
 
-     * scalar case, reverse mode 
+     * First we show you how to use evaluate the scalar case (i.e. where the inputs are scalar and the function's value is also scalar).
 
        ```python 
         x = Reverse(5)  # create a reverse mode variable that can be used later
 
         y =  Reverse.sqrt(Reverse.sinh(x)) + 2**x + 7*Reverse.exp(x) + Reverse.sin(Reverse.cos(x))  # create the function y = (sinh(x))^0.5 + 2^x + 7e^x + sin(cos(x))
+
+        x.reset_gradient()  # we want dy/dx this is with respect to x, so we first clear any initialisation that was previously existing using .reset_gradient()
 
         y.gradient_value = 1  # we want dy/dx so we set y.gradient_value to 1
 
@@ -210,6 +212,51 @@ numerical differentiation, in the sense that it computes numerical values, it co
         
         print(dy_dx)  # print the gradient value found to console
        ```
+     * Now we work on the vector case, i.e. where the inputs are vectors, and the function is a mathematical operation on these vector inputs:
+
+     ```python 
+        x = Reverse([1, 2, 3])  # create a reverse mode variable that can be used later (this time using a numpy array or python list)
+
+        y =  2*x + x**2  # create the function y = 2x + x^2
+
+        x.reset_gradient()  # we want dy/dx this is with respect to x, so we first clear any initialisation that was previously existing using .reset_gradient()
+
+        y.gradient_value = 1  # we want dy/dx so we set y.gradient_value to 1
+
+        dy_dx = x.get_gradient()  # Finally to get dy/dx calculate get_gradient at x (since we want dy/dx i.e. w.r.t. x)
+        
+        print(dy_dx)  # print the gradient value found to console
+      ```
+     * Next we do the case, where our output is a vector of functions.
+      ```python 
+
+        # Here we start by creating two variables that are vectors (x and y)
+        x = Reverse([1, 2, 3, 4, 5])
+
+        y = Reverse([8, 2, 1, 3, 2])
+
+
+        # And say we want our output as a vector of functions i.e. [f1, f2] then
+        f1 = x**2 + x**y + 2*x*y  # We first define f1
+
+        f2 = (y/x)**2  # then define f2
+
+        vect = ReverseVector([f1, f2])  # Finally we combine both the functions into a vector using the ReverseVector class
+
+
+        eval_arr = vect.val_func_order()  # Using this then, we can find our vector of function's value evaluated at the point we initialised it at.
+
+        # Now for derivatives, we call der_func_order() which takes in the argument a list of lists where if our vector of functions is [f1, f2] then:
+        der1_arr = vect.der_func_order([[x], [y]])  # returns [[df1/dx], [df2/dy]]
+
+        der2_arr = vect.der_func_order([[y], [x]])  # returns [[df1/dy], [df2/dx]]
+
+        der3_arr = vect.der_func_order([[x, y], [x, y]])  # returns [[df1/dx, df1/dy], [df2/dx, df2/dy]]
+
+        # i.e. the output follows the same format as the input that you define
+        # Note: You are passing in the Reverse object x in the lists above not a string "x".
+      ```
+
 
 * Instantiate root finding with Newton's method
 
@@ -342,9 +389,13 @@ numerical differentiation, in the sense that it computes numerical values, it co
               Initializes Reverse object with a value that was passed in
               """
               if isinstance(val, (int, float)):
+                  self.val = np.array([val])
+              elif isinstance(val, list):
+                  self.val = np.array(val)
+              elif isinstance(val, np.ndarray):
                   self.val = val
               else:
-                  raise TypeError("Please enter a float or integer.")
+                  raise TypeError("Please enter a valid type (float, int, list or np.ndarray).")
               self.children = []
               self.gradient_value = None
 
@@ -372,36 +423,71 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
          """Basic Operations"""
 
-         def __add__(self, other):
-            """
-            Overloads the addition operation
-            Inputs: Scalar or AutoDiff Instance
-            Returns: A new AutoDiff object which is the result of the addition operation
-            perform
-            """
-            if isinstance(other, int) or isinstance(other, float):
-                other = Reverse(other)
-            z = Reverse(self.val + other.val)
-            self.children.append((1, z)) # weight = dz/dself = 1
-            other.children.append((1, z)) # weight = dz/dother = 1
-            return z
+           def __add__(self, other):
+                """
+                Overloads the addition operation
+                Inputs: Scalar or AutoDiff Instance
+                Returns: A new AutoDiff object which is the result of the addition operation
+                perform
+                """
+                if isinstance(other, int) or isinstance(other, float):
+                    other = Reverse([other]*len(self.val))
+                z = Reverse(self.val + other.val)
+                one_array = np.ones(self.val.shape)
+                self.children.append((one_array, z)) # weight = dz/dself = 1
+                other.children.append((one_array, z)) # weight = dz/dother = 1
+                return z
 
         ...
 
         """Elemental Functions"""
 
-        def sin(self):
-          """
-          Inputs: None
-          Returns: A new Reverse object with the sine computation done on the value and derivative
-          """
-          z = Reverse(np.sin(self.val))
-          self.children.append((np.cos(self.val), z)) # z = sin(x) => dz/dx = cos(x)
-          return z
+          def sin(self):
+              """
+              Inputs: None
+              Returns: A new Reverse object with the sine computation done on the value and derivative
+              """
+              z = Reverse(np.sin(self.val))
+              self.children.append((np.cos(self.val), z)) # z = sin(x) => dz/dx = cos(x)
+              return z
 
         ...
 
       ```
+    * vector_reverse
+
+    ```python
+
+    class ReverseVector():
+    """
+    Implementation of evaluating multiple functions
+    """
+
+    def __init__(self, func_vec):
+        self.func_ver = func_vec
+
+    def val_func_order(self):
+        """
+        Used for getting all of the values in the order of function list
+        """
+        return [function.val for function in self.func_ver]
+
+    def der_func_order(self, list_of_inputs):
+        """
+        Used for getting all of the derivatives in the order of function list
+        """
+        output_array = []
+        for i in range(len(list_of_inputs)):
+            output_array.append([])
+            for input_var in list_of_inputs[i]:
+                input_var.reset_gradient()
+                self.func_ver[i].gradient_value = 1
+                grad_value = input_var.get_gradient()
+                output_array[-1].append(grad_value)
+
+        return np.array(output_array)
+
+    ```
 
 * Root finding with Newton's method
 
