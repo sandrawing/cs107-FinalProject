@@ -6,9 +6,13 @@ class Reverse():
         Initializes Reverse object with a value that was passed in
         """
         if isinstance(val, (int, float)):
+            self.val = np.array([val])
+        elif isinstance(val, list):
+            self.val = np.array(val)
+        elif isinstance(val, np.ndarray):
             self.val = val
         else:
-            raise TypeError("Please enter a float or integer.")
+            raise TypeError("Please enter a valid type (float, int, list or np.ndarray).")
         self.children = []
         self.gradient_value = None
 
@@ -42,10 +46,11 @@ class Reverse():
         perform
         """
         if isinstance(other, int) or isinstance(other, float):
-            other = Reverse(other)
+            other = Reverse([other]*len(self.val))
         z = Reverse(self.val + other.val)
-        self.children.append((1, z)) # weight = dz/dself = 1
-        other.children.append((1, z)) # weight = dz/dother = 1
+        one_array = np.ones(self.val.shape)
+        self.children.append((one_array, z)) # weight = dz/dself = 1
+        other.children.append((one_array, z)) # weight = dz/dother = 1
         return z
 
     def __radd__(self, other):
@@ -64,10 +69,10 @@ class Reverse():
         performed between the Reverse object and the argument that was passed in
         """
         if isinstance(other, int) or isinstance(other, float):
-            other = Reverse(other)
+            other = Reverse([other]*len(self.val))
         z = Reverse(self.val - other.val)
-        self.children.append((1, z)) # weight = dz/dself = 1
-        other.children.append((-1, z)) # weight = dz/dother = -1
+        self.children.append((np.ones(self.val.shape), z)) # weight = dz/dself = 1
+        other.children.append((-np.ones(self.val.shape), z)) # weight = dz/dother = -1
         return z
 
     def __rsub__(self, other):
@@ -77,10 +82,10 @@ class Reverse():
         performed between the Reverse object and the argument that was passed in
         """
         if isinstance(other, int) or isinstance(other, float):
-            other = Reverse(other)
+            other = Reverse([other]*len(self.val))
         z = Reverse( -self.val + other.val)
-        self.children.append((-1, z)) # weight = dz/dself = 1
-        other.children.append((1, z)) # weight = dz/dother = -1
+        self.children.append((-np.ones(self.val.shape), z)) # weight = dz/dself = 1
+        other.children.append((np.ones(self.val.shape), z)) # weight = dz/dother = -1
         return z
 
     def __mul__(self, other):
@@ -91,7 +96,7 @@ class Reverse():
         performed between the AutoDiff object and the argument that was passed in
         """
         if isinstance(other, int) or isinstance(other, float):
-            other = Reverse(other)
+            other = Reverse([other]*len(self.val))
         z = Reverse(self.val * other.val)
         self.children.append((other.val, z)) # weight = dz/dself = other.value
         other.children.append((self.val, z)) # weight = dz/dother = self.value
@@ -129,16 +134,29 @@ class Reverse():
         Returns: A new Reverse object which is the result of the Reverse object being
         raised to the power of the argument that was passed in
         """
-        try: # two Rev_Var objects
-            val = self.val**other.val
+        
+        if isinstance(other, Reverse):
+            if len(other.val) == 1:
+                other_val = other.val*np.ones(self.val.shape)
+            elif len(other.val) != len(self.val):
+                raise ValueError("You must have two vectors of the same length to use power on both.")
+            else:
+                other_val = other.val[:]
+            val = np.array([float(v) ** o for v, o in zip(self.val, other_val)])
             z = Reverse(val)
-            self.children.append((other.val*(self.val **(other.val - 1)), z)) # weight = dz/dself
+            temp_der = np.array([float(v) ** (o - 1) for v, o in zip(self.val, other_val)])
+            self.children.append((other_val * temp_der, z)) # weight = dz/dself
             other.children.append((val*np.log(self.val), z))
             return z
-        except AttributeError: # Var ** real number
-            z = Reverse(self.val ** other)
-            self.children.append((other*(self.val**(other-1)), z))
+        elif isinstance(other, (float, int)):
+            val = np.array([float(v) ** other for v in self.val])
+            z = Reverse(val)
+            temp_der = np.array([float(v) ** (other - 1) for v in self.val])
+            self.children.append((other * temp_der, z))
+            # self.children.append((other*(self.val**(other-1)), z))
             return z
+        else:
+            raise TypeError("Please us power with another Reverse object, int or float.")
 
     def __rpow__(self, other):
         """
@@ -146,8 +164,8 @@ class Reverse():
         Returns: A new Reverse object which is the result of the argument that was
         passed in being raised to the power of the Reverse object
         """
-        z = Reverse(other **self.val)
-        self.children.append(((other**self.val) * np.log(other), z))
+        z = Reverse(other ** self.val)
+        self.children.append(((other ** self.val) * np.log(other), z))
         return z
 
     def __neg__(self):
@@ -240,16 +258,20 @@ class Reverse():
         Returns: A new Reverse object with the exponential (using a specified base)
         computation done on the value and derivative
         """
-        z = Reverse(base ** self.val)
-        self.children.append(((base ** self.val) * np.log(base), z))
-        return z
-
+        if isinstance(base, (int, float)):
+            return self.__rpow__(base)
+        else:
+            raise TypeError("Please enter an int or float for base.")
+        #z = Reverse(base ** self.val)
+        #self.children.append(((base ** self.val) * np.log(base), z))
+        #return z
+    
     def arcsin(self):
         """
         Inputs: None
         Returns: A new Reverse object with the inverse
         sine computation done on the value and derivative
-        """
+        """ 
         z = Reverse(np.arcsin(self.val))
         self.children.append((1 / (1 - (self.val**2))**0.5, z))
         return z
@@ -259,7 +281,7 @@ class Reverse():
         Inputs: None
         Returns: A new Reverse object with the inverse
         cosine computation done on the value and derivative
-        """
+        """ 
         z = Reverse(np.arccos(self.val))
         self.children.append((-1 / (1 - (self.val**2))**0.5, z))
         return z
@@ -269,7 +291,7 @@ class Reverse():
         Inputs: None
         Returns: A new Reverse object with the inverse
         cosine computation done on the value and derivative
-        """
+        """ 
         z = Reverse(np.arctan(self.val))
         self.children.append((1 / (1 + (self.val**2)), z))
         return z
@@ -300,7 +322,7 @@ class Reverse():
         Returns: A new Reverse object with the natural log
         computation done on the value and derivative
         """
-        if(self.val > 0):
+        if (np.all(self.val > 0)) :
             z = Reverse(np.log(self.val))
             self.children.append(( 1 / self.val , z))
             return z
@@ -314,7 +336,7 @@ class Reverse():
         Returns: A new Reverse object with the log (using a specified
         base) computation done on the value and derivative
         """
-        if(self.val > 0 and base > 0):
+        if (np.all(self.val > 0) and base > 0):
             z = Reverse(np.log(self.val) / np.log(base))
             self.children.append((1 / (self.val * np.log(base)), z))
             return z
