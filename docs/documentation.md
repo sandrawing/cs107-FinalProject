@@ -73,7 +73,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
       ```python
      from autodiff.autodiff import AutoDiff
      from autodiff.reverse import Reverse
-     from autodiff.vector import Vector
+     from autodiff.vector_forward import Vector_Forward
      import numpy as np
      ```
 
@@ -150,7 +150,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        y = AutoDiff(5, name='y')
        f1 = (2 * x ** 2) + (3 * y ** 4)
        f2 = AutoDiff.cos(x + (4 * y ** 2))
-       v = Vector([f1, f2])
+       v = Vector_Forward([f1, f2])
        
        print(v.val())
        print(v.jacobian()[0])
@@ -174,7 +174,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
         y = AutoDiff([5, 2], name='y')
         f1 = (2 * x ** 2) + (3 * y ** 4)
         f2 = AutoDiff.cos(x + (4 * y ** 2))
-        v = Vector([f1, f2])
+        v = Vector_Forward([f1, f2])
         print(v.val())
         print(v.jacobian()[0])
         print(v.jacobian()[1])
@@ -317,17 +317,17 @@ numerical differentiation, in the sense that it computes numerical values, it co
 	  
            """Elemental Function"""
 
-             def sin(self):
-                 """
-                 Inputs: None
-                 Returns: A new AutoDiff object with the sine
-                 computation done on the value and derivative
-                 """
-                 temp_der = {}
-                 new_val = np.sin(self.val)
-                 for variable in self.get_variables():
-                     temp_der[variable] = np.cos(self.val) * self.der[variable]
-                 return AutoDiff(new_val, temp_der, self.name)
+           def sin(self):
+               """
+               Inputs: None
+               Returns: A new AutoDiff object with the sine
+               computation done on the value and derivative
+               """
+               temp_der = {}
+               new_val = np.sin(self.val)
+               for variable in self.get_variables():
+                   temp_der[variable] = np.cos(self.val) * self.der[variable]
+               return AutoDiff(new_val, temp_der, self.name)
 	    
            ...
      ```
