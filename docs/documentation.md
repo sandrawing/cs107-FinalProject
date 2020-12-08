@@ -704,16 +704,20 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 * The class we implemented is called `Reverse`, and this class creates objects which store the current value, as well as the children of the dependence as well as the derivative. This dependency graph is maintained throughout. The dependency graph is such that it has children with a weight (the partial derivative) and the next node. This will get clearer through our example code below.
 * Finally, we have a `get_gradient` method that goes down the dependency graph decribed above and calculates the gradient by adding up the products of the weights and the grad values for the nodes in the tree. For this reason, if the user wants to calculate the gradient with respect to x, she must first set `x.gradient_value = 1`, and then call `.get_gradient()` on the node they consider the final node of the function they want to evaluate.
-  * Here is our `__init__` method:
+  * Here is our `__init__` method (note we treat scalars also as lists of 1 element - but we operate on them as scalars would be):
   ```python
        def __init__(self, val):
           """
           Initializes Reverse object with a value that was passed in
           """
           if isinstance(val, (int, float)):
+              self.val = np.array([val])
+          elif isinstance(val, list):
+              self.val = np.array(val)
+          elif isinstance(val, np.ndarray):
               self.val = val
           else:
-              raise TypeError("Please enter a float or integer.")
+              raise TypeError("Please enter a valid type (float, int, list or np.ndarray).")
           self.children = []
           self.gradient_value = None
   ```
@@ -733,15 +737,16 @@ numerical differentiation, in the sense that it computes numerical values, it co
   ```
   * Here's an example of a dunder method we overwrote (for multiplication) - note that for `z = x*y`, the dependence graph is such that `x` has child `(y, z)` appended to it and `y` has child `(x, z)` appended to it, because `dz/dx = y` and `dz/dy = x`, so those are the respective weights (partial derivatives that we include).
   ```python
-       def __mul__(self, other):
+      def __mul__(self, other):
           """
           Overloads the multiplication operation
           Inputs: Scalar or Reverse Instance
           Returns: A new AutoDiff object which is the result of the multiplication operation
           performed between the AutoDiff object and the argument that was passed in
           """
-          if isinstance(other, int) or isinstance(other, float):
-              other = Reverse(other)
+          # If we have input as a scalar an elementwise multiplication with the scalar is needed so we create a new array of the length of the other vector
+          if isinstance(other, int) or isinstance(other, float):  
+              other = Reverse([other]*len(self.val))
           z = Reverse(self.val * other.val)
           self.children.append((other.val, z)) # weight = dz/dself = other.value
           other.children.append((self.val, z)) # weight = dz/dother = self.value
