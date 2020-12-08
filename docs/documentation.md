@@ -167,7 +167,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
           [-6.22988631e-01, -2.49195453e+01]])]
 	    ```
      
-      * Then, we show how to handle the most complicated case, where we have multiple variables, and each of the variable has vector input, and we evaluate them for multiple functions. Compared with the previous one, this time, the jacobian function inside Vector class would return a list of variable names and a list of numpy matrix.
+      * Then, we show how to handle the most complicated case, where we have multiple variables, and each of the variable has vector input, and we evaluate them for multiple functions. Compared with the previous one, this time, the jacobian function inside Vector class would return a list of variable names and a list of numpy matrix. For instance, in the following example, we essentially evaluate two pairs of values for (x, y), which are (3, 5) and (1, 2). And each element inside the list of numpy matrix has the same meaning as previous example. The first element is the result for (3, 5) and the second element is the result for (1, 2). 
      
         ```python
         x = AutoDiff([3, 1], name='x')
