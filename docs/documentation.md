@@ -286,7 +286,32 @@ numerical differentiation, in the sense that it computes numerical values, it co
               elif isinstance(val, np.ndarray):
                   self.val = val
               else:
-                  raise TypeError("Invalid Type for val! ")	      
+                  raise TypeError("Invalid Type for val! ")	
+		
+           ...
+		  
+           """Basic Operations"""
+
+           def __add__(self, other):
+           """
+           Overloads the addition operation
+           Inputs: Scalar or AutoDiff Instance
+           Returns: A new AutoDiff object which is the result of the addition operation
+           performed between the AutoDiff object and the argument that was passed in
+           """
+           temp_der = {}
+           if isinstance(other, (int, float)):
+               # Add a scalar to a AutoDiff object
+               return AutoDiff(self.val + float(other), self.der.copy(), self.name)
+           elif isinstance(other, AutoDiff):
+               # Add two AutoDiff objects
+               var_union = self.get_variables().union(other.get_variables())
+               temp_val = self.val + other.val
+               for variable in var_union:
+                   temp_der[variable] = self.der.get(variable, 0) + other.der.get(variable, 0)
+               return AutoDiff(temp_val, temp_der, self.name)
+           else:
+               raise TypeError("Invalid input type!")
      ```
 
 
