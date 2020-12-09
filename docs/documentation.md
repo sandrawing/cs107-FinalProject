@@ -27,7 +27,7 @@
    * Chain Rule
 
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
-    
+   
      <img src="ChainRule.png" alt="Image of Chain Rule" align="center" width="250"/>
    
 2. Automatic Differentiation
@@ -818,7 +818,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
 
 * Currently, both of our forward mode and reverse mode implementations handle vector inputs by evaluating them element-wise. In the future, we can extend them for matrix multiplication and do automatic differentiation for matrix cases. 
 * We use Newton's method for root finding in our package, and it handles *k* variables, *k* functions case. In the future, we plan to extend it to handle *k* variables, *m* equations, with *m* > *k*. 
-* Now we can get values and derivatives of functions with **AutoDiff** package, but we can not know about the process of calculation. Visualizations of forward and reverse mode can be great help, especially for users who have no knowledge about automatic differention. So one possible extension is to visualize calculation process of forward and reverse mode. 
-* We plan to make a graphical user interface for **AutoDiff** package, in this way those users who do not write code can also use the package. 
-* We also suggest extending **AutoDiff** package to other areas like optimization and machine learning. For instance, we can make some optimizers with automatic differentiation and can also implement back-propogation in neural network in our package in the future. 
+* Now we can get values and derivatives of functions with **autodiff** package, but we can not know about the process of calculation. Visualizations of forward and reverse mode can be great help, especially for users who have no knowledge about automatic differentiation. So one possible extension is to visualize calculation process of forward and reverse mode. 
+* We plan to make a graphical user interface for **autodiff** package, in this way those users who do not write code can also use the package. 
+* We also suggest extending **autodiff** package to other areas like optimization and machine learning. For instance, we can make some optimizers with automatic differentiation and can also implement back-propagation in neural network in our package in the future. 
 
