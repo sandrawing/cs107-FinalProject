@@ -184,6 +184,23 @@ def test_ln_log():
     except ValueError:
         pass
 
+def test_errors():
+    x = Reverse(5)
+    y = Reverse([1,2,3])
+    try:
+        z = Reverse.exp_base([1,2])
+    except TypeError:
+        pass
+    try:
+        z = x**y
+    except ValueError:
+        pass
+    try:
+        z = x**[1]
+    except TypeError:
+        pass
+
+
 def test_reset_gradient():
     w = Reverse(4)
     x = Reverse(5)
@@ -220,4 +237,5 @@ if __name__ == '__main__':
     test_gt()
     test_ge()
     test_ln_log()
+    test_errors()
     test_reset_gradient()
