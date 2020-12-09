@@ -58,12 +58,17 @@ numerical differentiation, in the sense that it computes numerical values, it co
 <img src="ReverseaccumulationAD.png" alt="Image of Reverse Mode" align="center" width="500"/>
 
 
-## How to Use PackageName
+## How to use autodiff
 
 
-1. Setting up the repository and environment
-    * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
-    * Install all the requirements for this package with the command `pip install -r requirements.txt`
+1. How to install:
+
+    There are 2 ways to install the package (you only need to use only one of these):
+    1. Directly using pip
+        * In the command line, run `python3 -m pip install autodiff_AsiaUnionCS107`
+    2. Cloning from the repository
+        * Clone the repository to your local directory with the command `git clone https://github.com/AsiaUnionCS107/cs107-FinalProject/`
+        * Install all the requirements for this package with the command `pip install -r requirements.txt`
 
 2. What to import and how to instantiate autodiff objects
 
