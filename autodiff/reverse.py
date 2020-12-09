@@ -31,7 +31,22 @@ class Reverse():
         Returns: None
 
         Example:
-
+        >>> w = Reverse([1,4])
+        >>> x = Reverse([2,5])
+        >>> y = Reverse([3,6])
+        >>> z = (2*x-w**2)/(x+y**w)
+        >>> z.gradient_value = 1
+        >>> x.get_gradient()
+        array([0.28      , 0.00154082])
+        >>> x.reset_gradient()
+        >>> grads = []
+        >>> for _, child in x.children:
+        ...     grads.append(child.gradient_value)
+        ...     for _, child2 in child.children:
+        ...         grads.append(child2.gradient_value)
+        ...
+        >>> print(grads)
+        [None, None, None, None]
         """
         self.gradient_value = None
         for _, child in self.children:
@@ -44,7 +59,13 @@ class Reverse():
         Returns: The gradient value (float)
 
         Example:
-
+        >>> w = Reverse([1,4])
+        >>> x = Reverse([2,5])
+        >>> y = Reverse([3,6])
+        >>> z = (2*x-w**2)/(x+y**w)
+        >>> z.gradient_value = 1
+        >>> x.get_gradient()
+        array([0.28      , 0.00154082])
         """
         if self.gradient_value is None:
             self.gradient_value = sum(
