@@ -609,11 +609,13 @@ print(f'Trace of function: {trace}')
 
       ​		rootfinding.py
 
-      ​		vector.py
+      ​		vector_forward.py
 
-      ​		...
+      ​		vector_reverse.py
 
       ​	tests/ Test files
+      
+      ​	demos/ Demo files
     ```
 * Modules
   * Numpy: We used numpy for elementary functions and linear algebra computations in our modules.
