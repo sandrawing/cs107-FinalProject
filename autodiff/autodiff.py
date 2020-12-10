@@ -308,11 +308,17 @@ class AutoDiff():
             return AutoDiff(temp_val, temp_der, self.name)
         elif isinstance(other, AutoDiff):
             # An AutoDiff object powered by another AutoDiff object
+            if len(other.val) == 1:
+                other_val = other.val * np.ones(self.val.shape)
+            elif len(other.val) != len(self.val):
+                raise ValueError("You must have two vectors of the same length to use power on both.")
+            else:
+                other_val = other.val[:]
             var_union = self.get_variables().union(other.get_variables())
-            temp_val = np.array([float(v) ** (o) for v, o in zip(self.val, other.val)])
+            temp_val = np.array([float(v) ** (o) for v, o in zip(self.val, other_val)])
             for variable in var_union:
-                curr_val = np.array([float(v) ** (o - 1) for v, o in zip(self.val, other.val)])
-                temp_der[variable] = curr_val * (other.val * self.der.get(variable, 0) +
+                curr_val = np.array([float(v) ** (o - 1) for v, o in zip(self.val, other_val)])
+                temp_der[variable] = curr_val * (other_val * self.der.get(variable, 0) +
                                                  self.val * np.log(self.val) * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
         else:
@@ -351,11 +357,17 @@ class AutoDiff():
                 temp_der[variable] = np.log(other) * curr_val * self.der[variable]
             return AutoDiff(temp_val, temp_der, self.name)
         elif isinstance(other, AutoDiff):
+            if len(other.val) == 1:
+                other_val = other.val * np.ones(self.val.shape)
+            elif len(other.val) != len(self.val):
+                raise ValueError("You must have two vectors of the same length to use power on both.")
+            else:
+                other_val = other.val[:]
             var_union = self.get_variables().union(other.get_variables())
-            temp_val = np.array([float(o) ** float(v) for v, o in zip(self.val, other.val)])
+            temp_val = np.array([float(o) ** float(v) for v, o in zip(self.val, other_val)])
             for variable in var_union:
-                curr_val = np.array([float(o) ** (float(v) - 1) for v, o in zip(self.val, other.val)])
-                temp_der[variable] = curr_val * (other.val * self.der.get(variable, 0) * np.log(other.val) +
+                curr_val = np.array([float(o) ** (float(v) - 1) for v, o in zip(self.val, other_val)])
+                temp_der[variable] = curr_val * (other_val * self.der.get(variable, 0) * np.log(other_val) +
                                                  self.val * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
         else:
