@@ -5,8 +5,7 @@ class Reverse():
         """
         Initializes Reverse object with a value that was passed in
         Inputs: Scalar or list or numpy array
-        Returns: A Reverse object which is the result of the addition operation
-        perform
+        Returns: A Reverse object initialized with the value that is passed in
 
         Example:
         >>> x = Reverse([5,6])
