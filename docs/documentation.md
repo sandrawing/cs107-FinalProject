@@ -18,13 +18,17 @@
 
      In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
 
-     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png?raw=True)
+     <p align="center">
+    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png?raw=True" alt="Image of Product Rule"/>
+     </p>
 
    * Chain Rule
-
+   
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
    
-     ![Image of Chain Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ChainRule.png?raw=True)
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ChainRule.png?raw=True" alt="Image of Chain Rule"/>
+     </p>
    
 2. Automatic Differentiation
 
@@ -37,10 +41,8 @@
    * Function evaluation traces: All numeric evaluations are sequences of elementary operations: a “trace,” also called a “Wengert list”. The evaluation of f at some point x = (x1, ..., xn) can be described by a so-called evaluation trace v[0] = v[0](x), ..., v[μ] = v[μ](x), where each v[i] ∈ H is a so-called state vector, representing the state of the evaluation after i steps. The following graph shows an example of evaluation traces.
 
      <p align="center">
-       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png?raw=True" alt="Image of trace evaluation"/>
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png?raw=True" alt="Image of Trace Evaluation"/>
      </p>
-
-     ![Image of trace evaluation](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace?raw=True.png)
 
 
 3. Forward Mode
@@ -51,7 +53,9 @@
    
    * The following graph shows an example of forward accumulation with computational graph.
    
-     ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation?raw=True.png)
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation.png?raw=True" alt="Image of Forward Mode"/>
+     </p>
 
 4. Reverse Mode
 
@@ -59,9 +63,11 @@
 
    * What changes in reverse mode is that if we have a dependence `z = x*y`, then x's children will be z and y's children will be z (instead of the other way around).
 
-   * The following graph shows an example of reverse accumulation with computational graph.
+   * The following graph shows an example of reverse accumulation with computational graph. 
 
-     ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD?raw=True.png)
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD.png?raw=True" alt="Image of Reverse Mode"/>
+     </p>
 
 
 ## How to use autodiff
