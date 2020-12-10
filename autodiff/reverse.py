@@ -304,9 +304,28 @@ class Reverse():
         >>> x.get_gradient()
         array([22.18070978, 44.36141956])
         """
-        z = Reverse(other ** self.val)
-        self.children.append(((other ** self.val) * np.log(other), z))
-        return z
+
+        if isinstance(other, Reverse):
+            if len(other.val) == 1:
+                other_val = other.val*np.ones(self.val.shape)
+            elif len(other.val) != len(self.val):
+                raise ValueError("You must have two vectors of the same length to use power on both.")
+            else:
+                other_val = other.val[:]
+            val = np.array([float(o) ** v for v, o in zip(self.val, other_val)])
+            z = Reverse(val)
+            temp_der = np.array([(v*(float(o) ** (v-1))) for v, o in zip(self.val, other_val)])
+            other.children.append((temp_der, z))
+            self.children.append((val*np.log(other.val), z))
+            return z
+        elif isinstance(other, (float, int)):
+            val = np.array([float(other) ** v for v in self.val])
+            z = Reverse(val)
+            self.children.append((val*np.log(other.val), z))
+            return z
+        else:
+            raise TypeError("Please us power with another Reverse object, int or float.")
+
 
     def __neg__(self):
         """
