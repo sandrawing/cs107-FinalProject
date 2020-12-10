@@ -14,9 +14,24 @@ class AutoDiff():
         Initializes AutoDiff object with a value, derivative and name that was passed in
         and converts the type of value to numpy array for handling multiple values
         converts the type of derivatives to a dictionary for handling multiple variables
+
+        INPUT
+        =======
+        val: value of the current variable
+        der: derivative of the current variable
+        name: name of the current variable
+
+        RETURNS
+        =======
+        AutoDiff object: self.val, self.der, and self.name
+
+        Example:
+        >>> x = AutoDiff([5,6], [1, 7], "x")
+        >>> print(x.val, x.der, x.name)
+        [5 6] {'x': array([1, 7])} x
         """
         # Handle several input types of val, including float, int, list and np.ndarray
-        if isinstance(val, (float, int, np.int64, np.float64)):
+        if isinstance(val, (float, int)):
             val = [val]
             self.val = np.array(val)
         elif isinstance(val, list):
@@ -37,7 +52,18 @@ class AutoDiff():
 
     def get_variables(self):
         """
-        returns the variable names
+        INPUT
+        =======
+        None
+
+        RETURNS
+        =======
+        set of variable names
+
+        Example:
+        >>> x = AutoDiff([5,6], [1, 7], "x")
+        >>> x.get_variables()
+        {'x'}
         """
         return set(self.der.keys())
 
@@ -46,9 +72,28 @@ class AutoDiff():
     def __add__(self, other):
         """
         Overloads the addition operation
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the addition operation
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the addition operation
         performed between the AutoDiff object and the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, 10, "x")
+        >>> f1 = x + 100
+        >>> print(f1.val, f1.der)
+        [105.] {'x': array([10])}
+
+        >>> x = AutoDiff([8, 4], [10, 11], 'x')
+        >>> y = AutoDiff([9, 12], [20, 33], 'y')
+        >>> f1 = x + y
+        >>> print(f1.val, f1.der["x"], f1.der["y"])
+        [17 16] [10 11] [20 33]
         """
         temp_der = {}
         if isinstance(other, (int, float)):
@@ -66,18 +111,59 @@ class AutoDiff():
 
     def __radd__(self, other):
         """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the addition operation
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the addition operation
         performed between the argument that was passed in and the AutoDiff object
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, 10, "x")
+        >>> f1 = 100 + x
+        >>> print(f1.val, f1.der)
+        [105.] {'x': array([10])}
+
+        >>> x = AutoDiff([8, 4], [10, 11], 'x')
+        >>> y = AutoDiff([9, 12], [20, 33], 'y')
+        >>> f1 = y + x
+        >>> print(f1.val, f1.der["x"], f1.der["y"])
+        [17 16] [10 11] [20 33]
         """
         return self.__add__(other)
 
     def __mul__(self, other):
         """
         Overloads the multiplication operation
+
         Inputs: Scalar or AutoDiff Instance
         Returns: A new AutoDiff object which is the result of the multiplication operation
         performed between the AutoDiff object and the argument that was passed in
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the addition operation
+        performed between the argument that was passed in and the AutoDiff object
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, name="x")
+        >>> f1 = 100 * x
+        >>> print(f1.val, f1.der)
+        [500.] {'x': array([100])}
+
+        >>> x = AutoDiff([8, 4], name='x')
+        >>> y = AutoDiff([9, 12], name='y')
+        >>> f1 = y * x
+        >>> print(f1.val, f1.der["x"], f1.der["y"])
+        [72 48] [ 9 12] [8 4]
         """
         temp_der = {}
         if isinstance(other, (int, float)):
@@ -96,18 +182,55 @@ class AutoDiff():
 
     def __rmul__(self, other):
         """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the multiplication operation
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the multiplication operation
         performed between the AutoDiff object and the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, name="x")
+        >>> f1 = x * 5
+        >>> print(f1.val, f1.der)
+        [25.] {'x': array([5])}
+
+        >>> x = AutoDiff(5, name="x")
+        >>> y = AutoDiff(2, name="y")
+        >>> result = x * y
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [10] [2] [5]
         """
         return self.__mul__(other)
 
     def __sub__(self, other):
         """
         Overloads the subtraction operation
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the subtraction operation
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the subtraction operation
         performed between the AutoDiff object and the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, name="x")
+        >>> f1 = x - 100
+        >>> print(f1.val, f1.der)
+        [-95.] {'x': array([1])}
+
+        >>> x = AutoDiff([8, 4], name='x')
+        >>> y = AutoDiff([9, 12],  name="y")
+        >>> result = x - y
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [-1 -8] [1 1] [-1 -1]
         """
         temp_der = {}
         if isinstance(other, (int, float)):
@@ -125,18 +248,55 @@ class AutoDiff():
 
     def __rsub__(self, other):
         """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the subtraction operation
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the subtraction operation
         performed between the AutoDiff object and the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5, name="x")
+        >>> f1 = 100 - x
+        >>> print(f1.val, f1.der)
+        [95.] {'x': array([-1])}
+
+        >>> x = AutoDiff([8, 4], name='x')
+        >>> y = AutoDiff([9, 12],  name="y")
+        >>> result = y - x
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [1 8] [-1 -1] [1 1]
         """
         return -self + other
 
     def __pow__(self, other):
         """
         Overloads the power operation
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the AutoDiff object being
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the AutoDiff object being
         raised to the power of the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = x ** 2
+        >>> print(f1.val, f1.der)
+        [4.] {'x': array([4.])}
+
+        >>> x = AutoDiff([3, 2], name='x')
+        >>> y = AutoDiff([-2, 5], name='y')
+        >>> result = (x ** y)
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [ 0.11111111 32.        ] [-7.40740741e-02  8.00000000e+01] [ 0.12206803 22.18070978]
         """
         temp_der = {}
         if isinstance(other, (int, float)):
@@ -149,9 +309,9 @@ class AutoDiff():
         elif isinstance(other, AutoDiff):
             # An AutoDiff object powered by another AutoDiff object
             var_union = self.get_variables().union(other.get_variables())
-            temp_val = np.array([float(v) ** other.val for v in self.val])
+            temp_val = np.array([float(v) ** (o) for v, o in zip(self.val, other.val)])
             for variable in var_union:
-                curr_val = np.array([float(v) ** (other.val - 1) for v in self.val])
+                curr_val = np.array([float(v) ** (o - 1) for v, o in zip(self.val, other.val)])
                 temp_der[variable] = curr_val * (other.val * self.der.get(variable, 0) +
                                                  self.val * np.log(self.val) * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
@@ -160,9 +320,27 @@ class AutoDiff():
 
     def __rpow__(self, other):
         """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the argument that was
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the argument that was
         passed in being raised to the power of the AutoDiff object
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = 2 ** x
+        >>> print(f1.val, f1.der)
+        [4.] {'x': array([2.77258872])}
+
+        >>> x = AutoDiff([-3, 2], name='x')
+        >>> y = AutoDiff([2, 5], name='y')
+        >>> result = (x.__rpow__(y))
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [ 0.125 25.   ] [ 0.0866434  40.23594781] [-0.1875 10.    ]
         """
         temp_der = {}
         if isinstance(other, (int, float)):
@@ -174,9 +352,9 @@ class AutoDiff():
             return AutoDiff(temp_val, temp_der, self.name)
         elif isinstance(other, AutoDiff):
             var_union = self.get_variables().union(other.get_variables())
-            temp_val = np.array([other.val ** float(v) for v in self.val])
+            temp_val = np.array([float(o) ** float(v) for v, o in zip(self.val, other.val)])
             for variable in var_union:
-                curr_val = np.array([other.val ** (float(v) - 1) for v in self.val])
+                curr_val = np.array([float(o) ** (float(v) - 1) for v, o in zip(self.val, other.val)])
                 temp_der[variable] = curr_val * (other.val * self.der.get(variable, 0) * np.log(other.val) +
                                                  self.val * other.der.get(variable, 0))
             return AutoDiff(temp_val, temp_der, self.name)
@@ -186,25 +364,74 @@ class AutoDiff():
     def __truediv__(self, other):
         """
         Overloads the division operation
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the AutoDiff
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the AutoDiff
         object divided by the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = x / 2
+        >>> print(f1.val, f1.der)
+        [1.] {'x': array([0.5])}
+
+        >>> x = AutoDiff([16, 0], name="x")
+        >>> y = AutoDiff([8, -1], name="y")
+        >>> result = (x/y)
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [ 2. -0.] [ 0.125 -1.   ] [-0.25 -0.  ]
         """
         return self * (other ** (-1))
 
     def __rtruediv__(self, other):
         """
-        Inputs: Scalar or AutoDiff Instance
-        Returns: A new AutoDiff object which is the result of the argument that
-        was passed in divided by the AutoDiff object
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which is the result of the AutoDiff
+        object divided by the argument that was passed in
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = 2 / x
+        >>> print(f1.val, f1.der)
+        [1.] {'x': array([-0.5])}
+
+        >>> x = AutoDiff([16, 2], name="x")
+        >>> y = AutoDiff([8, -1], name="y")
+        >>> result = y / x
+        >>> print(result.val, result.der["x"], result.der["y"])
+        [ 0.5 -0.5] [-0.03125  0.25   ] [0.0625 0.5   ]
         """
         return other * (self ** (-1))
 
     def __neg__(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object which has the signs of
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
+        AutoDiff object: A new AutoDiff object which has the signs of
         the value and derivative reversed
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = -x
+        >>> print(f1.val, f1.der)
+        [-2] {'x': array([-1])}
         """
         temp_der = {}
         for variable in self.get_variables():
@@ -214,14 +441,31 @@ class AutoDiff():
     def __eq__(self, other):
         """
         Overloads the equal comparision operator (==)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
         If the input is scalar:
         True if the length of val of self AutoDiff instance is 1 and
         the value of element in self.val is same as other; False if not
         If the input is AutoDiff Instance:
         True if self and other AutoDiff instance have the
         same values and same length of values; False if not
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 2
+        >>> print(x==y)
+        True
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([2.0, 4.0], name="y")
+        >>> print(x==y)
+        True
         """
         if isinstance(other, (int, float)):
             return np.array_equal(self.val, np.array([float(other)]))
@@ -231,14 +475,31 @@ class AutoDiff():
     def __ne__(self, other):
         """
         Overloads the not equal comparision operator (!=)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
         If the input is scalar:
         True if the length of val of self AutoDiff instance is not 1 or
         the value of element in self.val is different from other; False if not
         If the input is AutoDiff Instance:
         True if self and other AutoDiff instance have different
         values or different length of values; False if not
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 3
+        >>> print(x!=y)
+        True
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([2.0], name="y")
+        >>> print(x!=y)
+        True
         """
         if isinstance(other, (int, float)):
             return not np.array_equal(self.val, np.array([float(other)]))
@@ -248,9 +509,26 @@ class AutoDiff():
     def __lt__(self, other):
         """
         Overloads the less than comparision operator (<)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
         Return the truth value of values (x1 < x2) element-wise
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 3
+        >>> print(x<y)
+        [ True]
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([2.0, 5.0], name="y")
+        >>> print(x<y)
+        [False  True]
         """
         if isinstance(other, (int, float)):
             if len(self.val) != 1:
@@ -264,9 +542,26 @@ class AutoDiff():
     def __le__(self, other):
         """
         Overloads the less than or equal to comparision operator (<=)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        INPUT
+        =======
+        other: Scalar or AutoDiff Object
+
+        RETURNS
+        =======
         Return the truth value of values (x1 <= x2) element-wise
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 3
+        >>> print(x<=y)
+        [ True]
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([2.0, 5.0], name="y")
+        >>> print(x<=y)
+        [ True  True]
         """
         if isinstance(other, (int, float)):
             if len(self.val) != 1:
@@ -473,7 +768,7 @@ class AutoDiff():
         Returns: A new AutoDiff object with the exponential (using a specified base)
         computation done on the value and derivative
         """
-        new_val = base ** self.val
+        new_val = np.array([base ** float(v) for v in self.val])
         temp_der = {}
         for variable in self.get_variables():
             temp_der[variable] = self.der[variable] * (base ** self.val) * np.log(base)
@@ -489,3 +784,8 @@ class AutoDiff():
         for variable in self.get_variables():
             temp_der[variable] = self.der[variable] * np.exp(self.val) / ((1 + np.exp(self.val)) ** 2)
         return AutoDiff(new_val, temp_der, self.name)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
