@@ -18,13 +18,13 @@
 
      In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
 
-     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png)
+     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png?raw=True)
 
    * Chain Rule
 
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
    
-     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ProductRule.png)
+     ![Image of Chain Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ChainRule.png?raw=True)
    
 2. Automatic Differentiation
 
@@ -36,7 +36,11 @@
 
    * Function evaluation traces: All numeric evaluations are sequences of elementary operations: a “trace,” also called a “Wengert list”. The evaluation of f at some point x = (x1, ..., xn) can be described by a so-called evaluation trace v[0] = v[0](x), ..., v[μ] = v[μ](x), where each v[i] ∈ H is a so-called state vector, representing the state of the evaluation after i steps. The following graph shows an example of evaluation traces.
 
-     ![Image of trace evaluation](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png)
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png?raw=True" alt="Image of trace evaluation"/>
+     </p>
+
+     ![Image of trace evaluation](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace?raw=True.png)
 
 
 3. Forward Mode
@@ -47,7 +51,7 @@
    
    * The following graph shows an example of forward accumulation with computational graph.
    
-     ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation.png)
+     ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation?raw=True.png)
 
 4. Reverse Mode
 
@@ -57,7 +61,7 @@
 
    * The following graph shows an example of reverse accumulation with computational graph.
 
-     ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD.png)
+     ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD?raw=True.png)
 
 
 ## How to use autodiff
