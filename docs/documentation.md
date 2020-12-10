@@ -21,21 +21,26 @@
      ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png)
 
      <p align="center">
-    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Product Rule" />
+    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Product Rule" width="100" />
      </p>
    
    * Chain Rule
    
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
    
-     <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Chain Rule" width="250"/>
+     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ProductRule.png)
    
 2. Automatic Differentiation
 
    * Automatic Differentiation (short AD) is a method to evaluate derivatives of functions which differs significantly from the classical ways of computer-based differentiation through either approximative, numerical methods, or through symbolic differentiation, using computer algebra systems. While approximative methods (which are usually based on finite differences) are inherently prone to truncation and rounding errors and suffer from numerical instability, symbolic differentiation may (in certain cases) lead to significant long computation times. Automatic Differentiation suffers from none of these problems and is, in particular, well-suited for the differentiation of functions implemented as computer code. Furthermore, while Automatic Differentiation is also numerical differentiation, in the sense that it computes numerical values, it computes derivatives up to machine precision. That is, the only inaccuracies which occur are those which appear due to rounding errors in floating-point arithmetic or due to imprecise evaluations of elementary functions.
+
    * Automatic Differentiation refers to a general way of taking a program which computes a value, and automatically constructing a procedure for computing derivatives of that value. The derivatives sought may be first order (the gradient of a target function, or the Jacobian of a set of constraints), higher order (Hessian times direction vector or a truncated Taylor series), or nested. There are two modes in Automatic Differentiation: the forward mode and reverse mode. 
+
    * Elementary functions: The set of elementary functions has to be given and can, in principle, consist of arbitrary functions as long as these are sufficiently often differentiable. All elementary functions will be implemented in the system together with their gradients. 
+
    * Function evaluation traces: All numeric evaluations are sequences of elementary operations: a “trace,” also called a “Wengert list”. The evaluation of f at some point x = (x1, ..., xn) can be described by a so-called evaluation trace v[0] = v[0](x), ..., v[μ] = v[μ](x), where each v[i] ∈ H is a so-called state vector, representing the state of the evaluation after i steps. The following graph shows an example of evaluation traces.
+
+     ![Image of trace evaluation](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png)
 
 <img src="eval_trace.png" alt="Image of trace evaluation" align="center" width="400"/>
 
@@ -43,15 +48,24 @@
 3. Forward Mode
 
    * Forward automatic differentiation divides the expression into a sequence of differentiable elementary operations. The chain rule and well-known differentiation rules are then applied to each elementary operation.
+   
    * Forward automatic differentiation computes a directional derivative at the same time as it performs a forward evaluation trace. Implementation of forward automatic differentiation is simple due to how expressions are normally evaluated by computers.
+   
    * The following graph shows an example of forward accumulation with computational graph.
+   
+     ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation.png)
 
 <img src="ForwardAccumulationAutomaticDifferentiation.png" alt="Image of Forward Mode" align="center" width="500"/>
 
 4. Reverse Mode
+
    * In reverse accumulation automatic differentiation, the dependent variable to be differentiated is fixed and the derivative is computed with respect to each sub-expression recursively.
+
    * What changes in reverse mode is that if we have a dependence `z = x*y`, then x's children will be z and y's children will be z (instead of the other way around).
+
    * The following graph shows an example of reverse accumulation with computational graph.
+
+     ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD.png)
 
 <img src="ReverseaccumulationAD.png" alt="Image of Reverse Mode" align="center" width="500"/>
 
