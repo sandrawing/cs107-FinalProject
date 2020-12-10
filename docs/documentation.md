@@ -20,12 +20,8 @@
 
      ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png)
 
-     <p align="center">
-    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Product Rule" width="100" />
-     </p>
-   
    * Chain Rule
-   
+
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
    
      ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ProductRule.png)
@@ -42,8 +38,6 @@
 
      ![Image of trace evaluation](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/eval_trace.png)
 
-<img src="eval_trace.png" alt="Image of trace evaluation" align="center" width="400"/>
-
 
 3. Forward Mode
 
@@ -55,8 +49,6 @@
    
      ![Image of Forward Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ForwardAccumulationAutomaticDifferentiation.png)
 
-<img src="ForwardAccumulationAutomaticDifferentiation.png" alt="Image of Forward Mode" align="center" width="500"/>
-
 4. Reverse Mode
 
    * In reverse accumulation automatic differentiation, the dependent variable to be differentiated is fixed and the derivative is computed with respect to each sub-expression recursively.
@@ -66,8 +58,6 @@
    * The following graph shows an example of reverse accumulation with computational graph.
 
      ![Image of Reverse Mode](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ReverseaccumulationAD.png)
-
-<img src="ReverseaccumulationAD.png" alt="Image of Reverse Mode" align="center" width="500"/>
 
 
 ## How to use autodiff
