@@ -5,16 +5,12 @@
 
 ## Introduction
 
-*Describe the problem the software solves and why it's important to solve that problem.*
-
 * Autodiff software library computes gradients using Automatic Differentiation (AD).
 * Differentiation, the process of finding a derivative, is one of the most fundamental operations in mathematics. It measures the sensitivity to change of the function value with respect to a change in its argument. Computational techniques of calculating differentiations have broad applications in science and engineering, including numerical solution of ordinary differential equations, optimization and solution of linear systems. Besides, they also have many real-life applications, like edge detection in image processing and safety tests of cars.
 * Symbolic Differentiation and Finite Difference are two ways to numerically compute derivatives. Symbolic Differentiation is precise, but it can lead to inefficient code and can be costly to evaluate. Finite Difference is quick and easy to implement, but it can introduce round-off errors.
 * Automatic Differentiation handles both of these two problems. It achieves machine precision without costly evaluation, and therefore is widely used.
 
 ## Background
-
-*Describe (briefly) the mathematical background and concepts as you see fit. You do not need to give a treatise on automatic differentiation or dual numbers. Just give the essential ideas (e.g. the chain rule, the graph structure of calculations, elementary functions, etc). Do not copy and paste any of the lecture notes. We will easily be able to tell if you did this as it does not show that you truly understand the problem at hand.*
 
 1. Basic Calculus
 
@@ -600,8 +596,6 @@
    ```
 
 ## Software Organization
-
-*Discuss how you plan on organizing your software package.*
 
 * Directory Structure
 
