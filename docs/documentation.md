@@ -19,7 +19,7 @@
      In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
 
      <p align="center">
-    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ProductRule.png?raw=True" alt="Image of Product Rule"/>
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/images/ProductRule.png?raw=True" alt="Image of Product Rule"/>
      </p>
 
    * Chain Rule
