@@ -18,10 +18,12 @@
 
      In calculus, the product rule is a formula used to find the derivatives of products of two or more functions. The product rule can be expressed as
 
-     <p align="center">
-    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Product Rule" width="400"/>
-     </p>
+     ![Image of Product Rule](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png)
 
+     <p align="center">
+    <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/ProductRule.png" alt="Image of Product Rule" />
+     </p>
+   
    * Chain Rule
    
      In calculus, the chain rule is a formula to compute the derivative of a composite function. The chain rule can be expressed as
