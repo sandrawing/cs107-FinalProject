@@ -4,7 +4,7 @@ sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
 sys.path.append('autodiff')
 
 import pytest
-from autodiff import AutoDiff
+from autodiff_mod import AutoDiff
 
 
 def test_init_fail():
@@ -134,6 +134,22 @@ def test_pow():
     assert np.array_equal(f3.der['x'], np.array([384]))
     assert np.array_equal(f3.der['y'], np.array([432]))
 
+    tol = 1e-6
+    x = AutoDiff([3, 2], name='x')
+    y = AutoDiff([-2, -5], name='y')
+    f3 = (x ** y)
+    assert np.array_equal(f3.val, np.array([1/9, 2**(-5)]))
+    assert np.array_equal(f3.der['x'], np.array([-2*(3)**(-3), (-5)*(2)**(-6)]))
+    assert np.less(abs(f3.der['y'] - np.array([1/9*np.log(3), 2**(-5)*np.log(2)])), np.ones((2, 1)) * tol).all()
+
+    tol = 1e-6
+    x = AutoDiff([3, 2], name='x')
+    y = AutoDiff([-2], name='y')
+    f3 = (x ** y)
+    assert np.array_equal(f3.val, np.array([1 / 9, 2 ** (-2)]))
+    assert np.array_equal(f3.der['x'], np.array([-2 * (3) ** (-3), (-2) * (2) ** (-3)]))
+    assert np.less(abs(f3.der['y'] - np.array([1 / 9 * np.log(3), 2 ** (-2) * np.log(2)])), np.ones((2, 1)) * tol).all()
+
     x = AutoDiff([8, 4], name='x')
     y = AutoDiff([9, 12], name='y')
     f4 = (x ** 2) * (y ** 3)
@@ -160,6 +176,14 @@ def test_rpow():
     assert f2.val == 25.0
     assert f2.der["x"] == 25.0 * np.log(5)
     assert f2.der["y"] == 10.0
+
+    x = AutoDiff([3, 2], name='x')
+    y = AutoDiff([2], name='y')
+    # use ** for two AutoDiff
+    f3 = x.__rpow__(y)
+    assert np.array_equal(f3.val, np.array([(2)**3, 4]))
+    assert np.array_equal(f3.der['x'], np.array([(2)**3*np.log(2), 4*np.log(2)]))
+    assert np.array_equal(f3.der['y'], np.array([12, 4]))
 
     # Test TypeError
     with pytest.raises(TypeError):
@@ -431,6 +455,12 @@ def test_exp_base():
     assert f2.val == 4 ** 17
     assert f2.der["x"] == (4 ** 17) * 3 * np.log(4)
 
+    x = AutoDiff([-5.0, -1], 1.0, "x")
+    f1 = 3 * x + 2
+    f2 = AutoDiff.exp_base(f1, 4)
+    assert np.array_equal(f2.val, np.array([4**(-13), 0.25]))
+    assert np.array_equal(f2.der["x"], np.array([4**(-13)*np.log(4)*3, 0.25*np.log(4)*3]))
+
 
 def test_logistic():
     tol = 1e-6
@@ -510,6 +540,7 @@ if __name__ == '__main__':
     test_cosh()
     test_tan()
     test_tanh()
+    test_sqrt()
     test_sqrt()
     test_ln()
     test_log()
