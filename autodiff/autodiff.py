@@ -31,7 +31,7 @@ class AutoDiff():
         [5 6] {'x': array([1, 7])} x
         """
         # Handle several input types of val, including float, int, list and np.ndarray
-        if isinstance(val, (float, int, np.int64, np.float64):
+        if isinstance(val, (float, int, np.int64, np.float64)):
             val = [val]
             self.val = np.array(val)
         elif isinstance(val, list):
@@ -46,7 +46,7 @@ class AutoDiff():
             self.der = der
         elif type(der) == list:
             self.der = {name: np.array(der)}
-        elif isinstance(der, (float, int, np.int64, np.float64):
+        elif isinstance(der, (float, int, np.int64, np.float64)):
             self.der = {name: np.array([der] * len(self.val))}
         self.name = name
 
