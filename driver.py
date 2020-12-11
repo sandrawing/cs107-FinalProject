@@ -1,8 +1,9 @@
 from autodiff.autodiff import AutoDiff
 from autodiff.reverse import Reverse
-#from autodiff.vector_forward import Vector_Forward
-from autodiff.vector import Vector
+from autodiff.vector_forward import Vector_Forward
+from autodiff.vector_reverse import ReverseVector
 import numpy as np
+
 
 
 #####################
