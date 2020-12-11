@@ -5,7 +5,7 @@ sys.path.append('../autodiff')
 
 #print(sys.path)
 import pytest
-from autodiff.ad import Reverse
+from reverse import Reverse
 
 
 def test_init_fail():

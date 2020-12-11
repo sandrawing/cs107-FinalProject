@@ -1,10 +1,10 @@
-#import sys
+import sys
 import numpy as np
 sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
 sys.path.append('autodiff')
 
 import pytest
-from autodiff.rootfinding import newton_method
+from rootfinding import newton_method
 
 
 def test_rootfinding_scalar():
