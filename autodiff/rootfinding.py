@@ -20,6 +20,34 @@ def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int 
     =======
     x_val: root of function func computed with Newton's method
     x_trace: traces of x in root finding process
+
+    EXAMPLE
+    =======
+    Scalar case
+    >>> def func_scalar(x: list):
+    ...     f = (x[0]-2)**2
+    ...     return [f]
+    >>> root, trace = newton_method(func=func_scalar, num_of_variables=1, initial_val=[1], max_iter=10000, tol=1e-3)
+    >>> print(root, trace)
+    [1.96875] [array([1]), array([1.5]), array([1.75]), array([1.875]), array([1.9375]), array([1.96875])]
+
+    Vector case
+    >>> def func_vector(x: list):
+    ...     f1 = x[0] - 1
+    ...     f2 = x[1] ** 2
+    ...     return [f1, f2]
+    >>> root, trace = newton_method(func=func_vector, num_of_variables=2, initial_val=[0, 1], max_iter=10000, tol=1e-3)
+    >>> print(root, trace)
+    [1.      0.03125] [array([0, 1]), array([1. , 0.5]), array([1.  , 0.25]), array([1.   , 0.125]), array([1.    , 0.0625]), array([1.     , 0.03125])]
+
+    Failure case, maximum number of iteration reached
+    >>> def func_no_root(x: list):
+    ...     f1 = x[0]**2 + 1
+    ...     return [f1]
+    >>> root, trace = newton_method(func=func_no_root, num_of_variables=1, initial_val=[2], max_iter=10000, tol=1e-8)
+    Traceback (most recent call last):
+      ...
+    Exception: Max number of iterations is reached!
     """
 
     x_val = np.array(initial_val)         # Current value of x
@@ -53,8 +81,7 @@ def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int 
 
         # Throw exception if max number of iterations is reached
         if iter > max_iter:
-            raise Exception("Max number of iterations is reached! ")
+            raise Exception("Max number of iterations is reached!")
 
     return x_val, x_trace
-
 
