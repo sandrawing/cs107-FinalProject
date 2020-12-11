@@ -911,6 +911,20 @@
         return x_val, x_trace
 ```
 
+* Inside demo/ folders, we also plot the trace of our Root Finding with Newton's method. When the input is vector, the trace is
+
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/images/trace_rootfinding.png?raw=True" alt="Image of Reverse Mode"/>
+     </p>
+
+
+* When the input is scalar, the trace is
+
+     <p align="center">
+       <img src="https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/images/trace_scalar.png?raw=True" alt="Image of Reverse Mode"/>
+     </p>
+
+
 ## Future Work
 
 * Currently, both of our forward mode and reverse mode implementations handle vector inputs by evaluating them element-wise. In the future, we can extend them for matrix multiplication and do automatic differentiation for matrix cases.
