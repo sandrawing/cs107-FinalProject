@@ -3,7 +3,7 @@ import numpy as np
 sys.path.append('autodiff')
 sys.path.append('../autodiff')
 
-print(sys.path)
+#print(sys.path)
 import pytest
 from reverse import Reverse
 

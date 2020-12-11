@@ -1,4 +1,4 @@
-from autodiff import AutoDiff
+from ad import AutoDiff
 from vector_forward import Vector_Forward
 import numpy as np
 import pytest

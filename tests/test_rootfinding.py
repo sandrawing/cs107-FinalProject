@@ -50,6 +50,3 @@ if __name__ == "__main__":
     test_rootfinding_vector_1()
     test_rootfinding_vector_2()
     test_rootfinding_fail()
-
-
-

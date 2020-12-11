@@ -1,5 +1,15 @@
+# import sys
+# sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
+# sys.path.append('autodiff')
+
+import sys, os
+sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
+sys.path.append('autodiff')
+try:
+    from autodiff.ad import AutoDiff
+except ModuleNotFoundError:
+    from ad import AutoDiff
 import numpy as np
-from autodiff import AutoDiff
 
 
 class Vector_Forward():

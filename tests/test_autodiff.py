@@ -4,7 +4,7 @@ sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
 sys.path.append('autodiff')
 
 import pytest
-from autodiff import AutoDiff
+from ad import AutoDiff
 
 
 def test_init_fail():
