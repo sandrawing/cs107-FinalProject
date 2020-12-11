@@ -321,7 +321,7 @@ class Reverse():
         elif isinstance(other, (float, int)):
             val = np.array([float(other) ** v for v in self.val])
             z = Reverse(val)
-            self.children.append((val*np.log(other.val), z))
+            self.children.append((val*np.log(other), z))
             return z
         else:
             raise TypeError("Please us power with another Reverse object, int or float.")
