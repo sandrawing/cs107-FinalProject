@@ -76,7 +76,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
    * Import packages
 
       ```python
-     import autodiff as ad
+     import autodiff.autodiff as ad
      import numpy as np
       ```
 
@@ -100,7 +100,7 @@ numerical differentiation, in the sense that it computes numerical values, it co
        ```python
        vec = np.array([1,1]) # Value to be evaluate at
 
-       # Create an AD forward mode object with vector, number of inputs and number of putputs
+       # Create an AD forward mode object with vector, number of inputs and number of outputs
        x = ad.forward_mode(vec, 2, 2)
 
        f = ad.sin(2 * x) # function to be evaluate, i.e. f(x,y) = [sin(2x), sin(2y)]
