@@ -1,11 +1,11 @@
 import sys
 import numpy as np
-sys.path.append('autodiff')
-sys.path.append('../autodiff')
+#sys.path.append('autodiff')
+#sys.path.append('../autodiff')
 
-print(sys.path)
+#print(sys.path)
 import pytest
-from reverse import Reverse
+from autodiff.reverse import Reverse
 
 
 def test_init_fail():

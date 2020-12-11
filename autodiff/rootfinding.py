@@ -1,6 +1,6 @@
-from autodiff import AutoDiff
+from autodiff.autodiff import AutoDiff
 import numpy as np
-from vector_forward import Vector_Forward
+from autodiff.vector_forward import Vector_Forward
 
 
 def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int = 10000, tol: float = 1e-5):

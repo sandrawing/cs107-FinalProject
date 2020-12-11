@@ -1,5 +1,5 @@
 import numpy as np
-from autodiff import AutoDiff
+from autodiff.autodiff import AutoDiff
 
 
 class Vector_Forward():
