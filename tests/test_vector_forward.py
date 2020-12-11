@@ -1,10 +1,8 @@
-import sys
-import numpy as np
-sys.path.append('autodiff')
-
-import pytest
 from autodiff import AutoDiff
-from vector import Vector
+from vector_forward import Vector_Forward
+import numpy as np
+import pytest
+
 
 def test_vector():
     # handling multiple input; each input is a vector; multiple functions
@@ -12,7 +10,7 @@ def test_vector():
     y = AutoDiff([5, 2, 4], name='y')
     f1 = (2 * x ** (-2)) + (3 * y ** 4)
     f2 = AutoDiff.cos(x + (4 * y ** 2))
-    v = Vector([f1, f2])
+    v = Vector_Forward([f1, f2])
     assert np.array_equal(v.val()[0], np.array([16877/9, np.cos(103)]))
     assert np.array_equal(v.val()[1], np.array([50, np.cos(17)]))
     assert np.array_equal(v.val()[2], np.array([62210/81, np.cos(73)]))
