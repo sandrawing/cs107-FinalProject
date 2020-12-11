@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="autodiff-AsiaUnionCS107",
-    version="0.0.3",
+    version="0.0.7",
     author="AsiaUnionCS107",
     description="An Automatic Differentiation Package",
     long_description=long_description,
