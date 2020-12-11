@@ -1,6 +1,6 @@
 from autodiff import *
 from reverse import *
-from forward_vector import *
-from reverse_vector import *
+from vector_forward import *
+from vector_reverse import *
 from rootfinding import *
 
