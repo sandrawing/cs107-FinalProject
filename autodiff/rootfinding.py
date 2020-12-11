@@ -1,6 +1,6 @@
 from autodiff import AutoDiff
 import numpy as np
-from vector import Vector
+from vector_forward import Vector_Forward
 
 
 def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int = 10000, tol: float = 1e-5):
@@ -35,7 +35,7 @@ def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int 
         # Continue updating until abs_error <= tol
 
         # Calculate function value and jacobian matrix
-        f_vector = Vector(f)
+        f_vector = Vector_Forward(f)
         f_val = f_vector.val()[0].reshape(-1, 1)
         jacobian = f_vector.jacobian()[1][0]
 
