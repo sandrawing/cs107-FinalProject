@@ -5,7 +5,7 @@ import numpy as np
 
 #print(sys.path)
 import pytest
-from autodiff.reverse import Reverse
+from autodiff.ad import Reverse
 
 
 def test_init_fail():

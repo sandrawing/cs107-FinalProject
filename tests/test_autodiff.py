@@ -4,7 +4,7 @@ import numpy as np
 #sys.path.append('autodiff')
 
 import pytest
-from autodiff.autodiff import AutoDiff
+from autodiff.ad import AutoDiff
 
 
 def test_init_fail():
