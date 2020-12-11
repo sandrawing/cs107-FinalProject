@@ -587,9 +587,26 @@ class AutoDiff():
     def __gt__(self, other):
         """
         Overloads the greater than comparision operator (>)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        Inputs
+        =======
+        Scalar or AutoDiff Instance
+
+        Returns
+        =======
         Return the truth value of values (x1 > x2) element-wise
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 3
+        >>> print(y>x)
+        [ True]
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([3.0, 5.0], name="y")
+        >>> print(y>x)
+        [ True  True]
         """
         if isinstance(other, (int, float)):
             if len(self.val) != 1:
@@ -603,9 +620,26 @@ class AutoDiff():
     def __ge__(self, other):
         """
         Overloads the greater than or equal to comparision operator (>=)
-        Inputs: Scalar or AutoDiff Instance
-        Returns:
+
+        Inputs
+        =======
+        Scalar or AutoDiff Instance
+
+        Returns
+        =======
         Return the truth value of values (x1 >= x2) element-wise
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2.0, name="x")
+        >>> y = 1
+        >>> print(x>=y)
+        [ True]
+
+        >>> x = AutoDiff([2.0, 4.0], name="x")
+        >>> y = AutoDiff([1.0, 3.0], name="y")
+        >>> print(x>=y)
+        [ True  True]
         """
         if isinstance(other, (int, float)):
             if len(self.val) != 1:
@@ -620,9 +654,23 @@ class AutoDiff():
 
     def sin(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the sine
+        Elementary function sin
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the sine
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(2, name="x")
+        >>> f1 = AutoDiff.sin(x)
+        >>> print(f1.val, f1.der)
+        [0.90929743] {'x': array([-0.41614684])}
         """
         temp_der = {}
         new_val = np.sin(self.val)
@@ -632,9 +680,24 @@ class AutoDiff():
 
     def sinh(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic sine
+        Elementary function sinh
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic sine
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5.0, 1.0, "x")
+        >>> f1 = 3 * x + 2
+        >>> f2 = AutoDiff.sinh(f1)
+        >>> print(f2.val, f2.der)
+        [12077476.37678763] {'x': array([36232429.13036301])}
         """
         new_val = np.sinh(self.val)
         temp_der = {}
@@ -644,9 +707,24 @@ class AutoDiff():
 
     def cos(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the cosine computation
+        Elementary function cos
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the cosine computation
         done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5.0, 1.0, "x")
+        >>> f1 = 3 * x + 2
+        >>> f2 = AutoDiff.cos(f1)
+        >>> print(f2.val, f2.der)
+        [-0.27516334] {'x': array([2.88419248])}
         """
         new_val = np.cos(self.val)
         temp_der = {}
@@ -656,9 +734,24 @@ class AutoDiff():
 
     def cosh(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic cosine
+        Elementary function cosh
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic cosine
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5.0, 1.0, "x")
+        >>> f1 = 3 * x + 2
+        >>> f2 = AutoDiff.cosh(f1)
+        >>> print(f2.val, f2.der)
+        [12077476.37678767] {'x': array([36232429.13036288])}
         """
         new_val = np.cosh(self.val)
         temp_der = {}
@@ -668,9 +761,24 @@ class AutoDiff():
 
     def tan(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the tangent computation
+        Elementary function tan
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the tangent computation
         done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5.0, 1.0, "x")
+        >>> f1 = 3 * x + 2
+        >>> f2 = AutoDiff.tan(f1)
+        >>> print(f2.val, f2.der)
+        [3.49391565] {'x': array([39.62233961])}
         """
         new_val = np.tan(self.val)
         temp_der = {}
@@ -680,9 +788,24 @@ class AutoDiff():
 
     def tanh(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic
+        Elementary function tanh
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic
         tangent computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(5.0, 1.0, "x")
+        >>> f1 = 3 * x + 2
+        >>> f2 = AutoDiff.tanh(f1)
+        >>> print(f2.val, f2.der)
+        [1.] {'x': array([2.05669012e-14])}
         """
         new_val = np.tanh(self.val)
         temp_der = {}
@@ -692,9 +815,23 @@ class AutoDiff():
 
     def arcsin(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic
+        Elemtary function arcsin
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic
         arcsin computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.arcsin(x)
+        >>> print(f1.val, f1.der)
+        [0.52359878] {'x': array([1.15470054])}
         """
         new_val = np.arcsin(self.val)
         temp_der = {}
@@ -704,9 +841,23 @@ class AutoDiff():
 
     def arccos(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic
+        Elementary function arccos
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic
         arccos computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.arccos(x)
+        >>> print(f1.val, f1.der)
+        [1.04719755] {'x': array([-1.15470054])}
         """
         new_val = np.arccos(self.val)
         temp_der = {}
@@ -716,9 +867,22 @@ class AutoDiff():
 
     def arctan(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the hyperbolic
+        Elementary function arctan
+
+        Inputs
+        =======
+        None
+        Returns
+        =======
+        A new AutoDiff object with the hyperbolic
         arctan computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.arctan(x)
+        >>> print(f1.val, f1.der)
+        [0.46364761] {'x': array([0.8])}
         """
         new_val = np.arctan(self.val)
         temp_der = {}
@@ -728,9 +892,23 @@ class AutoDiff():
 
     def sqrt(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the square root
+        Elementary function sqrt
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the square root
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.sqrt(x)
+        >>> print(f1.val, f1.der)
+        [0.70710678] {'x': array([0.70710678])}
         """
         new_val = self.val ** (1 / 2)
         temp_der = {}
@@ -740,9 +918,23 @@ class AutoDiff():
 
     def ln(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the natural log
+        Elementary function ln
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the natural log
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.ln(x)
+        >>> print(f1.val, f1.der)
+        [-0.69314718] {'x': array([2.])}
         """
         new_val = np.log(self.val)
         temp_der = {}
@@ -752,9 +944,22 @@ class AutoDiff():
 
     def log(self, base):
         """
-        Inputs: scalar
-        Returns: A new AutoDiff object with the log (using a specified
+        Elementary function log with a scalar base
+
+        Inputs
+        =======
+        scalar
+
+        Returns
+        =======A new AutoDiff object with the log (using a specified
         base) computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.log(x, 10)
+        >>> print(f1.val, f1.der)
+        [-0.30103] {'x': array([0.86858896])}
         """
         new_val = np.log(self.val) / np.log(base)
         temp_der = {}
@@ -764,9 +969,23 @@ class AutoDiff():
 
     def exp(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object with the natural exponential
+        Elementary function exp with exponential base
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object with the natural exponential
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.exp(x)
+        >>> print(f1.val, f1.der)
+        [1.64872127] {'x': array([1.64872127])}
         """
         new_val = np.exp(self.val)
         temp_der = {}
@@ -776,9 +995,23 @@ class AutoDiff():
 
     def exp_base(self, base):
         """
-        Inputs: scalar
-        Returns: A new AutoDiff object with the exponential (using a specified base)
+        Elementary function exp with a scalr base
+
+        Inputs
+        =======
+        scalar
+
+        Returns
+        =======
+        A new AutoDiff object with the exponential (using a specified base)
         computation done on the value and derivative
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.exp_base(x, 10)
+        >>> print(f1.val, f1.der)
+        [3.16227766] {'x': array([7.2814134])}
         """
         new_val = np.array([base ** float(v) for v in self.val])
         temp_der = {}
@@ -788,8 +1021,22 @@ class AutoDiff():
 
     def logistic(self):
         """
-        Inputs: None
-        Returns: A new AutoDiff object calculated with logistic function
+        Logistic function
+
+        Inputs
+        =======
+        None
+
+        Returns
+        =======
+        A new AutoDiff object calculated with logistic function
+
+        EXAMPLES
+        =======
+        >>> x = AutoDiff(0.5, 1.0, "x")
+        >>> f1 = AutoDiff.logistic(x)
+        >>> print(f1.val, f1.der)
+        [0.62245933] {'x': array([0.23500371])}
         """
         new_val = 1 / (1 + np.exp(-self.val))
         temp_der = {}
@@ -797,7 +1044,3 @@ class AutoDiff():
             temp_der[variable] = self.der[variable] * np.exp(self.val) / ((1 + np.exp(self.val)) ** 2)
         return AutoDiff(new_val, temp_der, self.name)
 
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
