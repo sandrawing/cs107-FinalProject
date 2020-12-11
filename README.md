@@ -4,7 +4,7 @@
 
 # Final Project - autodiff Python Package
 
-# AC207 Systems Development for Computational Science, Fall 2020
+## AC207 Systems Development for Computational Science, Fall 2020
 
 ### Group Number 7
 
@@ -25,5 +25,7 @@ Our package, **autodiff**, provides an easy way to calculate derivatives of func
 
 We invite you to use **autodiff** package and help us improve it! 
 
-## Quick Start 
+
+
+The link for full documentation is [here](https://github.com/AsiaUnionCS107/cs107-FinalProject/blob/Milestone_3/docs/documentation.md). 
 
