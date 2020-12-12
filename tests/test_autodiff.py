@@ -1,10 +1,7 @@
-import sys
 import numpy as np
-sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
-sys.path.append('autodiff')
 
 import pytest
-from ad import AutoDiff
+from autodiff.ad import AutoDiff
 
 
 def test_init_fail():
