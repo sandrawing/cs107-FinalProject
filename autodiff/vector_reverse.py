@@ -1,4 +1,5 @@
 import numpy as np
+from autodiff.reverse import Reverse
 
 
 class ReverseVector():
@@ -31,8 +32,8 @@ class ReverseVector():
         >>> f1 = x**2 + x**y + 2*x*y
         >>> f2 = (y/x)**2
         >>> vect = ReverseVector([f1, f2])
-        >>> vect.val_func_order()
-        [np.array([ 18., 16., 18., 104., 70.]), np.array([64., 1., 0.11111111, 0.5625, 0.16])]
+        >>> print(vect.val_func_order())
+        [array([ 18.,  16.,  18., 104.,  70.]), array([64.        ,  1.        ,  0.11111111,  0.5625    ,  0.16      ])]
         """
         return [function.val for function in self.func_ver]
 
@@ -45,9 +46,10 @@ class ReverseVector():
         >>> f1 = x**2 + x**y + 2*x*y
         >>> f2 = (y/x)**2
         >>> vect = ReverseVector([f1, f2])
-        >>> der1_arr = vect.der_func_order([[x], [y]])
-        np.array([[[26, 12, 9, 62, 24]], [[16, 1, 2/9, 0.375, 0.16]]])
-
+        >>> print(vect.der_func_order([[x], [y]]))
+        [[[26.         12.          9.         62.         24.        ]]
+        <BLANKLINE>
+         [[16.          1.          0.22222222  0.375       0.16      ]]]
         """
         output_array = []
         for i in range(len(list_of_inputs)):
