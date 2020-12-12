@@ -118,7 +118,8 @@ Below are some simple demos of **autodiff** package.
 ...     f = (x[0]-2)**2
 ...     return [f]
 # Find root of function, print root and trace
->>> root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[0], >>> >>> max_iter=10000, tol=1e-3)
+>>> root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[0], 
+...                             max_iter=10000, tol=1e-3)
 >>> print(f'Root of function: {root}')
 >>> print(f'Trace of function: {trace}')
 Root of function: [1.96875]
@@ -133,7 +134,6 @@ Trace of function: [array([0]), array([1.]), array([1.5]), array([1.75]), array(
 ...     f1 = x[0] + 2
 ...     f2 = x[0] + x[1]**2 - 2
 ...     return [f1, f2]
-
 # Find root of function, print root and trace
 >>> root, trace = newton_method(func=func_multi_variables, num_of_variables=2, 
 ...                             initial_val=[0, 1], max_iter=10000, tol=1e-3)
