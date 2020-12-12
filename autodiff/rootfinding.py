@@ -1,16 +1,7 @@
-import sys, os
-sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
-sys.path.append('autodiff')
-try:
-    from autodiff.ad import AutoDiff
-except ModuleNotFoundError:
-    from ad import AutoDiff
-try:
-    from autodiff.vector_forward import Vector_Forward
-except ModuleNotFoundError:
-    from vector_forward import Vector_Forward
-
+from autodiff.ad import AutoDiff
+from autodiff.vector_forward import Vector_Forward
 import numpy as np
+
 
 def newton_method(func, num_of_variables: int, initial_val: list, max_iter: int = 10000, tol: float = 1e-5):
     """
