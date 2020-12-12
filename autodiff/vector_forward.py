@@ -27,7 +27,7 @@ class Vector_Forward():
         >>> f2 = AutoDiff.cos(x + (4 * y ** 2))
         >>> v = Vector_Forward([f1, f2])
         >>> print(type(v.func_ver[0]), len(v.func_ver))
-        <class 'autodiff.AutoDiff'> 2
+        <class 'autodiff.ad.AutoDiff'> 2
         """
         self.func_ver = func_vec
 
