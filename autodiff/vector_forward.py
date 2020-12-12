@@ -1,10 +1,3 @@
-# import sys
-# sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
-# sys.path.append('autodiff')
-
-# import sys, os
-# sys.path.append('../')      # Enable test_autodiff.py to work locally
-
 from autodiff.ad import AutoDiff
 import numpy as np
 
