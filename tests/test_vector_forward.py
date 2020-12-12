@@ -1,11 +1,11 @@
 import sys
-import numpy as np
 sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
 sys.path.append('autodiff')
 
+from ad import AutoDiff
+from vector_forward import Vector_Forward
+import numpy as np
 import pytest
-from reverse import Reverse
-from vector_reverse import ReverseVector
 
 
 def test_vector():
