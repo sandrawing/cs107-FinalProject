@@ -1,5 +1,9 @@
-from autodiff.ad import AutoDiff
-from autodiff.vector_forward import Vector_Forward
+import sys
+sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
+sys.path.append('autodiff')
+
+from ad import AutoDiff
+from vector_forward import Vector_Forward
 import numpy as np
 import pytest
 
