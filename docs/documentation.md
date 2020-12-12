@@ -87,7 +87,7 @@
    * Import packages
 
    ```python
-       from autodiff.autodiff import AutoDiff
+       from autodiff.ad import AutoDiff
        from autodiff.reverse import Reverse
        from autodiff.vector_forward import Vector_Forward
        from autodiff.vector_reverse import ReverseVector
