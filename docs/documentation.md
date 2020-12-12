@@ -86,110 +86,110 @@
 
    * Import packages
 
-   ```python
-       from autodiff.ad import AutoDiff
-       from autodiff.reverse import Reverse
-       from autodiff.vector_forward import Vector_Forward
-       from autodiff.vector_reverse import ReverseVector
-       import numpy as np
-```
-   
-* Instantiate autodiff objects and calculate values and derivatives
-   
-  * Firstly, we show how to handle scalar case in forward mode. The user begins by initializing an AD forward mode object with input value. By default, the derivatives of variable is 1 and the name of variable is "not_specified". But any derivatives and name can be passed in. And we use different names of variables to represent their independence. Then, the user can call the functions we provide inside AutoDiff class and get the value and derivatives.
-   
      ```python
-      val = 0 # Value to evaluate at
+         from autodiff.ad import AutoDiff
+         from autodiff.reverse import Reverse
+         from autodiff.vector_forward import Vector_Forward
+         from autodiff.vector_reverse import ReverseVector
+         import numpy as np
+     ```
+
+   * Instantiate autodiff objects and calculate values and derivatives
+
+     * Firstly, we show how to handle scalar case in forward mode. The user begins by initializing an AD forward mode object with input value. By default, the derivatives of variable is 1 and the name of variable is "not_specified". But any derivatives and name can be passed in. And we use different names of variables to represent their independence. Then, the user can call the functions we provide inside AutoDiff class and get the value and derivatives.
+
+     ```python
+         val = 0 # Value to evaluate at
      
          # Create an AD forward mode object with val
-      x = AutoDiff(val, name="x")
+         x = AutoDiff(val, name="x")
      
-      f = AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
+         f = AutoDiff.sin(2 * x) # function to be evaluate, i.e. f(x) = sin(2x)
      
          print(f.val) # Output the function value
          print(f.der) # Output the function derivative
-  ```
-   
+     ```
+
      ​	The output is
-   
-  ```python
+
+     ```python
          [0.]
      
-      {'x': array([2.])}
+         {'x': array([2.])}
      ```
 
      * Then, we show how to handle vector case for a single variable in forward mode. This is very similar to handle scalar case in forward mode. But instead, we pass in a list or numpy.array to initialize the values.
-   
+
      ```python
-      # Create an AD forward mode object with vector
+         # Create an AD forward mode object with vector
          x = AutoDiff([-1.0, -3.0, -5.0, -7.0, 0.1], name="x")
      
-      f = AutoDiff.logistic(AutoDiff.tan(x) + (3 * x ** (-2)) + (2 * x) + 7) \
+         f = AutoDiff.logistic(AutoDiff.tan(x) + (3 * x ** (-2)) + (2 * x) + 7) \
          # function to be evaluate
      
          print(f.val) # Output the function value
-      print(f.der) # Output the function derivative
+         print(f.der) # Output the function derivative
      ```
-   
+
      ​	The output is
-  ```python
+     ```python
          [9.98410258e-01 8.13949454e-01 6.22580352e-01 4.05402978e-04 1.00000000e+00]
      
          {'x': array([ 1.81347563e-002,  4.91036710e-001,  3.40145666e+000, 1.53055156e-003, \
-                   -2.08494059e-130])}
+                      -2.08494059e-130])}
      ```
 
      * Then, we show how to handle vector case for various variables in forward mode.
-   
+
      ```python
-      # Create an AD forward mode object with vector for x
+         # Create an AD forward mode object with vector for x
          x = AutoDiff([16, 0], name="x")
      
-      # Create an AD forward mode object with vector for y
+         # Create an AD forward mode object with vector for y
          y = AutoDiff([8, -1], name="y")
-  
+     
          f = x / y  # function to be evaluate, i.e. f(x, y) = x / y
      
          print(f.val) # Output the function value
-      print(f.der) # Output the function derivative
+         print(f.der) # Output the function derivative
      ```
-   
+
      ​	The output is
-  ```python
+     ```python
          [ 2. -0.]
      
-      {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
+         {'x': array([ 0.125, -1.   ]), 'y': array([-0.25, -0.  ])}
      ```
 
      * Then, we show how to handle the case of various functions. Let's begin with a simple case when the input of different variables is scalar. The user begins by initializing different AD forward mode object with input values for different variables. Then, the user can define various functions to be evaluated using Vector_Forward class. And the val function inside Vector_Forward class gives the output values of the functions. And the jacobian function inside Vector_Forward class would return a list and a numpy matrix. The list is the order of variables appears inside the matrix. For instance, if the list is ['x', 'y'], the the first column of the matrix is the derivatives for variable 'x', and the second column of the matrix is the derivatives for variable 'y'. The numpy matrix is the jacobian matrix. Different rows represents the derivatives for different functions. In the following result, where we input two functions. Then the first row is the result for f1 and the second row is the result for f2.
-   
+
      ```python
          # Create an AD forward mode object with value for x
          x = AutoDiff(3, name='x')
          # Create an AD forward mode object with value for y
          y = AutoDiff(5, name='y')
          f1 = (2 * x ** 2) + (3 * y ** 4)
-      f2 = AutoDiff.cos(x + (4 * y ** 2))
+         f2 = AutoDiff.cos(x + (4 * y ** 2))
          v = Vector_Forward([f1, f2])
      
          print(v.val())
          print(v.jacobian()[0])
-      print(v.jacobian()[1])
+         print(v.jacobian()[1])
      ```
 
      ​	The output is
-   
-  ```python
+
+     ```python
          [[ 1.8930000e+03 -7.8223089e-01]]
-  
+     
          ['x', 'y']
      
          [array([[ 1.20000000e+01,  1.50000000e+03],
-         [-6.22988631e-01, -2.49195453e+01]])]
+            [-6.22988631e-01, -2.49195453e+01]])]
      ```
 
       * Then, we show how to handle the most complicated case, where we have multiple variables, and each of the variable has vector input, and we evaluate them for multiple functions. Compared with the previous one, this time, the jacobian function inside Vector_Forward class would return a list of variable names and a list of numpy matrix. For instance, in the following example, we essentially evaluate two pairs of values for (x, y), which are (3, 5) and (1, 2). And each element inside the list of numpy matrix has the same meaning as previous example. The first element is the result for (3, 5) and the second element is the result for (1, 2).
-   
+
      ```python
          x = AutoDiff([3, 1], name='x')
          y = AutoDiff([5, 2], name='y')
@@ -198,130 +198,130 @@
          v = Vector_Forward([f1, f2])
          print(v.val())
          print(v.jacobian()[0])
-      print(v.jacobian()[1])
+         print(v.jacobian()[1])
      ```
 
      ​	The output is
-   
+
      ```python
-      [[ 1.89300000e+03 -7.82230890e-01]
+         [[ 1.89300000e+03 -7.82230890e-01]
          [ 5.00000000e+01 -2.75163338e-01]]
-  
+     
          ['x', 'y']
      
          [array([[ 1.20000000e+01,  1.50000000e+03],
          [-6.22988631e-01, -2.49195453e+01]]),
          array([[ 4.        , 96.        ],
-      [ 0.96139749, 15.38235987]])]
+         [ 0.96139749, 15.38235987]])]
      ```
 
    * Instantiate reverse objects and calculate values and derivatives    
 
       * First we show you how to use evaluate the scalar case (i.e. where the inputs are scalar and the function's value is also scalar).
-   
-   ```python
+
+      ```python
           x = Reverse(5)  # create a reverse mode variable that can be used later
-   
+
           y = Reverse.sqrt(Reverse.sinh(x)) + 2**x + 7*Reverse.exp(x) + \
-       		Reverse.sin(Reverse.cos(x)) \
+          		Reverse.sin(Reverse.cos(x)) \
           # create the function y = (sinh(x))^0.5 + 2^x + 7e^x + sin(cos(x))
-   
-       x.reset_gradient()  
+
+          x.reset_gradient()  
           # we want dy/dx this is with respect to x, so we first clear any initialisation that was previously existing using .reset_gradient()
-   
-       y.gradient_value = 1  
+
+          y.gradient_value = 1  
           # we want dy/dx so we set y.gradient_value to 1
-   
-       dy_dx = x.get_gradient()  
+
+          dy_dx = x.get_gradient()  
           # Finally to get dy/dx calculate get_gradient at x (since we want dy/dx i.e. w.r.t. x)
-   
-       print(dy_dx)  # print the gradient value found to console
+
+          print(dy_dx)  # print the gradient value found to console
       ```
 
       * Now we work on the vector case, i.e. where the inputs are vectors, and the function is a mathematical operation on these vector inputs:
-   
+
       ```python
-       x = Reverse([1, 2, 3])  
+          x = Reverse([1, 2, 3])  
         	# create a reverse mode variable that can be used later (this time using a numpy array or python list)
 
           y =  2*x + x**2  # create the function y = 2x + x^2
-   
-       x.reset_gradient()  
+
+          x.reset_gradient()  
           # we want dy/dx this is with respect to x, so we first clear any initialisation that was previously existing using .reset_gradient()
 
           y.gradient_value = 1  # we want dy/dx so we set y.gradient_value to 1
-   
-       dy_dx = x.get_gradient()  
+
+          dy_dx = x.get_gradient()  
           # Finally to get dy/dx calculate get_gradient at x (since we want dy/dx i.e. w.r.t. x)
-   
-       print(dy_dx)  # print the gradient value found to console
+
+          print(dy_dx)  # print the gradient value found to console
       ```
 
       * Next we do the case, where our output is a vector of functions.
-   
+
       ```python
-       # Here we start by creating two variables that are vectors (x and y)
+          # Here we start by creating two variables that are vectors (x and y)
           x = Reverse([1, 2, 3, 4, 5])
-   
-       y = Reverse([8, 2, 1, 3, 2])
+
+          y = Reverse([8, 2, 1, 3, 2])
       ```
-   
+
       ```python
-       # And say we want our output as a vector of functions i.e. [f1, f2] then
+          # And say we want our output as a vector of functions i.e. [f1, f2] then
           f1 = x**2 + x**y + 2*x*y  # We first define f1
 
           f2 = (y/x)**2  # then define f2
-   
+
           vect = ReverseVector([f1, f2])
-       # Finally we combine both the functions into a vector using the ReverseVector class
+          # Finally we combine both the functions into a vector using the ReverseVector class
       ```
-   
+
       ```python
-       eval_arr = vect.val_func_order()
+          eval_arr = vect.val_func_order()
         	# Using this then, we can find our vector of function's value evaluated at the point we initialised it at.
-   
-       # Now for derivatives, we call der_func_order() which takes in the argument a list of lists where if our vector of functions is [f1, f2] then:
+
+          # Now for derivatives, we call der_func_order() which takes in the argument a list of lists where if our vector of functions is [f1, f2] then:
           der1_arr = vect.der_func_order([[x], [y]])  # returns [[df1/dx], [df2/dy]]
 
           der2_arr = vect.der_func_order([[y], [x]])  # returns [[df1/dy], [df2/dx]]
-   
-       der3_arr = vect.der_func_order([[x, y], [x, y]])  
+
+          der3_arr = vect.der_func_order([[x, y], [x, y]])  
           # returns [[df1/dx, df1/dy], [df2/dx, df2/dy]]
-   
+
           # i.e. the output follows the same format as the input that you define
-       # Note: You are passing in the Reverse object x in the lists above not a string "x".
+          # Note: You are passing in the Reverse object x in the lists above not a string "x".
       ```
 
       * Here, we also want to specify the following cases for Reverse mode, where the input is a combination of vector and scalar.
-   
+
       ```python
           # Case 1: Inputs are one-length list and a vector
           x = Reverse([5])
-       y = Reverse([1, 2, 3])
+          y = Reverse([1, 2, 3])
           f = x * y
-   
+
           # Case 2: Inputs are a value and a vector
           x = Reverse(5)
-       y = Reverse([1, 2, 3])
+          y = Reverse([1, 2, 3])
           f = x * y
-   
+
           # For both of Case 1, 2, we do Reverse mode for x=5 and y=1, y=2, and y=3 respectively
           # Both of them are equivalent to the following case
           x = Reverse([5, 5, 5])
           y = Reverse([1, 2, 3])
-       f = x * y
+          f = x * y
       ```
 
    * Instantiate root finding with Newton's method
 
      * One-variable function
-   
+
      ```python
          def func_one_variable(x: list):
              # function with one variable
-          f = (x[0]-2)**2
+             f = (x[0]-2)**2
              return [f]
-   
+
          # Find root of function, print root and trace
          root, trace = newton_method(func=func_one_variable,
                                      num_of_variables=1,
@@ -329,29 +329,29 @@
                                      max_iter=10000,
                                    tol=1e-8)
          print(f'Root of function: {root}')
-      print(f'Trace of function: {trace}')
+         print(f'Trace of function: {trace}')
      ```
 
      Output is as below
-   
+
      ```python
          Root of function: [1.99993896]
          Trace of function: [array([1]), array([1.5]), array([1.75]), array([1.875]),  
                              array([1.9375]), array([1.96875]), array([1.984375]),  
                              array([1.9921875]), array([1.99609375]), array([1.99804688]),  
                              array([1.99902344]), array([1.99951172]), array([1.99975586]),
-                          array([1.99987793]), array([1.99993896])]
+                             array([1.99987793]), array([1.99993896])]
      ```
 
      * Multi-variable function
-   
+
      ```python
          def func_multi_variables(x: list):
            # function with multi variables
            f1 = x[0] + 2
-        f2 = x[0] + x[1]**2 - 2
+           f2 = x[0] + x[1]**2 - 2
            return [f1, f2]
-   
+
          # Find root of function, print root and trace
          root, trace = newton_method(func=func_multi_variables,
                                      num_of_variables=2,
@@ -359,11 +359,11 @@
                                      max_iter=10000,
                                      tol=1e-8)
          print(f'Root of function: {root}')
-      print(f'Trace of function: {trace}')
+         print(f'Trace of function: {trace}')
      ```
 
      ​	Output is as below
-   
+
      ```python
          Root of function: [-2.  2.]
          Trace of function: [array([0, 1]), array([-2. ,  2.5]),
