@@ -1,8 +1,12 @@
+import sys
 import numpy as np
+sys.path.append('../autodiff')      # Enable test_autodiff.py to work locally
+sys.path.append('autodiff')
 
 import pytest
-from autodiff.reverse import Reverse
-from autodiff.vector_reverse import ReverseVector
+from reverse import Reverse
+from vector_reverse import ReverseVector
+
 
 def test_vector_reverse():
     # handling multiple input; each input is a vector; multiple functions
