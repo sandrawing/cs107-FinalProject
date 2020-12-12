@@ -91,6 +91,7 @@
          from autodiff.reverse import Reverse
          from autodiff.vector_forward import Vector_Forward
          from autodiff.vector_reverse import ReverseVector
+         from autodiff.rootfinding import newton_method 
          import numpy as np
      ```
 
