@@ -4,12 +4,12 @@ python: "3.6"
   # PyPy versions
 
 before_install:
-    - pip install pytest pytest-cov 
+    - pip install pytest pytest-cov
     - pip install codecov
+    - python setup.py install
 
 script:
-    - pytest --cov=autodiff/
+    - pytest --cov=./
 
 after_success:
     - bash <(curl -s https://codecov.io/bash) -t 5e655a65-d0e2-4f94-a82d-17d4f40a04dd
-
