@@ -115,8 +115,8 @@ Below are some simple demos of **autodiff** package.
 >>> from autodiff.rootfinding import newton_method
 >>> def func_one_variable(x: list):
 ...     # function with one variable
-... 		f = (x[0]-2)**2
-...			return [f]
+...     f = (x[0]-2)**2
+...     return [f]
 # Find root of function, print root and trace
 >>> root, trace = newton_method(func=func_one_variable, num_of_variables=1, initial_val=[0], >>> >>> max_iter=10000, tol=1e-3)
 >>> print(f'Root of function: {root}')
@@ -129,10 +129,10 @@ Trace of function: [array([0]), array([1.]), array([1.5]), array([1.75]), array(
 
 ```python
 >>> def func_multi_variables(x: list):
-...			# function with multi variables
-... 		f1 = x[0] + 2
-... 		f2 = x[0] + x[1]**2 - 2
-... 		return [f1, f2]
+...     # function with multi variables
+...     f1 = x[0] + 2
+...     f2 = x[0] + x[1]**2 - 2
+...     return [f1, f2]
 
 # Find root of function, print root and trace
 >>> root, trace = newton_method(func=func_multi_variables, num_of_variables=2, 
