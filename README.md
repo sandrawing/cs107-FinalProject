@@ -41,7 +41,7 @@ Below are some simple demos of **autodiff** package.
 
 * Forward mode AD
 
-  *Example 1*
+*Example 1*
 
 ```python
 >>> from autodiff.ad import AutoDiff
@@ -54,7 +54,7 @@ Below are some simple demos of **autodiff** package.
 {'x': array([2.])}
 ```
 
-​	*Example 2*
+*Example 2*
 
 ```python
 # Create an AD forward mode object with vector
@@ -70,7 +70,7 @@ Below are some simple demos of **autodiff** package.
 
 * Reverse mode AD
 
-  *Example 1*
+*Example 1*
 
 ```python
 >>> from autodiff.reverse import Reverse
@@ -89,7 +89,7 @@ Below are some simple demos of **autodiff** package.
 [1066.30088158]
 ```
 
-​	*Example 2*
+*Example 2*
 
 ```python
 # create a reverse mode variable that can be used later (this time using a numpy array or python list)
@@ -109,7 +109,7 @@ Below are some simple demos of **autodiff** package.
 
 * Root finding with Newton's method
 
-  *Example 1*
+*Example 1*
 
 ```python
 >>> from autodiff.rootfinding import newton_method
@@ -125,7 +125,7 @@ Root of function: [1.96875]
 Trace of function: [array([0]), array([1.]), array([1.5]), array([1.75]), array([1.875]), array([1.9375]), array([1.96875])]
 ```
 
-​	*Example 2*
+*Example 2*
 
 ```python
 >>> def func_multi_variables(x: list):
