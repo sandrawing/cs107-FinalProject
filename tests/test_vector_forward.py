@@ -1,5 +1,5 @@
-from ad import AutoDiff
-from vector_forward import Vector_Forward
+from autodiff.ad import AutoDiff
+from autodiff.vector_forward import Vector_Forward
 import numpy as np
 import pytest
 
